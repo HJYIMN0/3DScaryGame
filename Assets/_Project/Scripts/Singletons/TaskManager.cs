@@ -4,7 +4,7 @@ using UnityEngine;
 /// <summary>
 /// this class is destroyed on load. So you will need to create a new one for each scene.
 /// Each Scenes will have a different set of tasks, so this class is responsible for keeping track of the tasks of the day.
-public class DayManager : GenericSingleton<DayManager>
+public class TaskManager : GenericSingleton<TaskManager>
 {
     [SerializeField] private List<TaskSO> tasksOfTheDay;
     public List<TaskSO> CompletedTasks { get; private set; } = new List<TaskSO>();

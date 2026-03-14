@@ -1,22 +1,20 @@
 ﻿using System;
 using UnityEngine;
-
-public class InteractableTask : MonoBehaviour, iInteractable
+public abstract class AbstractInteractable : MonoBehaviour
 {
-    [SerializeField] private TaskSO task;
+    [SerializeField] protected TaskSO task;
     [SerializeField] private float canvaPos = 1.15f;
-    
-    public event Action OnInteractionStart;
-    public event Action OnInteractionEnd;
     private bool isCanvaInstantiated = false;
     private GameObject canvaInstance;
-    private PlayerInteractionSystem playerInteractionSystem;
+    private PlayerInteractionController playerInteractionController;
 
-    private void Start()
+    public bool HasBeenInteractedWith { get; protected set; } = false;
+
+    protected virtual void Start()
     {
         if (task != null) 
         {
-            DayManager.Instance.AddTask(task);
+            TaskManager.Instance.AddTask(task);
             Debug.Log($"Added task '{task.TaskName}' to DayManager.");
         }
         else
@@ -25,7 +23,7 @@ public class InteractableTask : MonoBehaviour, iInteractable
         }
     }
 
-    private void Update()
+    protected virtual void Update()
     {
         Collider[] player = Physics.OverlapSphere(transform.position, task.interactionRadius, LayerMask.GetMask("Player"));
         if (player.Length > 0)
@@ -42,9 +40,9 @@ public class InteractableTask : MonoBehaviour, iInteractable
                 isCanvaInstantiated = false;
                 Debug.Log("Player left, deactivating canva.");
             }
-            if (playerInteractionSystem != null)
+            if (playerInteractionController != null && playerInteractionController.interactableTask == this)
             {
-                playerInteractionSystem.ClearInteractableTaskForPlayer();
+                playerInteractionController.ClearInteractableTaskForPlayer();
                 Debug.Log("Player left, clearing interactable task for player.");
             }
         }
@@ -56,11 +54,11 @@ public class InteractableTask : MonoBehaviour, iInteractable
         if (isCanvaInstantiated) return;
 
 
-        if (playerInteractionSystem == null)
+        if (playerInteractionController == null)
         {
-           playerInteractionSystem = player.GetComponent<PlayerInteractionSystem>();
+           playerInteractionController = player.GetComponent<PlayerInteractionController>();
         }
-        playerInteractionSystem.SetInteractableTaskForPlayer(this);
+        playerInteractionController.SetInteractableTaskForPlayer(this);
 
         if (!isCanvaInstantiated && canvaInstance != null) 
             {
@@ -79,20 +77,7 @@ public class InteractableTask : MonoBehaviour, iInteractable
            Debug.Log("Canva was null, instantiating now...");
         }
     }
-    public void InteractWithTask()
-    {
-        if (task != null)
-        {
-            DayManager.Instance.CompleteTask(task.TaskName);
-            Debug.Log($"Interacted with task: {task.TaskName}");
-        }
-        else
-        {
-            Debug.LogWarning("No task assigned to this interactable.");
-        }
-        OnInteractionStart?.Invoke();
-        OnInteractionEnd?.Invoke();
-    }
+    public abstract void InteractWithTask();
 
     private void OnDrawGizmos()
     {
