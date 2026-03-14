@@ -1,0 +1,63 @@
+using System.Collections.Generic;
+using UnityEngine;
+
+/// <summary>
+/// this class is destroyed on load. So you will need to create a new one for each scene.
+/// Each Scenes will have a different set of tasks, so this class is responsible for keeping track of the tasks of the day.
+public class DayManager : GenericSingleton<DayManager>
+{
+    [SerializeField] private List<TaskSO> tasksOfTheDay;
+    public List<TaskSO> CompletedTasks { get; private set; } = new List<TaskSO>();
+
+    private void Start()
+    {
+        CompletedTasks.Clear(); // Clear completed tasks at the start of each day
+    }
+
+    public void AddTask(TaskSO task)
+    {
+        if (!tasksOfTheDay.Contains(task))
+        {
+            tasksOfTheDay.Add(task);
+            Debug.Log($"Task '{task.TaskName}' added to today's tasks.");
+        }
+        else
+        {
+            Debug.LogWarning($"Task '{task.TaskName}' is already in today's tasks.");
+        }
+    }
+    public void CompleteTask(string TaskId)
+    {
+        TaskSO task = tasksOfTheDay.Find(t =>
+            t.TaskName.Equals(TaskId, System.StringComparison.OrdinalIgnoreCase));
+        if (task != null && !CompletedTasks.Contains(task))
+        {
+            CompletedTasks.Add(task);
+            Debug.Log($"Task '{task.TaskName}' completed.");
+        }
+        else if (task == null)
+        {
+            Debug.LogWarning($"Task with ID '{TaskId}' not found in today's tasks.");
+        }
+        else
+        {
+            Debug.LogWarning($"Task '{task.TaskName}' has already been completed.");
+        }
+    }
+
+    public bool AreAllTasksCompleted()
+    {
+        List<TaskSO> mandatoryTasks = tasksOfTheDay.FindAll(t => t.isMandatory);
+        foreach (TaskSO task in mandatoryTasks)
+        {
+            if (!CompletedTasks.Contains(task))
+            {
+                return false; // Found a mandatory task that hasn't been completed
+            }
+        }
+        return true; // All mandatory tasks are completed
+    }
+
+    public override bool IsDestroyedOnLoad() => true;
+    public override bool ShouldDetatchFromParent() => true;
+}
