@@ -4,7 +4,7 @@ public class InteractableGeneral : AbstractInteractable
 {
     public override void InteractWithTask()
     {
-        ShowDialogue(task.inkJson, false);
+        ShowDialogue(task.inkJson, task.usesVariablesInInk);
         
         if (HasBeenInteractedWith) 
         {

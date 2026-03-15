@@ -45,6 +45,7 @@ public abstract class AbstractInteractable : MonoBehaviour
             if (playerInteractionController != null && playerInteractionController.interactableTask == this)
             {
                 playerInteractionController.ClearInteractableTaskForPlayer();
+                InkManager.Instance.ClearStoryAndTextAsset();
                 Debug.Log("Player left, clearing interactable task for player.");
             }
         }
