@@ -6,6 +6,7 @@ public class PlayerInteractionController : MonoBehaviour
     public InputSystem_Actions actions { get; private set; }
 
     private PlayerInputController _input;
+    private PlayerDialogueController _dialogueController;
 
     private void Awake()
     {
@@ -38,6 +39,16 @@ public class PlayerInteractionController : MonoBehaviour
 
     private void HandleInteraction()
     {
+        if (_dialogueController == null)
+        {
+            _dialogueController = GetComponent<PlayerDialogueController>();
+        }
+
+        if (_dialogueController.IsDialogueActive)
+        {
+         return;   
+        }
+
         if (interactableTask != null)
         {
             Debug.Log("Player interacted with task: " + interactableTask.name);

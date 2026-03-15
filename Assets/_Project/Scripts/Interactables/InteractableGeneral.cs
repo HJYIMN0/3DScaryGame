@@ -4,6 +4,8 @@ public class InteractableGeneral : AbstractInteractable
 {
     public override void InteractWithTask()
     {
+        ShowDialogue(task.inkJson, false);
+        
         if (HasBeenInteractedWith) 
         {
             Debug.Log($"Player has already interacted with {name}. No need to interact again.");

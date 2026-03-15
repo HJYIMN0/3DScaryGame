@@ -17,3 +17,5 @@ MonoBehaviour:
   isMandatory: 1
   interactionRadius: 3.58
   canvaObj: {fileID: 5118407277419850778, guid: 7bc6925bac6833743ac4301f7508ebef, type: 3}
+  inkJson: {fileID: 4900000, guid: b2c7b44f2c20f3347abc420f170f514d, type: 3}
+  usesVariablesInInk: 0

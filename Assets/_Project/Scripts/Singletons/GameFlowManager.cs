@@ -5,9 +5,6 @@ using UnityEngine.SceneManagement;
 
 public class GameFlowManager : GenericSingleton<GameFlowManager>
 {
-    // MODIFICATO: Scene[] → string[] perché Scene è una struct runtime non
-    // serializzabile dall'Inspector. I nomi delle scene sono sufficienti
-    // per caricarle tramite SceneManager.
     [SerializeField] private string[] gameScenes;
     [SerializeField] private float fadeDuration = 2f;
     [SerializeField] private GameObject fadeCanvaPrefab;

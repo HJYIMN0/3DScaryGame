@@ -18,7 +18,9 @@ public class PlayerInputController : MonoBehaviour, InputSystem_Actions.IPlayerA
     public bool JumpPressed { get; private set; }
     public bool IsSprinting { get; private set; }
     public bool IsCrouching { get; private set; }
+
     public Action OnInteractAction;
+    public Action OnAttackAction;
 
     // -------------------------------------------------------------------------
     // Stato interno
@@ -81,7 +83,13 @@ public class PlayerInputController : MonoBehaviour, InputSystem_Actions.IPlayerA
     public void OnCrouch(InputAction.CallbackContext context)
         => IsCrouching = context.ReadValueAsButton();
 
-    public void OnAttack(InputAction.CallbackContext context) { }
+    public void OnAttack(InputAction.CallbackContext context) 
+    {
+        if (!context.started) return;
+
+        Debug.Log("Interazione: Tasto Attack premuto.");
+        OnAttackAction?.Invoke();
+    }
     public void OnInteract(InputAction.CallbackContext context)
     {
         // ERRORE PRECEDENTE: Mancanza di output in console per tracciare l'esecuzione.
@@ -89,7 +97,7 @@ public class PlayerInputController : MonoBehaviour, InputSystem_Actions.IPlayerA
         // Se non siamo nel frame esatto in cui il tasto viene premuto (started), esce.
         if (!context.started) return;
 
-        Debug.Log("Interazione: Tasto E premuto.");
+        Debug.Log("Interazione: Tasto Interact premuto.");
         OnInteractAction?.Invoke();
     }
     public void OnPrevious(InputAction.CallbackContext  context) { }

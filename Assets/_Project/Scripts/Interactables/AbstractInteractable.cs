@@ -8,6 +8,8 @@ public abstract class AbstractInteractable : MonoBehaviour
     private GameObject canvaInstance;
     private PlayerInteractionController playerInteractionController;
 
+    public TaskSO TaskSO => task;
+
     public bool HasBeenInteractedWith { get; protected set; } = false;
 
     protected virtual void Start()
@@ -30,7 +32,7 @@ public abstract class AbstractInteractable : MonoBehaviour
         {
             EvaluateCanvaStatus(player[0].gameObject, 
                                 new Vector3(transform.position.x, transform.position.y + canvaPos, transform.position.z)
-                                , transform.rotation, task.canvaObj);
+                                , Camera.main.transform.rotation, task.canvaObj);
         }
         else
         {
@@ -60,6 +62,7 @@ public abstract class AbstractInteractable : MonoBehaviour
         }
         playerInteractionController.SetInteractableTaskForPlayer(this);
 
+        if (HasBeenInteractedWith) return;
         if (!isCanvaInstantiated && canvaInstance != null) 
             {
                 canvaInstance.transform.position = pos;
@@ -78,6 +81,19 @@ public abstract class AbstractInteractable : MonoBehaviour
         }
     }
     public abstract void InteractWithTask();
+
+    public virtual void ShowDialogue(TextAsset dialogue, bool usesVariables)
+    {
+        if (dialogue != null)
+        {
+            InkManager.Instance.StartDialogue(dialogue, usesVariables);
+            Debug.Log($"Showing dialogue for task '{task.TaskName}'.");
+        }
+        else
+        {
+            Debug.LogWarning($"No dialogue assigned for task '{task.TaskName}'.");
+        }
+    }
 
     private void OnDrawGizmos()
     {

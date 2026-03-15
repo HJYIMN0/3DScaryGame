@@ -60,6 +60,8 @@ public class PlayerMovementController : MonoBehaviour
     private float _verticalVelocity;
     private float _cameraPitch;
 
+    private bool _canMove = true;
+
     // -------------------------------------------------------------------------
     // Unity Lifecycle
     // -------------------------------------------------------------------------
@@ -120,6 +122,8 @@ public class PlayerMovementController : MonoBehaviour
 
     private void HandleMovement()
     {
+        if (!_canMove) return;
+
         float currentSpeed = _input.IsCrouching ? crouchSpeed
                            : _input.IsSprinting ? sprintSpeed
                                                  : walkSpeed;
@@ -177,4 +181,8 @@ public class PlayerMovementController : MonoBehaviour
         camLocalPos.y = Mathf.Lerp(camLocalPos.y, targetCameraY, crouchTransitionSpeed * Time.deltaTime);
         _cameraRoot.localPosition = camLocalPos;
     }
+
+    public void StopMovement() => _canMove = false;
+
+    public void StartMovement() => _canMove = true;
 }
