@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 5245836862605448042}
   - component: {fileID: 4241753701169561741}
   - component: {fileID: 6425573273451070613}
+  - component: {fileID: 6251991970560250423}
   m_Layer: 5
   m_Name: InteractionCanva
   m_TagString: Untagged
@@ -36,7 +37,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 2.83}
+  m_AnchoredPosition: {x: 0, y: 2.830017}
   m_SizeDelta: {x: 2.5, y: 0.5}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!223 &5245836862605448042
@@ -102,6 +103,20 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
+--- !u!114 &6251991970560250423
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5118407277419850778}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f9695407a5f0d204ab9142c10598e95f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::InteractionCanva
+  _defaultDistance: 5
+  _surfaceOffset: 0.1
 --- !u!1 &5558887542213226117
 GameObject:
   m_ObjectHideFlags: 0

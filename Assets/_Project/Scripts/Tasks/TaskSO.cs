@@ -9,13 +9,11 @@ public class TaskSO : ScriptableObject
     public string TaskDescription;
     public bool isMandatory;
 
-    [Header("Interaction Attributes")]
-    public float interactionRadius = 1f;
-
     [Header("Properties")]
     public GameObject canvaObj;
 
     [Header("Ink Attributes")]
+    public bool isInkTask = false;
     public TextAsset inkJson;
     public bool usesVariablesInInk = false;
 }

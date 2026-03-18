@@ -25,11 +25,6 @@ public class InkManager : GenericSingleton<InkManager>
     private GameObject _player;
     public bool IsStoryActive => currentStory != null;
 
-    private void Update()
-    {
-        Debug.Log($"current text asset = {currentTextAsset?.name}");
-        Debug.Log($", current story = {(currentStory != null ? "active" : "null")}");
-    }
     public void StartDialogue(TextAsset inkJson, bool usesVariables) => PrepareStory(inkJson, usesVariables);
     private void SetTextAsset(TextAsset textAsset)
     {
