@@ -11,6 +11,7 @@ public class TaskSO : ScriptableObject
 
     [Header("Properties")]
     public GameObject canvaObj;
+    public AudioClip TaskSfx;
 
     [Header("Ink Attributes")]
     public bool isInkTask = false;

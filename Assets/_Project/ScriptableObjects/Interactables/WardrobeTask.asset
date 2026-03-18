@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fdb42010bcccddf44a08dbd0362b333c, type: 3}
+  m_Name: WardrobeTask
+  m_EditorClassIdentifier: Assembly-CSharp::TaskSO
+  TaskName: WardrobeTask
+  TaskDescription: Get Dressed
+  isMandatory: 1
+  canvaObj: {fileID: 5118407277419850778, guid: 7bc6925bac6833743ac4301f7508ebef, type: 3}
+  TaskSfx: {fileID: 0}
+  isInkTask: 0
+  inkJson: {fileID: 0}
+  usesVariablesInInk: 0

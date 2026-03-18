@@ -73,4 +73,22 @@ public abstract class AbstractInteractable : MonoBehaviour
             Debug.LogWarning($"No dialogue assigned for task '{task.TaskName}'.");
         }
     }
+
+    public void PLayTaskSfx()
+    {
+        if (task.TaskSfx != null)
+        {
+            AudioSource.PlayClipAtPoint(task.TaskSfx, transform.position);
+            Debug.Log($"Playing SFX for task '{task.TaskName}'.");
+        }
+        else
+        {
+            Debug.LogWarning($"No SFX assigned for task '{task.TaskName}'.");
+        }
+    }
+
+    public virtual void MarkTaskAsComplete()
+    {
+        TaskManager.Instance.CompleteTask(task.TaskName);
+    }
 }
