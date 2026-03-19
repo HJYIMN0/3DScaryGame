@@ -36,6 +36,9 @@ public class InteractionCanva : MonoBehaviour
             // Se c'è un ostacolo, posizioniamo l'oggetto sul punto di impatto
             // Sottraiamo un piccolo offset per non farlo "affogare" nel muro
             transform.position = hit.point - (direction.normalized * _surfaceOffset);
+            // Opzionale: Ruota il canvas per guardare sempre la camera
+            transform.LookAt(_camera.transform);
+            transform.Rotate(0, 180, 0); // Corregge l'orientamento tipico dei Canvas
         }
         else
         {
@@ -43,8 +46,6 @@ public class InteractionCanva : MonoBehaviour
             transform.position = targetPosition;
         }
 
-        // Opzionale: Ruota il canvas per guardare sempre la camera
-        transform.LookAt(_camera.transform);
-        transform.Rotate(0, 180, 0); // Corregge l'orientamento tipico dei Canvas
+
     }
 }

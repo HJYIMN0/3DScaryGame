@@ -12,7 +12,6 @@ GameObject:
   - component: {fileID: 7067567717286952253}
   - component: {fileID: 1962680051358261114}
   - component: {fileID: 2625913033810839841}
-  - component: {fileID: -637761178808589917}
   m_Layer: 0
   m_Name: InteractableTrigger
   m_TagString: Untagged
@@ -113,17 +112,3 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &-637761178808589917
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6832049856231082768}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ff5758e2d927f62408f7439fd768a5de, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::InteractableTrigger
-  interactable: {fileID: 0}
-  canvaPos: 1.15

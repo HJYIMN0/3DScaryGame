@@ -76,14 +76,16 @@ public abstract class AbstractInteractable : MonoBehaviour
 
     public void PLayTaskSfx()
     {
-        if (task.TaskSfx != null)
+        AudioSource audioSource = this.GetComponent<AudioSource>();
+        if (task.TaskSfx != null && audioSource != null)
         {
-            AudioSource.PlayClipAtPoint(task.TaskSfx, transform.position);
+            AudioManager.Instance.PlaySfxSoundFromSource(audioSource, task.TaskSfx);
             Debug.Log($"Playing SFX for task '{task.TaskName}'.");
         }
         else
         {
-            Debug.LogWarning($"No SFX assigned for task '{task.TaskName}'.");
+            Debug.LogWarning($"No SFX assigned for task '{task.TaskName}'. or No AudioSource Component");
+            
         }
     }
 
