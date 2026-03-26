@@ -1,4 +1,7 @@
 # TO DO
+##Scripting
+- conviene mettere il trigger serializzato dell'abstract interactable così semplicemente creiamo due Collider all'oggetto uno trigger e uno no invece di dover mettere sempre uno script extra e un ovb trigger extra
+
 ## 3D Modeling
 - Conviene importare tutti i modelli in un unica scena Blender e poi esportare la casa da lì, in modo da poter disporre più comodamente i mobili ed effettuare modifiche.
 - Aggiungere finestre alle stanze.
