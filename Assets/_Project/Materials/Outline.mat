@@ -21,7 +21,7 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: Outline
-  m_Shader: {fileID: -6465566751694194690, guid: 0cf816d372b17814a8ff85af020f44b1, type: 3}
+  m_Shader: {fileID: -6465566751694194690, guid: 523c72dd51a083549a2e6f70e62a4787, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords: []
@@ -109,6 +109,8 @@ Material:
     - _ClearCoatSmoothness: 0
     - _Cull: 2
     - _Cutoff: 0.5
+    - _DepthNormalStrength: 0
+    - _DepthThreshold: 0.001
     - _DetailAlbedoMapScale: 1
     - _DetailNormalMapScale: 1
     - _DstBlend: 0
@@ -118,7 +120,10 @@ Material:
     - _Glossiness: 0
     - _GlossyReflections: 0
     - _Metallic: 0
+    - _NormalThreshold: 0.3
     - _OcclusionStrength: 1
+    - _OutlineThickness: 3
+    - _OutlineThreshold: 0.01
     - _OutlineWidth: 0.95
     - _Parallax: 0.005
     - _QueueControl: 0
@@ -144,7 +149,7 @@ Material:
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _MainColor: {r: 0.7660377, g: 0.7660377, b: 0.7660377, a: 1}
-    - _OutlineColor: {r: 1, g: 1, b: 1, a: 1}
+    - _OutlineColor: {r: 0, g: 0, b: 0, a: 1}
     - _RimColor: {r: 0, g: 0, b: 0, a: 1}
     - _ShadowColor: {r: 0, g: 0, b: 0, a: 1}
     - _SpecColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}

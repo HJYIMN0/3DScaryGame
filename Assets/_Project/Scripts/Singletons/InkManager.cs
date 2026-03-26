@@ -9,7 +9,7 @@ public class InkManager : GenericSingleton<InkManager>
 
 
 
-    [Header("Canva Settings")] // Nota tecnica: si scrive "Canvas", non "Canva", ma mantengo la tua nomenclatura.
+    [Header("Canva Settings")] 
     [SerializeField] private GameObject canvaPrefab;
 
 

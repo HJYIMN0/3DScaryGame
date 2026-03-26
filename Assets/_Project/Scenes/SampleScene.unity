@@ -245,7 +245,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::InteractableBed
   task: {fileID: 11400000, guid: 67f3c46cd1477e144a7f255680b5281b, type: 2}
-  canvaPos: 1.15
 --- !u!1 &342766861
 GameObject:
   m_ObjectHideFlags: 0
@@ -423,7 +422,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &594092854
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -437,7 +436,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::InteractableGeneral
   task: {fileID: 11400000, guid: 0de144afdf95582429436ad33f125349, type: 2}
-  canvaPos: 1.15
 --- !u!65 &594092855
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -946,7 +944,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::InteractableGeneral
   task: {fileID: 11400000, guid: 53a2ce360fcad6b448d281bc4cedad6a, type: 2}
-  canvaPos: 1.15
 --- !u!1 &1637886566
 GameObject:
   m_ObjectHideFlags: 0
