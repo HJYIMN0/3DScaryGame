@@ -1,17 +1,20 @@
 # TO DO
 ## Scripting
-- conviene mettere il trigger serializzato dell'abstract interactable così semplicemente creiamo due Collider all'oggetto uno trigger e uno no invece di dover mettere sempre uno script extra e un ovb trigger extra
+- conviene mettere il trigger serializzato dell'abstract interactable così semplicemente creiamo due Collider all'oggetto uno trigger e uno no invece di dover mettere sempre uno script extra e un obj trigger extra
 
 ## 3D Modeling
-- Conviene importare tutti i modelli in un unica scena Blender e poi esportare la casa da lì, in modo da poter disporre più comodamente i mobili ed effettuare modifiche.
-- Aggiungere finestre alle stanze.
 - Nuova porta per l'ingresso.
 - Terminare di modellare tavolo e sedie
 - Modellare ambienti resto della casa
+
 ## Art
 - Serve una vera texture per il dithering. Facciamola Quadrata, ma bella grande. Per esempio 4096 * 4096
 - Main Menu 
 - Decisioni sul buco
+- Camera and Volume for aesthetic 
+
+## Writing
+- Finire Gdd
 
 
 # Gemini
