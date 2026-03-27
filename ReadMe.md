@@ -1,5 +1,5 @@
 # TO DO
-##Scripting
+## Scripting
 - conviene mettere il trigger serializzato dell'abstract interactable così semplicemente creiamo due Collider all'oggetto uno trigger e uno no invece di dover mettere sempre uno script extra e un ovb trigger extra
 
 ## 3D Modeling
