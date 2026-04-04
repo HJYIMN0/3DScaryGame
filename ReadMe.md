@@ -2,6 +2,7 @@
 ## Scripting
 - Script interazione con con buco: Cambiare posizione camera
 - Fadeble estratto da DayManager. Facciamo un prefab con un onEnable? Oppure un singleton, perché ci serve che resti durante il caricamento
+- Save System
 
 
 ## 3D Modeling
@@ -9,10 +10,12 @@
 - Modellare ambienti resto della casa
 
 ## Art
-- Serve una vera texture per il dithering. Facciamola Quadrata, ma bella grande. Per esempio 4096 * 4096
+- Serve una vera texture per il dithering. Facciamola Quadrata, ma bella grande. Per esempio 4096 * 4096 - ne ho fatta una per fullscreen a 1920*1080
 - Main Menu 
 - Decisioni sul buco
 - Camera and Volume for aesthetic 
+- Il dithering applicato alla camera non funziona con le linee. Dobbiamo per forza usare i punti
+- Anche con i punti, il dithering applicato alla camera fa proprio cacare. Rivediamo lo shader in modo che sia implementato nel singolo Mtl. 
 
 ## Writing
 - Finire Gdd
