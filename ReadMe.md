@@ -1,10 +1,11 @@
 # TO DO
 ## Scripting
-- conviene mettere il trigger serializzato dell'abstract interactable così semplicemente creiamo due Collider all'oggetto uno trigger e uno no invece di dover mettere sempre uno script extra e un obj trigger extra
+- Script interazione con con buco: Cambiare posizione camera
+- Fadeble estratto da DayManager. Facciamo un prefab con un onEnable? Oppure un singleton, perché ci serve che resti durante il caricamento
+
 
 ## 3D Modeling
 - Nuova porta per l'ingresso.
-- Terminare di modellare tavolo e sedie
 - Modellare ambienti resto della casa
 
 ## Art
@@ -15,6 +16,8 @@
 
 ## Writing
 - Finire Gdd
+- Organizzare un Day00
+- - N.b: Probabilmente il Day00, lo riafaremo per avere un inizio ben strutturato alla fine del primo prototipo, ma intanto, così abbiamo una base per preparare un first playable
 
 
 # Gemini

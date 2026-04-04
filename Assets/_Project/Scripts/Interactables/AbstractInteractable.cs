@@ -3,12 +3,14 @@ using UnityEngine;
 public abstract class AbstractInteractable : MonoBehaviour
 {
     [SerializeField] protected TaskSO task;
+    [SerializeField] protected GameObject canvaPrefab;
 
     private bool isCanvaInstantiated = false;
     private GameObject canvaInstance;
     public TaskSO TaskSO => task;
 
     public bool HasBeenInteractedWith { get; protected set; } = false;
+    private PlayerInteractionController _playerInteractionController;
 
     protected virtual void Start()
     {
@@ -33,7 +35,7 @@ public abstract class AbstractInteractable : MonoBehaviour
         }
     }
 
-    public void EvaluateCanvaStatus(PlayerInteractionController player, Vector3 pos, Quaternion rot, GameObject canvaObj)
+    public void EvaluateCanvaStatus(PlayerInteractionController player, GameObject canvaObj)
     {
         Debug.Log("Player is here!");
         if (isCanvaInstantiated) return;
@@ -43,15 +45,13 @@ public abstract class AbstractInteractable : MonoBehaviour
         if (HasBeenInteractedWith) return;
         if (!isCanvaInstantiated && canvaInstance != null)
         {
-            canvaInstance.transform.position = pos;
-            canvaInstance.transform.rotation = rot;
             canvaInstance.SetActive(true);
             isCanvaInstantiated = true;
             Debug.Log("Canva wasn't null, but not instantiated. Instantiating now...");
         }
         else if (!isCanvaInstantiated && canvaInstance == null)
         {
-            canvaInstance = Instantiate(canvaObj, pos, rot);
+            canvaInstance = Instantiate(canvaObj, Vector3.zero, Quaternion.identity);
             canvaInstance.transform.SetParent(transform);
             canvaInstance.SetActive(true);
             isCanvaInstantiated = true;
@@ -92,5 +92,30 @@ public abstract class AbstractInteractable : MonoBehaviour
     public virtual void MarkTaskAsComplete()
     {
         TaskManager.Instance.CompleteTask(task.TaskName);
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.gameObject.CompareTag("Player"))
+        {
+            EvaluateCanvaStatus(other.gameObject.GetComponent<PlayerInteractionController>(), canvaPrefab);
+
+            if (_playerInteractionController == null)
+                _playerInteractionController = other.gameObject.GetComponent<PlayerInteractionController>();
+        }
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.gameObject.CompareTag("Player"))
+        {
+            DeactivateCanvas();
+            if (_playerInteractionController != null && _playerInteractionController.interactableTask == this)
+            {
+                _playerInteractionController.ClearInteractableTaskForPlayer();
+                InkManager.Instance.ClearStoryAndTextAsset();
+                Debug.Log("Player left, clearing interactable task for player.");
+            }
+        }
     }
 }
