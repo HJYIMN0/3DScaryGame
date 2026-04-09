@@ -7,7 +7,7 @@
 
 ## 3D Modeling
 - Nuova porta per l'ingresso.
-- Modellare ambienti resto della casa
+- Spostare Pivot porta per farla aprire correttamente.
 
 ## Art
 - Serve una vera texture per il dithering. Facciamola Quadrata, ma bella grande. Per esempio 4096 * 4096 - ne ho fatta una per fullscreen a 1920*1080
