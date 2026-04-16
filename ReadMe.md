@@ -15,12 +15,17 @@
 - Decisioni sul buco
 - Camera and Volume for aesthetic 
 - Il dithering applicato alla camera non funziona con le linee. Dobbiamo per forza usare i punti
-- Anche con i punti, il dithering applicato alla camera fa proprio cacare. Rivediamo lo shader in modo che sia implementato nel singolo Mtl. 
+- Anche con i punti, il dithering applicato alla camera fa proprio cacare. Rivediamo lo shader in modo che sia implementato nel singolo Mtl.
+- tanti elementi surreali, estraneanti. una donna ricorrente, sporca, malata, dio di begotten.
+- finto found footage
+
 
 ## Writing
 - Finire Gdd
 - Organizzare un Day00
 - - N.b: Probabilmente il Day00, lo riafaremo per avere un inizio ben strutturato alla fine del primo prototipo, ma intanto, così abbiamo una base per preparare un first playable
+- la narrazione non è lineare. ogni tanto sei nel passato, ogni tanto nel presente. 
+- ogni tanto parli con qualcuno. cioè appare del testo come se stessi avendo una conversazione con qualcuno. magari nelle giornate da "normale" è quando esci per andare a lavoro. comunque inizialmente si lascia intendere che tu stia parlando con qualcuno. Verso la fine, la rivelazione "con chi pensi di stare parlando"? potremmo aggiungere dei finti found footage come interruzione tra un momento in cui hai visto il buco e subito dopo sei solo accanto. task: vai a letto. 
 
 
 # Gemini
