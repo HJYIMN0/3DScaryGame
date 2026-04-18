@@ -1,29 +1,29 @@
 # TO DO
+## High priority 
+- Esportare video da KdenLive e provare a vederlo su Unity6 correttamente
+- Interactable_Hole.cs
+
 ## Scripting
-- Script interazione con con buco: Cambiare posizione camera
+- Script interazione con con buco: Visualizzare video
 - Fadeble estratto da DayManager. Facciamo un prefab con un onEnable? Oppure un singleton, perché ci serve che resti durante il caricamento
 - Save System
 
 
 ## 3D Modeling
 - Nuova porta per l'ingresso.
-- Spostare Pivot porta per farla aprire correttamente.
 
 ## Art
-- Serve una vera texture per il dithering. Facciamola Quadrata, ma bella grande. Per esempio 4096 * 4096 - ne ho fatta una per fullscreen a 1920*1080
 - Main Menu 
 - Decisioni sul buco
 - Camera and Volume for aesthetic 
-- Il dithering applicato alla camera non funziona con le linee. Dobbiamo per forza usare i punti
-- Anche con i punti, il dithering applicato alla camera fa proprio cacare. Rivediamo lo shader in modo che sia implementato nel singolo Mtl.
 - tanti elementi surreali, estraneanti. una donna ricorrente, sporca, malata, dio di begotten.
 - finto found footage
-
+- Texture Dithering migliore
+- diversi video in cui si ripete la stessa azione
 
 ## Writing
 - Finire Gdd
-- Organizzare un Day00
-- - N.b: Probabilmente il Day00, lo riafaremo per avere un inizio ben strutturato alla fine del primo prototipo, ma intanto, così abbiamo una base per preparare un first playable
+- Organizzare un Day01
 - la narrazione non è lineare. ogni tanto sei nel passato, ogni tanto nel presente. 
 - ogni tanto parli con qualcuno. cioè appare del testo come se stessi avendo una conversazione con qualcuno. magari nelle giornate da "normale" è quando esci per andare a lavoro. comunque inizialmente si lascia intendere che tu stia parlando con qualcuno. Verso la fine, la rivelazione "con chi pensi di stare parlando"? potremmo aggiungere dei finti found footage come interruzione tra un momento in cui hai visto il buco e subito dopo sei solo accanto. task: vai a letto. 
 
