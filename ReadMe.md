@@ -12,6 +12,7 @@
 
 ## 3D Modeling
 - Nuova porta per l'ingresso.
+- Shader blender pittorico 
 
 ## Art
 - Main Menu 
