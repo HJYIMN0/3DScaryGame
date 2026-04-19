@@ -7,6 +7,7 @@
 - Script interazione con con buco: Visualizzare video
 - Fadeble estratto da DayManager. Facciamo un prefab con un onEnable? Oppure un singleton, perché ci serve che resti durante il caricamento
 - Save System
+- Togliere play SfxSound da abstract interactable e fare un singleton per l'audio
 
 
 ## 3D Modeling
