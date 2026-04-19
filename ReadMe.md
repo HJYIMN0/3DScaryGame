@@ -1,7 +1,7 @@
 # TO DO
 ## High priority 
-- Esportare video da KdenLive e provare a vederlo su Unity6 correttamente
 - Interactable_Hole.cs
+- Day 01
 
 ## Scripting
 - Script interazione con con buco: Visualizzare video
