@@ -12,7 +12,8 @@
 
 ## 3D Modeling
 - Nuova porta per l'ingresso.
-- Shader blender pittorico 
+- Shader blender pittorico
+- Hyper realistic clock
 
 ## Art
 - Main Menu 
