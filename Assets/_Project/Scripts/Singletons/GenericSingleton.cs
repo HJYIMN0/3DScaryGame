@@ -14,7 +14,8 @@ public abstract class GenericSingleton<T> : MonoBehaviour where T : MonoBehaviou
         {
             if (instance == null)
             {
-                FindAnyObjectByType(typeof(T));
+                // FIX: assegna il risultato a instance invece di ignorarlo
+                instance = FindAnyObjectByType(typeof(T)) as T;
                 if (instance == null && !isApplicationQuitting)
                 {
                     GameObject gameObj = new GameObject(typeof(T).Name + "_Singleton");

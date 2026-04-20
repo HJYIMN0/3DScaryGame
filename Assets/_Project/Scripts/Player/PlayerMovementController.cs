@@ -61,6 +61,7 @@ public class PlayerMovementController : MonoBehaviour
     private float _cameraPitch;
 
     private bool _canMove = true;
+    public bool CanMove => _canMove;
 
     // -------------------------------------------------------------------------
     // Unity Lifecycle

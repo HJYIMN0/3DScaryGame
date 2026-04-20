@@ -10,10 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: fdb42010bcccddf44a08dbd0362b333c, type: 3}
-  m_Name: HoleTask_Day01
+  m_Name: PileOfClothesTask
   m_EditorClassIdentifier: Assembly-CSharp::TaskSO
-  TaskName: Hole_Day01
-  TaskDescription: Look into the abyss
+  TaskName: Pile Of Clothes
+  TaskDescription: Pick up the clothes from the floor in your room
   isMandatory: 1
   canvaObj: {fileID: 0}
   TaskSfx: {fileID: 0}

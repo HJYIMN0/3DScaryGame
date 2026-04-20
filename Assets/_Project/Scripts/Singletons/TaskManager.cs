@@ -1,5 +1,7 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 /// <summary>
 /// this class is destroyed on load. So you will need to create a new one for each scene.
@@ -9,9 +11,14 @@ public class TaskManager : GenericSingleton<TaskManager>
     [SerializeField] private List<TaskSO> tasksOfTheDay;
     public List<TaskSO> CompletedTasks { get; private set; } = new List<TaskSO>();
 
+    public Action<TaskSO> OnTaskComplete;
+
+    public List<TaskSO> GetTasksOfTheDay() => tasksOfTheDay;
+
     private void Start()
     {
-        CompletedTasks.Clear(); // Clear completed tasks at the start of each day
+        //SceneManager.sceneLoaded += (scene, mode) => CompletedTasks.Clear(); // Clear completed tasks when a new scene is loaded
+        CompletedTasks.Clear();
     }
 
     public void AddTask(TaskSO task)
@@ -34,6 +41,8 @@ public class TaskManager : GenericSingleton<TaskManager>
         {
             CompletedTasks.Add(task);
             Debug.Log($"Task '{task.TaskName}' completed.");
+
+            OnTaskComplete?.Invoke(task);
         }
         else if (task == null)
         {

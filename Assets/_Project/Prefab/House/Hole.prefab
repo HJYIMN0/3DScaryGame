@@ -11,8 +11,8 @@ GameObject:
   - component: {fileID: 3047995680563076033}
   - component: {fileID: 4714962234285403277}
   - component: {fileID: 20830626555309955}
-  - component: {fileID: 456762494052919698}
   - component: {fileID: 5905052242168551879}
+  - component: {fileID: 1356418304597014771}
   m_Layer: 0
   m_Name: Hole
   m_TagString: Untagged
@@ -30,7 +30,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -2.93505, y: -1.36934, z: -22.32284}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.12549515, y: 0.12549515, z: 0.12549515}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -92,8 +92,23 @@ MeshRenderer:
   m_SortingOrder: 0
   m_MaskInteraction: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!64 &456762494052919698
-MeshCollider:
+--- !u!114 &5905052242168551879
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3475437395548625872}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1d0f79cf8b9e6f74eab6dea9bcf10e7b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Interactable_Hole
+  task: {fileID: 11400000, guid: f4888407f299c5c428899a425a70236f, type: 2}
+  canvaPrefab: {fileID: 5118407277419850778, guid: 7bc6925bac6833743ac4301f7508ebef, type: 3}
+  UiVideoCanva: {fileID: 1208874050514393490, guid: 08ae45bab29853442b5c0147fab99c74, type: 3}
+--- !u!65 &1356418304597014771
+BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -107,25 +122,9 @@ MeshCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
-  serializedVersion: 5
-  m_Convex: 0
-  m_CookingOptions: 30
-  m_Mesh: {fileID: 10209, guid: 0000000000000000e000000000000000, type: 0}
---- !u!114 &5905052242168551879
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3475437395548625872}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1d0f79cf8b9e6f74eab6dea9bcf10e7b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Interactable_Hole
-  task: {fileID: 0}
-  canvaPrefab: {fileID: 0}
-  UiVideoCanva: {fileID: 0}
+  serializedVersion: 3
+  m_Size: {x: 31.145689, y: 27.859533, z: 44.96601}
+  m_Center: {x: 2.529433, y: 13.682496, z: -5.31132}
