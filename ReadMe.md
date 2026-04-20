@@ -1,13 +1,14 @@
 # TO DO
 ## High priority 
-- Interactable_Hole.cs
 - Day 01
+- Fix Fader
 
 ## Scripting
-- Script interazione con con buco: Visualizzare video
 - Fadeble estratto da DayManager. Facciamo un prefab con un onEnable? Oppure un singleton, perché ci serve che resti durante il caricamento
+- - ho fatto un singleton. bisogna modificare Day manager in modo che lo richiami piuttosto che usare il suo metodo interno. 
+- - - in questi momento Fader non funziona
 - Save System
-- Togliere play SfxSound da abstract interactable e fare un singleton per l'audio
+- Togliere play SfxSound da abstract Interactable e fargli richiamare il singleton audiomanager 
 
 
 ## 3D Modeling
