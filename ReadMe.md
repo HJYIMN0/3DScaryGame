@@ -2,6 +2,7 @@
 ## High priority 
 - Day 01
 - Fix Fader
+- Fix inside door
 
 ## Scripting
 - Fadeble estratto da DayManager. Facciamo un prefab con un onEnable? Oppure un singleton, perché ci serve che resti durante il caricamento
