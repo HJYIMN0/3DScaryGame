@@ -13,6 +13,10 @@ public class GameFlowManager : GenericSingleton<GameFlowManager>
     public int CurrentDay => currentDay;
     public string CurrentScene => gameScenes[CurrentDay];
 
+    private void Start()
+    {
+        Debug.Log($"GameFlowManager started. Current day: {currentDay}, Current scene: {CurrentScene}");
+    }
     public void LoadNextScene(int day)
     {
         if (day < 0 || day >= gameScenes.Length)

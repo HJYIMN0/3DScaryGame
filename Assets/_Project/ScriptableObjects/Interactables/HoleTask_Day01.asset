@@ -17,6 +17,7 @@ MonoBehaviour:
   isMandatory: 1
   canvaObj: {fileID: 0}
   TaskSfx: {fileID: 0}
-  isInkTask: 0
-  inkJson: {fileID: 0}
-  usesVariablesInInk: 0
+  isTaskSecret: 1
+  isInkTask: 1
+  inkJson: {fileID: 4900000, guid: e52042052480a2b438a74d693dc8ee3e, type: 3}
+  usesVariablesInInk: 1

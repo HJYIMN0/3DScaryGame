@@ -9,6 +9,7 @@ public class TaksListManager : MonoBehaviour
     private void OnEnable()
     {
         TaskManager.Instance.OnTaskComplete += HandleTaskComplete;
+        TaskManager.Instance.OnTaskAdded += UpdateList;
     }
 
     private void Start()
@@ -24,6 +25,12 @@ public class TaksListManager : MonoBehaviour
     private void OnDestroy()
     {
         TaskManager.Instance.OnTaskComplete -= HandleTaskComplete;
+    }
+
+    private void UpdateList(TaskSO newTask)
+    {
+        Debug.Log($"New task '{newTask.TaskName}' added. Updating the task list UI.");
+        SetupTaskList();
     }
 
     private void HandleTaskComplete(TaskSO completedTask)

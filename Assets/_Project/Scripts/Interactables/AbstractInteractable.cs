@@ -14,7 +14,7 @@ public abstract class AbstractInteractable : MonoBehaviour
 
     protected virtual void Start()
     {
-        if (task != null) 
+        if (task != null && !task.isTaskSecret) 
         {
             TaskManager.Instance.AddTask(task);
             Debug.Log($"Added task '{task.TaskName}' to DayManager.");
@@ -60,6 +60,11 @@ public abstract class AbstractInteractable : MonoBehaviour
     }
     public abstract void InteractWithTask();
 
+    /// <summary>
+    /// Remember, you need to set the TaskSo to bool IsInkTask = true if you need to show Dialogue
+    /// </summary>
+    /// <param name="dialogue"></param>
+    /// <param name="usesVariables"></param>
     public virtual void ShowDialogue(TextAsset dialogue, bool usesVariables)
     {
         if (!task.isInkTask) return;

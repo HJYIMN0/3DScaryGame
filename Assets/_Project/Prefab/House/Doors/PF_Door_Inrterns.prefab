@@ -81,6 +81,26 @@ PrefabInstance:
       insertIndex: -1
       addedObject: {fileID: 7577083620568060420}
   m_SourcePrefab: {fileID: 100100000, guid: 992d2f671c4bfc84db1e3ec11a03b043, type: 3}
+--- !u!1 &258630502884126169 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: -2896805244245680828, guid: 992d2f671c4bfc84db1e3ec11a03b043, type: 3}
+  m_PrefabInstance: {fileID: 6078361859122163869}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &726554269174147200 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6795809423104759837, guid: 992d2f671c4bfc84db1e3ec11a03b043, type: 3}
+  m_PrefabInstance: {fileID: 6078361859122163869}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &3325673847756257249 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: -397012386368518276, guid: 992d2f671c4bfc84db1e3ec11a03b043, type: 3}
+  m_PrefabInstance: {fileID: 6078361859122163869}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &5885052099145730554 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: -8795166837550745241, guid: 992d2f671c4bfc84db1e3ec11a03b043, type: 3}
+  m_PrefabInstance: {fileID: 6078361859122163869}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &6384912649600060876 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 992d2f671c4bfc84db1e3ec11a03b043, type: 3}
@@ -141,6 +161,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::InsideDoor
   doorOpenSound: {fileID: 0}
+  doorMeshes:
+  - {fileID: 3325673847756257249}
+  - {fileID: 258630502884126169}
+  - {fileID: 5885052099145730554}
+  - {fileID: 726554269174147200}
+  doorCollider: {fileID: 3599651775101657983}
+  doorDirection: 2
 --- !u!82 &7577083620568060420
 AudioSource:
   m_ObjectHideFlags: 0

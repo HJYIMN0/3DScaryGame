@@ -1,25 +1,39 @@
-using Unity.VisualScripting;
 using UnityEngine;
 
 class InsideDoor : MonoBehaviour
 {
     [SerializeField] private AudioClip doorOpenSound;
+    [SerializeField] private GameObject[] doorMeshes;
+    [SerializeField] private Collider doorCollider;
+    [SerializeField] private Directions doorDirection;
 
-    private bool isOpen = false;
+    private Vector3 initialRot;
+    private AudioSource audioSource;   
+
+    private void Awake()
+    {
+        audioSource = GetComponent<AudioSource>();
+
+        if (doorMeshes.Length > 0)
+        {
+            initialRot = doorMeshes[0].transform.localEulerAngles;
+        }
+    }
 
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Player"))
         {
-            // AGGIUNTO: guard — se già aperta, non ruotare di nuovo
-            if (isOpen) return;
-            isOpen = true;
+            doorCollider.enabled = false;
 
-            Debug.Log("I'mma rotate!");
-            transform.Rotate(Vector3.left, 90f, Space.Self);
-            if (doorOpenSound != null)
+            foreach (GameObject go in doorMeshes)
             {
-                AudioManager.Instance.PlaySfxSoundFromSource(GetComponent<AudioSource>(), doorOpenSound);
+                RotateDoor(go, doorDirection, initialRot);
+            }
+
+            if (doorOpenSound != null && audioSource != null)
+            {
+                AudioManager.Instance.PlaySfxSoundFromSource(audioSource, doorOpenSound);
             }
         }
     }
@@ -28,12 +42,42 @@ class InsideDoor : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
-            isOpen = false;
+            doorCollider.enabled = true;
 
-            transform.Rotate(Vector3.left, -90f, Space.Self);
+            foreach (GameObject go in doorMeshes)
+            {
+                go.transform.localEulerAngles = initialRot;
+            }
+
+            if (doorOpenSound != null && audioSource != null)
+            {
+                AudioManager.Instance.PlaySfxSoundFromSource(audioSource, doorOpenSound);
+            }
         }
     }
-}
+
+    private void RotateDoor(GameObject go, Directions directions, Vector3 originalRot)
+    {
+        // Calcoliamo la rotazione finale desiderata partendo da quella originale
+        Vector3 targetRotation = originalRot;
+
+        switch (directions)
+        {
+            case Directions.Up:
+                targetRotation += new Vector3(-90, 0, 0);
+                break;
+            case Directions.Down:
+                targetRotation += new Vector3(90, 0, 0);
+                break;
+            case Directions.Left:
+                targetRotation += new Vector3(0, -90, 0);
+                break;
+            case Directions.Right:
+                targetRotation += new Vector3(0, 90, 0);
+                break;
         }
+
+        // Applichiamo la rotazione in modo assoluto e locale, non relativo
+        go.transform.localEulerAngles = targetRotation;
     }
 }

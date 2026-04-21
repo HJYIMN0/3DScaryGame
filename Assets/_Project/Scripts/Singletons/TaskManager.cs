@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 /// <summary>
 /// this class is destroyed on load. So you will need to create a new one for each scene.
@@ -12,6 +11,7 @@ public class TaskManager : GenericSingleton<TaskManager>
     public List<TaskSO> CompletedTasks { get; private set; } = new List<TaskSO>();
 
     public Action<TaskSO> OnTaskComplete;
+    public Action<TaskSO> OnTaskAdded;
 
     public List<TaskSO> GetTasksOfTheDay() => tasksOfTheDay;
 
@@ -27,10 +27,24 @@ public class TaskManager : GenericSingleton<TaskManager>
         {
             tasksOfTheDay.Add(task);
             Debug.Log($"Task '{task.TaskName}' added to today's tasks.");
+            OnTaskAdded?.Invoke(task);
         }
         else
         {
             Debug.LogWarning($"Task '{task.TaskName}' is already in today's tasks.");
+        }
+    }
+
+    public void ClearTask(TaskSO task)
+    {
+        if (tasksOfTheDay.Contains(task))
+        {
+            tasksOfTheDay.Remove(task);
+            Debug.Log($"Task '{task.TaskName}' removed from today's tasks.");
+        }
+        else
+        {
+            Debug.LogWarning($"Task '{task.TaskName}' not found in today's tasks.");
         }
     }
     public void CompleteTask(string TaskId)

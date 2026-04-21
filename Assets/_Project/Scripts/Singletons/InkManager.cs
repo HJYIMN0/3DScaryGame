@@ -1,5 +1,6 @@
 using Ink.Runtime;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 public class InkManager : GenericSingleton<InkManager>
 
@@ -56,7 +57,7 @@ public class InkManager : GenericSingleton<InkManager>
 
             // FIX: salta esplicitamente al knot corrispondente al giorno corrente.
             // Senza questo, la storia non ha contenuto radice da cui partire e termina subito.
-            string targetKnot = $"Day{GameFlowManager.Instance.CurrentDay}";
+            string targetKnot = $"{dayVariableNameInInk}{GameFlowManager.Instance.CurrentDay}";
             currentStory.ChoosePathString(targetKnot);
         }
 
@@ -93,8 +94,9 @@ public class InkManager : GenericSingleton<InkManager>
         if (canvaInstance != null)
         {
             canvaInstance.SetActive(false);
-
         }
+
+        Debug.Log($"InkManager = {dayVariableNameInInk}{GameFlowManager.Instance.CurrentDay}");
     }
     private void InitializeCanva()
     {

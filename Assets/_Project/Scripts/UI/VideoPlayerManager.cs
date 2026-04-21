@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using UnityEngine.Video;
 
@@ -9,6 +10,7 @@ public class VideoPlayerManager : MonoBehaviour
 
     public bool IsVideoPlaying => videoPlayer != null && videoPlayer.isPlaying;
 
+    public Action OnVideoEnd;
     private void OnEnable()
     {        
         videoPlayer.loopPointReached += OnVideoFinished;
@@ -34,6 +36,7 @@ public class VideoPlayerManager : MonoBehaviour
         Debug.Log("[VideoPlayerManager] OnVideoFinished chiamato.");
         Destroy(this.gameObject);
         SetPlayerMovement(true);
+        OnVideoEnd?.Invoke();
     }
 
     public void SetPlayerMovement(bool canMove)

@@ -33,6 +33,7 @@ public class InteractableClothes : AbstractInteractable
         }
         fader.StartCoroutine(fader.FadeOut(fadeDuration));
         holeGameObject.SetActive(true);
+        TaskManager.Instance.AddTask(holeGameObject.GetComponent<AbstractInteractable>().TaskSO);
 
     }
 
