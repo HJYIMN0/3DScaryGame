@@ -1,6 +1,6 @@
 using Ink.Runtime;
 using TMPro;
-using Unity.VisualScripting;
+using System;
 using UnityEngine;
 public class InkManager : GenericSingleton<InkManager>
 
@@ -26,7 +26,10 @@ public class InkManager : GenericSingleton<InkManager>
     private GameObject _player;
     public bool IsStoryActive => currentStory != null;
 
+    public Action<TextAsset> onDialogueEnd;
+
     public void StartDialogue(TextAsset inkJson, bool usesVariables) => PrepareStory(inkJson, usesVariables);
+    public void StartDialogue(TextAsset inkJson, bool usesVariables, int differentDay) => PrepareStory(inkJson, usesVariables, differentDay);
     private void SetTextAsset(TextAsset textAsset)
     {
         if (textAsset != null && textAsset != currentTextAsset)
@@ -63,6 +66,27 @@ public class InkManager : GenericSingleton<InkManager>
 
         ContinueDialogue();
     }
+
+    private void PrepareStory(TextAsset textAsset, bool usesVariables, int differentDay)
+    {
+        if (textAsset == null) return;
+
+        SetTextAsset(textAsset);
+        SetStory(textAsset);
+        ToggleSystem();
+
+        if (usesVariables)
+        {
+            // FIX: assicurati che il nome corrisponda esattamente a quello nel file Ink
+            currentStory.variablesState[dayVariableNameInInk] = differentDay;
+            // FIX: salta esplicitamente al knot corrispondente al giorno corrente.
+            // Senza questo, la storia non ha contenuto radice da cui partire e termina subito.
+            string targetKnot = $"{dayVariableNameInInk}{differentDay}";
+            currentStory.ChoosePathString(targetKnot);
+        }
+
+        ContinueDialogue();
+    }
     public void ContinueDialogue()
     {
         Debug.Log("Continue Dialogue has been called.");
@@ -86,6 +110,7 @@ public class InkManager : GenericSingleton<InkManager>
     public void EndDialogue()
     {
         ToggleSystem();
+        onDialogueEnd?.Invoke(currentTextAsset);
         currentStory = null;
     }
 

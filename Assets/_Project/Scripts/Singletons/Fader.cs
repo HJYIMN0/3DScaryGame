@@ -38,7 +38,7 @@ public class Fader : GenericSingleton<Fader>
             elapsedTime += Time.deltaTime;
             yield return null;
         }
-        canvaToFade.alpha = 0f;
+        canvaToFade.alpha = 1f;
         onFadeComplete?.Invoke(false); // Notify that fade-in is complete (screen is transparent)
     }
 
@@ -48,14 +48,38 @@ public class Fader : GenericSingleton<Fader>
         float elapsedTime = 0f;
         while (elapsedTime < duration)
         {
-            canvaToFade.alpha = Mathf.Lerp(0f, 1f, elapsedTime / duration);
+            // FIX: era Lerp(0f, 1f, ...) — direzione invertita, causava doppio fade visivo
+            canvaToFade.alpha = Mathf.Lerp(1f, 0f, elapsedTime / duration);
             elapsedTime += Time.deltaTime;
             yield return null;
         }
 
-        canvaToFade.alpha = 0f; // Ensure the canvas starts fully transparent
-        canvaToFade.interactable = false; // Disable interaction during fade
+        canvaToFade.alpha = 0f;
+        canvaToFade.interactable = false;
         canvaToFade.blocksRaycasts = false;
-        onFadeComplete?.Invoke(true); // Notify that fade-out is complete (screen is black)
+        // FIX: era Invoke(true) — ma "true = schermo nero", qui lo schermo è trasparente
+        onFadeComplete?.Invoke(false);
     }
+
+    public IEnumerator FadeOut(float waitTimer, float duration)
+    {
+        canvaToFade.alpha = 1f;
+        yield return new WaitForSeconds(waitTimer);
+        float elapsedTime = 0f;
+        while (elapsedTime < duration)
+        {
+            // FIX: stesso errore di direzione del lerp
+            canvaToFade.alpha = Mathf.Lerp(1f, 0f, elapsedTime / duration);
+            elapsedTime += Time.deltaTime;
+            yield return null;
+        }
+
+        canvaToFade.alpha = 0f;
+        canvaToFade.interactable = false;
+        canvaToFade.blocksRaycasts = false;
+        // FIX: stesso errore sul booleano
+        onFadeComplete?.Invoke(false);
+    }
+
+
 }

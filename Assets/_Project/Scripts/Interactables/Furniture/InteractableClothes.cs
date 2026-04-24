@@ -19,19 +19,21 @@ public class InteractableClothes : AbstractInteractable
 
     public override void InteractWithTask()
     {
+        if (HasBeenInteractedWith) return;
+
         taskManager.CompleteTask(task.TaskName);
         fader.StartCoroutine(fader.FadeIn(fadeDuration));
         StartCoroutine(WaitForFadeOut());
-        Destroy(this.gameObject);
     }
 
     public IEnumerator WaitForFadeOut()
     {
-        while (fader.CanvasGroupAlpha < 1f)
+        while (fader.CanvasGroupAlpha < 0.9f)
         {
             yield return null;
         }
-        fader.StartCoroutine(fader.FadeOut(fadeDuration));
+        Destroy(this.gameObject);
+        fader.StartCoroutine(fader.FadeOut(fadeDuration, fadeDuration));
         holeGameObject.SetActive(true);
         TaskManager.Instance.AddTask(holeGameObject.GetComponent<AbstractInteractable>().TaskSO);
 

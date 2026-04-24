@@ -18,13 +18,13 @@ public class PlayerInteractionController : MonoBehaviour
         _input.OnInteractAction += HandleInteraction;
     }
 
-    private void Update()
-    {
-        if (interactableTask != null)
-        {
-            Debug.Log("Player is near interactable task: " + interactableTask.name);
-        }
-    }
+    //private void Update()
+    //{
+    //    if (interactableTask != null)
+    //    {
+    //        Debug.Log("Player is near interactable task: " + interactableTask.name);
+    //    }
+    //}
 
     public void SetInteractableTaskForPlayer(AbstractInteractable taskToInteractWith)
     {

@@ -53,6 +53,7 @@ public abstract class AbstractInteractable : MonoBehaviour
         {
             canvaInstance = Instantiate(canvaObj, Vector3.zero, Quaternion.identity);
             canvaInstance.transform.SetParent(transform);
+            canvaInstance.GetComponent<InteractionCanvaManager>().Initialize(this);
             canvaInstance.SetActive(true);
             isCanvaInstantiated = true;
             Debug.Log("Canva was null, instantiating now...");
@@ -71,6 +72,20 @@ public abstract class AbstractInteractable : MonoBehaviour
         if (dialogue != null)
         {
             InkManager.Instance.StartDialogue(dialogue, usesVariables);
+            Debug.Log($"Showing dialogue for task '{task.TaskName}'.");
+        }
+        else
+        {
+            Debug.LogWarning($"No dialogue assigned for task '{task.TaskName}'.");
+        }
+    }
+
+    public virtual void ShowDialogue(TextAsset dialogue, bool usesVariables, int differentDay)
+    {
+        if (!task.isInkTask) return;
+        if (dialogue != null)
+        {
+            InkManager.Instance.StartDialogue(dialogue, usesVariables, differentDay);
             Debug.Log($"Showing dialogue for task '{task.TaskName}'.");
         }
         else
