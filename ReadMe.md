@@ -1,6 +1,7 @@
 # TO DO
 ## High priority
 - Dobbiamo scrivere per forza cosa fa questo il primo giorno. sennò fa troppo cagare. Ci serve qualche strumento narrativo
+- buona idea! potremmo fare una voce in segreteria che ti dice cosa fare. è la stessa voce che poi "con chi credi di star parlando?"
 - Video
 - Day 01
 - Fix Fader
