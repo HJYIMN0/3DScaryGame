@@ -4,6 +4,7 @@
 - Video
 - Day 01
 - Fix Fader
+- Volume e renderer 
 
 ## Scripting
 - Fader potrebbe essere semplicemente un prefab che si infila dentro il transform del padre e poi si distrugge. tipo Fader = new Fader { float fadeInTime, ... }. 
