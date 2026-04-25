@@ -61,23 +61,23 @@ public class PlayerDialogueController : MonoBehaviour
 
     private void HandleDialogue()
     {
+        // FIX: il controllo su IsStoryActive viene spostato FUORI dal blocco condizionale.
+        // Se una storia è già attiva (es. avviata da StartingDialogueManager),
+        // non serve alcun interactable per poterla continuare.
+        if (_inkManager.IsStoryActive)
+        {
+            _inkManager.ContinueDialogue();
+            return; // aggiunto return per evitare di entrare nel blocco sottostante
+        }
+
+        // Il blocco originale rimane invariato: serve solo per AVVIARE
+        // un dialogo tramite un interactable.
         if (playerInteractionController != null &&
             playerInteractionController.interactableTask != null &&
             playerInteractionController.interactableTask.TaskSO != null)
         {
-            // LOGICA CORRETTA:
-            // Prima verifico se una storia è già attiva nel manager.
-            if (_inkManager.IsStoryActive)
-            {
-                // Se sì, procedo con la lettura.
-                _inkManager.ContinueDialogue();
-            }
-            else
-            {
-                // Se no, la inizio.
-                _inkManager.StartDialogue(playerInteractionController.interactableTask.TaskSO.inkJson,
-                                          playerInteractionController.interactableTask.TaskSO.usesVariablesInInk);
-            }
+            _inkManager.StartDialogue(playerInteractionController.interactableTask.TaskSO.inkJson,
+                                      playerInteractionController.interactableTask.TaskSO.usesVariablesInInk);
         }
     }
 }

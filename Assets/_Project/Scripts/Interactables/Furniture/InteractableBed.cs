@@ -11,12 +11,20 @@ public class InteractableBed : AbstractInteractable
     }
     public override void InteractWithTask()
     {
+        if (!taskManager.HasAnsweredThePhone)
+        {
+            Debug.Log("Player interacted with the clothes, but hasn't answered the phone yet.");
+            ShowDialogue(task.answerThePhoneText, false);
+            return;
+        }
+
+
         if (TaskManager.Instance.AreAllTasksCompleted())
         {
             Debug.Log("Player interacted with the bed. Task completed!");
             MarkTaskAsComplete();
             ShowDialogue(task.inkJson, task.usesVariablesInInk);
-            GameFlowManager.Instance.LoadNextScene(GameFlowManager.Instance.CurrentDay + 1);
+            GameFlowManager.Instance.LoadScene(GameFlowManager.Instance.CurrentDay + 1);
         }
         else
         {
@@ -30,7 +38,7 @@ public class InteractableBed : AbstractInteractable
         if (ts == task.inkJson && TaskManager.Instance.AreAllTasksCompleted())
         {
             Debug.Log("Dialogue ended for task: " + task.TaskName);
-            GameFlowManager.Instance.LoadNextScene(GameFlowManager.Instance.CurrentDay + 1);
+            GameFlowManager.Instance.LoadScene(GameFlowManager.Instance.CurrentDay + 1);
         }
     }
 }

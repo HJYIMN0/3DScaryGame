@@ -8,15 +8,19 @@ public abstract class AbstractInteractable : MonoBehaviour
     private bool isCanvaInstantiated = false;
     private GameObject canvaInstance;
     public TaskSO TaskSO => task;
+    protected TaskManager taskManager;
 
     public bool HasBeenInteractedWith { get; protected set; } = false;
+
     private PlayerInteractionController _playerInteractionController;
 
     protected virtual void Start()
     {
+        taskManager = TaskManager.Instance;
+        
         if (task != null && !task.isTaskSecret) 
         {
-            TaskManager.Instance.AddTask(task);
+            taskManager.AddTask(task);
             Debug.Log($"Added task '{task.TaskName}' to DayManager.");
         }
         else
@@ -111,7 +115,7 @@ public abstract class AbstractInteractable : MonoBehaviour
 
     public virtual void MarkTaskAsComplete()
     {
-        TaskManager.Instance.CompleteTask(task.TaskName);
+        taskManager.CompleteTask(task.TaskName);
     }
 
     private void OnTriggerEnter(Collider other)

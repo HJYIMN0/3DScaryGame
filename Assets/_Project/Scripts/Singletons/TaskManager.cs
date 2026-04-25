@@ -14,6 +14,9 @@ public class TaskManager : GenericSingleton<TaskManager>
     public Action<TaskSO> OnTaskAdded;
 
     public List<TaskSO> GetTasksOfTheDay() => tasksOfTheDay;
+    public bool HasAnsweredThePhone { get; private set; }
+    
+    public void SetPhoneAnswered(bool value) => HasAnsweredThePhone = value;
 
     private void Start()
     {

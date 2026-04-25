@@ -5,6 +5,8 @@ using UnityEngine.Video;
 public class VideoPlayerManager : MonoBehaviour
 {
     [SerializeField] private VideoPlayer videoPlayer;
+    [SerializeField] private bool isPlayerInScene = true;
+
 
     private PlayerMovementController playerMovementController;
 
@@ -16,18 +18,18 @@ public class VideoPlayerManager : MonoBehaviour
         videoPlayer.loopPointReached += OnVideoFinished;
         videoPlayer.Play();
         Debug.Log($"[VideoPlayerManager] Video avviato. Loop attivo: {videoPlayer.isLooping}");
-        SetPlayerMovement(false);
+        SetPlayerMovement(false, isPlayerInScene);
     }
 
     private void OnDisable()
     {
-        SetPlayerMovement(false);
+        SetPlayerMovement(false, isPlayerInScene);
         videoPlayer.loopPointReached -= OnVideoFinished;
     }
 
     private void OnDestroy()
     {
-        SetPlayerMovement(false);
+        SetPlayerMovement(false, isPlayerInScene);
         videoPlayer.loopPointReached -= OnVideoFinished;
     }
 
@@ -35,12 +37,14 @@ public class VideoPlayerManager : MonoBehaviour
     {
         Debug.Log("[VideoPlayerManager] OnVideoFinished chiamato.");
         Destroy(this.gameObject);
-        SetPlayerMovement(true);
+        SetPlayerMovement(true, isPlayerInScene);
         OnVideoEnd?.Invoke();
     }
 
-    public void SetPlayerMovement(bool canMove)
+    public void SetPlayerMovement(bool canMove, bool isPlayerInScene)
     {
+        if (!isPlayerInScene) return;
+
         {
             switch (canMove)
             {

@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 8141231370687460473}
   - component: {fileID: 1813476504391838744}
   - component: {fileID: 7503419932706028071}
+  - component: {fileID: 3914763879667988609}
   m_Layer: 5
   m_Name: LoadingScreenCanva
   m_TagString: Untagged
@@ -115,6 +116,19 @@ CanvasGroup:
   m_Interactable: 0
   m_BlocksRaycasts: 0
   m_IgnoreParentGroups: 0
+--- !u!114 &3914763879667988609
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1221388945609126733}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ca496ef696e41eb4ca9b6666d85f73e2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Fader
+  canvaToFade: {fileID: 7503419932706028071}
 --- !u!1 &8010970646824184507
 GameObject:
   m_ObjectHideFlags: 0

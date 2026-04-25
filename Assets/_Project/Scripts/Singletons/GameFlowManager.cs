@@ -17,7 +17,7 @@ public class GameFlowManager : GenericSingleton<GameFlowManager>
     {
         Debug.Log($"GameFlowManager started. Current day: {currentDay}, Current scene: {CurrentScene}");
     }
-    public void LoadNextScene(int day)
+    public void LoadScene(int day)
     {
         if (day < 0 || day >= gameScenes.Length)
         {
@@ -25,54 +25,25 @@ public class GameFlowManager : GenericSingleton<GameFlowManager>
             return;
         }
         
-        StartCoroutine(FadeToLoad(gameScenes[day], fadeCanvaPrefab, fadeDuration));
+        StartCoroutine(FadeToLoad(day, gameScenes[day], fadeCanvaPrefab, fadeDuration));
     }
 
-    private IEnumerator FadeToLoad(string sceneName, GameObject objToFade, float fadeDuration)
+    private IEnumerator FadeToLoad(int day, string sceneName, GameObject objToFade, float fadeDuration)
     {
-        // MODIFICATO: StopAllCoroutines() era dentro la coroutine e la fermava
-        // immediatamente. Ora non si ferma più da sola.
-        // Se vuoi evitare coroutine sovrapposte, usa un flag booleano esterno.
-
-        // MODIFICATO: salviamo il riferimento al clone istanziato. Prima si chiamava
-        // GetComponent e Destroy sull'originale (il prefab), non sul clone.
         GameObject fadeInstance = Instantiate(objToFade, Vector3.zero, Quaternion.identity);
         fadeInstance.transform.SetParent(transform);
-        CanvasGroup canvasGroup = fadeInstance.GetComponent<CanvasGroup>();
-
-        if (canvasGroup == null)
-        {
-            Debug.LogError($"{gameObject.name} couldn't find CanvasGroup on {objToFade.name}");
-            yield break;
-        }
-
-        canvasGroup.alpha = 0f;
-
-        float elapsedTime = 0f;
-        while (elapsedTime < fadeDuration)
-        {
-            canvasGroup.alpha = Mathf.Lerp(0f, 1f, elapsedTime / fadeDuration);
-            elapsedTime += Time.deltaTime;
-            yield return null;
-        }
-        canvasGroup.alpha = 1f;
+        Fader fader = fadeInstance.GetComponent<Fader>();
+        fader.StartCoroutine(fader.FadeIn(fadeDuration));
+        yield return new WaitUntil(() => fader.HasFadedIn);
 
         SceneManager.LoadSceneAsync(sceneName);
-        yield return new WaitUntil(() => SceneManager.GetActiveScene().name.Equals(sceneName));
+        yield return new WaitUntil(() => SceneManager.GetActiveScene().name.Equals(sceneName) && fader.HasFadedIn);
 
         Debug.Log($"Successfully loaded scene: {sceneName}");
+        fader.StartCoroutine(fader.FadeOut(fadeDuration));
+        currentDay = day;
 
-        elapsedTime = 0f;
-        while (elapsedTime < fadeDuration)
-        {
-            canvasGroup.alpha = Mathf.Lerp(1f, 0f, elapsedTime / fadeDuration);
-            elapsedTime += Time.deltaTime;
-            yield return null;
-        }
-        canvasGroup.alpha = 0f;
-
-        // MODIFICATO: Destroy sul clone, non sul prefab originale
-        Destroy(fadeInstance);
+        TaskManager.Instance.SetPhoneAnswered(false);
     }
 
     public override bool IsDestroyedOnLoad() => false;

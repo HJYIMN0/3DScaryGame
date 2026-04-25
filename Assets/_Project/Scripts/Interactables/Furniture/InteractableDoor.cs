@@ -10,7 +10,7 @@ public class InteractableDoor : AbstractInteractable
 
     private void GoToWork() 
     {
-        GameFlowManager.Instance.LoadNextScene(GameFlowManager.Instance.CurrentDay + 1);
+        GameFlowManager.Instance.LoadScene(GameFlowManager.Instance.CurrentDay + 1);
     }
 
 }

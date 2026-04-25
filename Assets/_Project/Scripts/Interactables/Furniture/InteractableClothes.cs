@@ -6,14 +6,14 @@ public class InteractableClothes : AbstractInteractable
 
     [SerializeField] private float fadeDuration = 1f;
     [SerializeField] private GameObject holeGameObject;
-    TaskManager taskManager;
-    Fader fader;
+    [SerializeField] private GameObject fadeCanvaPrefab;
+    private TaskManager taskManager;
+
+    private GameObject fadeInstance;
     protected override void Start()
     {
         base.Start();
         taskManager = TaskManager.Instance;
-        fader = Fader.Instance;
-
         holeGameObject.SetActive(false);
     }
 
@@ -21,19 +21,26 @@ public class InteractableClothes : AbstractInteractable
     {
         if (HasBeenInteractedWith) return;
 
-        taskManager.CompleteTask(task.TaskName);
-        fader.StartCoroutine(fader.FadeIn(fadeDuration));
-        StartCoroutine(WaitForFadeOut());
-    }
+        if (!taskManager.HasAnsweredThePhone)
+        {
+            Debug.Log("Player interacted with the clothes, but hasn't answered the phone yet.");
+            ShowDialogue(task.answerThePhoneText, false);
+            return;
+        }
 
-    public IEnumerator WaitForFadeOut()
+        taskManager.CompleteTask(task.TaskName);
+        fadeInstance = Instantiate(fadeCanvaPrefab, Vector3.zero, Quaternion.identity);
+        fadeInstance.GetComponent<Fader>().StartCoroutine(fadeInstance.GetComponent<Fader>().FadeIn(fadeDuration));
+        StartCoroutine(WaitAndFadeOut());
+    }
+    public IEnumerator WaitAndFadeOut()
     {
-        while (fader.CanvasGroupAlpha < 0.9f)
+        while (!fadeInstance.GetComponent<Fader>().HasFadedIn)
         {
             yield return null;
         }
         Destroy(this.gameObject);
-        fader.StartCoroutine(fader.FadeOut(fadeDuration, fadeDuration));
+        fadeInstance.GetComponent<Fader>().StartCoroutine(fadeInstance.GetComponent<Fader>().FadeOut(fadeDuration, fadeDuration));
         holeGameObject.SetActive(true);
         TaskManager.Instance.AddTask(holeGameObject.GetComponent<AbstractInteractable>().TaskSO);
 

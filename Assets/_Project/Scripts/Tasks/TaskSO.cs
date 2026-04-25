@@ -18,4 +18,7 @@ public class TaskSO : ScriptableObject
     public bool isInkTask = false;
     public TextAsset inkJson;
     public bool usesVariablesInInk = false;
+
+    [Header("Phone inkFile")]
+    public TextAsset answerThePhoneText;
 }

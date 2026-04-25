@@ -116,15 +116,16 @@ public class InkManager : GenericSingleton<InkManager>
 
     private void Start()
     {
-        if (canvaInstance != null)
-        {
-            canvaInstance.SetActive(false);
-        }
+        //if (canvaInstance != null)
+        //{
+        //    canvaInstance.SetActive(false);
+        //}
 
         Debug.Log($"InkManager = {dayVariableNameInInk}{GameFlowManager.Instance.CurrentDay}");
     }
     private void InitializeCanva()
     {
+        Debug.Log("[InkManager] Initializing Canva...");
         if (canvaInstance == null)
         {
             canvaInstance = Instantiate(canvaPrefab, Vector3.zero, Quaternion.identity);
@@ -149,6 +150,7 @@ public class InkManager : GenericSingleton<InkManager>
 
     private void CloseCanva()
     {
+        Debug.Log("[InkManager] Closing Canva...");
         if (canvaInstance != null && canvaInstance.activeSelf && canvaPrefabText != null)
         {
             canvaInstance.SetActive(false);
