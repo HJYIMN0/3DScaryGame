@@ -1,14 +1,16 @@
 # TO DO
-## High priority 
+## High priority
+- Dobbiamo scrivere per forza cosa fa questo il primo giorno. sennò fa troppo cagare. Ci serve qualche strumento narrativo
+- buona idea! potremmo fare una voce in segreteria che ti dice cosa fare. è la stessa voce che poi "con chi credi di star parlando?"
+- Video
 - Day 01
 - Fix Fader
+- Volume e renderer 
 
 ## Scripting
-- Fadeble estratto da DayManager. Facciamo un prefab con un onEnable? Oppure un singleton, perché ci serve che resti durante il caricamento
-- - ho fatto un singleton. bisogna modificare Day manager in modo che lo richiami piuttosto che usare il suo metodo interno. 
-- - - in questi momento Fader non funziona
+- Fader potrebbe essere semplicemente un prefab che si infila dentro il transform del padre e poi si distrugge. tipo Fader = new Fader { float fadeInTime, ... }. 
+così se tanto è nel singleton non si dovrebbe distruggere (fai attenzione che sia un singleton don't destroy on load)
 - Save System
-- Togliere play SfxSound da abstract Interactable e fargli richiamare il singleton audiomanager 
 
 
 ## 3D Modeling
