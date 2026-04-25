@@ -1,22 +1,21 @@
 # TO DO
 ## High priority
-- Dobbiamo scrivere per forza cosa fa questo il primo giorno. sennò fa troppo cagare. Ci serve qualche strumento narrativo
-- buona idea! potremmo fare una voce in segreteria che ti dice cosa fare. è la stessa voce che poi "con chi credi di star parlando?"
+- Phone task
 - Video
 - Day 01
-- Fix Fader
 - Volume e renderer 
 
 ## Scripting
-- Fader potrebbe essere semplicemente un prefab che si infila dentro il transform del padre e poi si distrugge. tipo Fader = new Fader { float fadeInTime, ... }. 
-così se tanto è nel singleton non si dovrebbe distruggere (fai attenzione che sia un singleton don't destroy on load)
+- in questo momento mi devo ricordare in ogni singola classe di mettere il controllo se phone task è stata fatta. forse dovrei mettere un metodo astratto in Abstract Task così da ricordarmene?
 - Save System
+- Dividere InkManager in InkManager e InkUIManager
 
 
 ## 3D Modeling
 - Nuova porta per l'ingresso.
 - Shader blender pittorico
 - Hyper realistic clock
+- Hyper realistic phone
 
 ## Art
 - Main Menu 
@@ -26,6 +25,7 @@ così se tanto è nel singleton non si dovrebbe distruggere (fai attenzione che 
 - finto found footage
 - Texture Dithering migliore
 - diversi video in cui si ripete la stessa azione
+- check come usare fotogrammetria su Unity (meaning, come si fa il bake su Unity6? lo faccio su blender e poi esporto?)
 
 ## Writing
 - Finire Gdd
