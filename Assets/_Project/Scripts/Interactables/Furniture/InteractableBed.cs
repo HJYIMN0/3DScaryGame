@@ -3,7 +3,7 @@ using UnityEngine;
 public class InteractableBed : AbstractInteractable
 {
 
-    [SerializeField] private int notAllTasksCompletedDialogueIndex = 100;
+    [SerializeField] private string notAllTasksCompletedDialogueKey = "I can't go to bed yet.";
 
     private void OnEnable()
     {
@@ -11,17 +11,17 @@ public class InteractableBed : AbstractInteractable
     }
     public override void ExecuteInteraction()
     {
-        if (TaskManager.Instance.AreAllTasksCompleted())
+        Debug.Log("Interacted with bed! Checking if all tasks are completed...");
+        if (taskManager.AreAllTasksCompleted())
         {
-            Debug.Log("Player interacted with the bed. Task completed!");
+            Debug.Log("All tasks are completed. Proceeding with bed interaction.");
             MarkTaskAsComplete();
             ShowDialogue(task.inkJson, task.usesVariablesInInk);
-            GameFlowManager.Instance.LoadScene(GameFlowManager.Instance.CurrentDay + 1);
         }
         else
         {
             Debug.Log("Player interacted with the bed, but not all tasks are completed yet.");
-             ShowDialogue(task.inkJson, task.usesVariablesInInk, notAllTasksCompletedDialogueIndex);
+             ShowDialogue(notAllTasksCompletedDialogueKey);
         }
     }
 
@@ -30,7 +30,15 @@ public class InteractableBed : AbstractInteractable
         if (ts == task.inkJson && TaskManager.Instance.AreAllTasksCompleted())
         {
             Debug.Log("Dialogue ended for task: " + task.TaskName);
-            GameFlowManager.Instance.LoadScene(GameFlowManager.Instance.CurrentDay + 1);
+            int nextDay = GameFlowManager.Instance.CurrentDay + 1;
+            if (nextDay > GameFlowManager.Instance.GameScenes.Length)
+            {
+                Debug.Log("No more scenes to load. Game might be completed.");
+                Debug.Log("Reloading current scene or showing end game screen...");
+                GameFlowManager.Instance.LoadScene(GameFlowManager.Instance.CurrentDay); // Reload current scene or implement end game logic
+                return;
+            }
+            GameFlowManager.Instance.LoadScene(nextDay);
         }
     }
 }

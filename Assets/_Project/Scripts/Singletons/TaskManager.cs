@@ -89,6 +89,19 @@ public class TaskManager : GenericSingleton<TaskManager>
         return true; // All mandatory tasks are completed
     }
 
+    public void MarkAllTasksAsComplete()
+    {
+        foreach (TaskSO task in tasksOfTheDay)
+        {
+            if (!CompletedTasks.Contains(task))
+            {
+                CompletedTasks.Add(task);
+                Debug.Log($"Task '{task.TaskName}' marked as completed.");
+                OnTaskComplete?.Invoke(task);
+            }
+        }
+    }
+
     public override bool IsDestroyedOnLoad() => true;
     public override bool ShouldDetatchFromParent() => true;
 }

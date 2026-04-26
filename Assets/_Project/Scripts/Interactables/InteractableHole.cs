@@ -19,6 +19,7 @@ public class InteractableHole : AbstractInteractable
                 DeactivateCanvas();
                 Debug.Log("Video ended, showing dialogue...");
                 ShowDialogue(task.inkJson, true);
+                taskManager.MarkAllTasksAsComplete();
             };
             TaskManager.Instance.CompleteTask(task.TaskName);
             HasBeenInteractedWith = true;

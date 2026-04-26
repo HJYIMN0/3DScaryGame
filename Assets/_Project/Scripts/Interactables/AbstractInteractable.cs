@@ -42,11 +42,11 @@ public abstract class AbstractInteractable : MonoBehaviour
     public void EvaluateCanvaStatus(PlayerInteractionController player, GameObject canvaObj)
     {
         Debug.Log("Player is here!");
-        //if (isCanvaInstantiated) return;
+        if (isCanvaInstantiated) return;
 
         player.SetInteractableTaskForPlayer(this);
 
-        if (HasBeenInteractedWith) return;
+        //if (HasBeenInteractedWith) return;
         if (!isCanvaInstantiated && canvaInstance != null)
         {
             canvaInstance.SetActive(true);
