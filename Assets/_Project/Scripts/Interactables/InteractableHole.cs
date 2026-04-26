@@ -1,14 +1,15 @@
 using UnityEngine;
 
-public class Interactable_Hole : AbstractInteractable
+public class InteractableHole : AbstractInteractable
 {
     [SerializeField] private GameObject UiVideoCanva;
 
     protected override void Start() 
     {
+        base.Start();
         TaskManager.Instance.ClearTask(task);
     }
-    public override void InteractWithTask()
+    public override void ExecuteInteraction()
     {
         if (!HasBeenInteractedWith) 
         {

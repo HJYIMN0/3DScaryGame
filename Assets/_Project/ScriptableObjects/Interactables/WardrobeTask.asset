@@ -17,6 +17,10 @@ MonoBehaviour:
   isMandatory: 1
   canvaObj: {fileID: 5118407277419850778, guid: 7bc6925bac6833743ac4301f7508ebef, type: 3}
   TaskSfx: {fileID: 0}
+  isTaskSecret: 0
   isInkTask: 0
   inkJson: {fileID: 0}
   usesVariablesInInk: 0
+  alreadyCompletedTaskJson: {fileID: 0}
+  isThisPhoneTask: 0
+  answerThePhoneText: Answer the phone!

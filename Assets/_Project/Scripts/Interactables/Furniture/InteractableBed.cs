@@ -9,16 +9,8 @@ public class InteractableBed : AbstractInteractable
     {
         InkManager.Instance.onDialogueEnd += HandleDialogueEnd;
     }
-    public override void InteractWithTask()
+    public override void ExecuteInteraction()
     {
-        if (!taskManager.HasAnsweredThePhone)
-        {
-            Debug.Log("Player interacted with the clothes, but hasn't answered the phone yet.");
-            ShowDialogue(task.answerThePhoneText, false);
-            return;
-        }
-
-
         if (TaskManager.Instance.AreAllTasksCompleted())
         {
             Debug.Log("Player interacted with the bed. Task completed!");

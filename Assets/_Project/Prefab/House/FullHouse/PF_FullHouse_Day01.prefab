@@ -286,12 +286,24 @@ PrefabInstance:
       value: PF_ChestOfDrawers
       objectReference: {fileID: 0}
     - target: {fileID: 5236888016054671910, guid: 34feefa2b73afd0478d517a8f9545240, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 85
+      objectReference: {fileID: 0}
+    - target: {fileID: 5236888016054671910, guid: 34feefa2b73afd0478d517a8f9545240, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 85
+      objectReference: {fileID: 0}
+    - target: {fileID: 5236888016054671910, guid: 34feefa2b73afd0478d517a8f9545240, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 85
+      objectReference: {fileID: 0}
+    - target: {fileID: 5236888016054671910, guid: 34feefa2b73afd0478d517a8f9545240, type: 3}
       propertyPath: m_LocalPosition.x
       value: 20.7
       objectReference: {fileID: 0}
     - target: {fileID: 5236888016054671910, guid: 34feefa2b73afd0478d517a8f9545240, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -6.0600004
+      value: -6.36
       objectReference: {fileID: 0}
     - target: {fileID: 5236888016054671910, guid: 34feefa2b73afd0478d517a8f9545240, type: 3}
       propertyPath: m_LocalPosition.z
@@ -2284,6 +2296,7 @@ MonoBehaviour:
   canvaPrefab: {fileID: 5118407277419850778, guid: 7bc6925bac6833743ac4301f7508ebef, type: 3}
   fadeDuration: 1
   holeGameObject: {fileID: 0}
+  fadeCanvaPrefab: {fileID: 0}
 --- !u!4 &680630101861174833 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4975271708742448754, guid: ad555403e85e2b9479cb091ecc2bb785, type: 3}

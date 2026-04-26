@@ -2,15 +2,8 @@ using UnityEngine;
 
 public class InteractableWardrobe : AbstractInteractable
 {
-    public override void InteractWithTask()
+    public override void ExecuteInteraction()
     {
-        if (!taskManager.HasAnsweredThePhone)
-        {
-            Debug.Log("Player interacted with the clothes, but hasn't answered the phone yet.");
-            ShowDialogue(task.answerThePhoneText, false);
-            return;
-        }
-
         PLayTaskSfx();
         MarkTaskAsComplete();
     }

@@ -10,17 +10,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: fdb42010bcccddf44a08dbd0362b333c, type: 3}
-  m_Name: PileOfClothesTask
+  m_Name: PhoneTask
   m_EditorClassIdentifier: Assembly-CSharp::TaskSO
-  TaskName: Pile Of Clothes
-  TaskDescription: Pick up the clothes from the floor in your room
+  TaskName: Phone_Day01
+  TaskDescription: ANSWER THE PHONE
   isMandatory: 1
-  canvaObj: {fileID: 0}
+  canvaObj: {fileID: 5118407277419850778, guid: 7bc6925bac6833743ac4301f7508ebef, type: 3}
   TaskSfx: {fileID: 0}
   isTaskSecret: 0
-  isInkTask: 0
-  inkJson: {fileID: 0}
-  usesVariablesInInk: 0
-  alreadyCompletedTaskJson: {fileID: 0}
-  isThisPhoneTask: 0
-  answerThePhoneText: Answer the phone!
+  isInkTask: 1
+  inkJson: {fileID: 4900000, guid: 03a3987afee44e0489d4a53b2ad5436d, type: 3}
+  usesVariablesInInk: 1
+  alreadyCompletedTaskJson: {fileID: 4900000, guid: ac19a8873fe558046980a0ea2ce81b84, type: 3}
+  isThisPhoneTask: 1
+  answerThePhoneText: 

@@ -25,11 +25,14 @@ public class InkManager : GenericSingleton<InkManager>
 
     private GameObject _player;
     public bool IsStoryActive => currentStory != null;
+    private bool _isDialogueOpen = false;
+    public bool IsDialogueOpen => _isDialogueOpen;
 
     public Action<TextAsset> onDialogueEnd;
 
     public void StartDialogue(TextAsset inkJson, bool usesVariables) => PrepareStory(inkJson, usesVariables);
     public void StartDialogue(TextAsset inkJson, bool usesVariables, int differentDay) => PrepareStory(inkJson, usesVariables, differentDay);
+    public void StartDialogue(string text) => PrepareStory(text);
     private void SetTextAsset(TextAsset textAsset)
     {
         if (textAsset != null && textAsset != currentTextAsset)
@@ -87,6 +90,23 @@ public class InkManager : GenericSingleton<InkManager>
 
         ContinueDialogue();
     }
+
+    private void PrepareStory(string text)
+    {
+        if (string.IsNullOrEmpty(text))
+        {
+            Debug.Log("PrepareStory called with empty text. Closing dialogue.");
+            CloseCanva();
+            EndDialogue();
+            ClearStoryAndTextAsset();
+            return;
+        } 
+
+        ToggleSystem(); // inizializza il canvas e setta canvaPrefabText
+
+        if (canvaPrefabText != null)
+            canvaPrefabText.text = text;
+    }
     public void ContinueDialogue()
     {
         Debug.Log("Continue Dialogue has been called.");
@@ -94,7 +114,6 @@ public class InkManager : GenericSingleton<InkManager>
         if (currentStory != null && currentStory.canContinue)
         {
             string nextLine = currentStory.Continue();
-            Debug.Log($"Next line: {nextLine}");
 
             if (canvaPrefabText != null)
             {
@@ -134,6 +153,7 @@ public class InkManager : GenericSingleton<InkManager>
         {
             canvaInstance.SetActive(true);
         }
+        _isDialogueOpen = true;
 
         if (canvaPrefabText == null)
         {
@@ -154,6 +174,7 @@ public class InkManager : GenericSingleton<InkManager>
         if (canvaInstance != null && canvaInstance.activeSelf && canvaPrefabText != null)
         {
             canvaInstance.SetActive(false);
+            _isDialogueOpen = false;
         }
 
         else

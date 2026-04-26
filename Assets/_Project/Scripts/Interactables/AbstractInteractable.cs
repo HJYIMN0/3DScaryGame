@@ -42,7 +42,7 @@ public abstract class AbstractInteractable : MonoBehaviour
     public void EvaluateCanvaStatus(PlayerInteractionController player, GameObject canvaObj)
     {
         Debug.Log("Player is here!");
-        if (isCanvaInstantiated) return;
+        //if (isCanvaInstantiated) return;
 
         player.SetInteractableTaskForPlayer(this);
 
@@ -63,7 +63,20 @@ public abstract class AbstractInteractable : MonoBehaviour
             Debug.Log("Canva was null, instantiating now...");
         }
     }
-    public abstract void InteractWithTask();
+
+    public void InteractWithTask()
+    {
+        if (!taskManager.HasAnsweredThePhone && !task.isThisPhoneTask)
+        { 
+            Debug.Log("Player hasn't completed the phone task yet.");
+            ShowDialogue(task.answerThePhoneText);
+            return;
+        }
+        ExecuteInteraction();
+        PLayTaskSfx();
+    }
+
+    public abstract void ExecuteInteraction();
 
     /// <summary>
     /// Remember, you need to set the TaskSo to bool IsInkTask = true if you need to show Dialogue
@@ -98,6 +111,13 @@ public abstract class AbstractInteractable : MonoBehaviour
         }
     }
 
+    public virtual void ShowDialogue(string text)
+    {
+        if (string.IsNullOrEmpty(text)) return;
+        InkManager.Instance.StartDialogue(text);
+        Debug.Log($"Showing dialogue: '{text}'.");
+    }
+
     public void PLayTaskSfx()
     {
         AudioSource audioSource = this.GetComponent<AudioSource>();
@@ -116,7 +136,10 @@ public abstract class AbstractInteractable : MonoBehaviour
     public virtual void MarkTaskAsComplete()
     {
         taskManager.CompleteTask(task.TaskName);
+        HasBeenInteractedWith = true;
     }
+
+
 
     private void OnTriggerEnter(Collider other)
     {

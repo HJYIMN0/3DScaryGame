@@ -46,7 +46,6 @@ public class PlayerDialogueController : MonoBehaviour
                 Debug.LogError("InkManager instance not found: " + e.Message);
             }
         }
-
         playerInputController.OnAttackAction += HandleDialogue;
         Debug.Log("PlayerDialogueController enabled and subscribed to OnAttackAction.");
     }
@@ -61,17 +60,23 @@ public class PlayerDialogueController : MonoBehaviour
 
     private void HandleDialogue()
     {
-        // FIX: il controllo su IsStoryActive viene spostato FUORI dal blocco condizionale.
-        // Se una storia è già attiva (es. avviata da StartingDialogueManager),
-        // non serve alcun interactable per poterla continuare.
+        // MODIFICATO: distingue tre casi:
+        // 1. Storia Ink attiva → continua la storia
+        // 2. Canvas aperto ma nessuna storia (testo plain text) → chiudi il canvas
+        // 3. Nessun dialogo aperto → avvia una nuova storia tramite l'interactable
         if (_inkManager.IsStoryActive)
         {
             _inkManager.ContinueDialogue();
-            return; // aggiunto return per evitare di entrare nel blocco sottostante
+            return;
         }
 
-        // Il blocco originale rimane invariato: serve solo per AVVIARE
-        // un dialogo tramite un interactable.
+        // AGGIUNTO: caso plain text — chiude il canvas senza tentare di avviare una storia
+        if (_inkManager.IsDialogueOpen)
+        {
+            _inkManager.EndDialogue();
+            return;
+        }
+
         if (playerInteractionController != null &&
             playerInteractionController.interactableTask != null &&
             playerInteractionController.interactableTask.TaskSO != null)

@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class InteractableGeneral : AbstractInteractable
 {
-    public override void InteractWithTask()
+    public override void ExecuteInteraction()
     {
         ShowDialogue(task.inkJson, task.usesVariablesInInk);
         

@@ -21,3 +21,6 @@ MonoBehaviour:
   isInkTask: 1
   inkJson: {fileID: 4900000, guid: 555ed896bb7830b4b839587ba8739c6b, type: 3}
   usesVariablesInInk: 1
+  alreadyCompletedTaskJson: {fileID: 4900000, guid: 824c1a8300c10b2489ea7176d525f2a8, type: 3}
+  isThisPhoneTask: 0
+  answerThePhoneText: Answer the phone!

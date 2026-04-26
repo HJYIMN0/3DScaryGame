@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class InteractableDoor : AbstractInteractable
 {
-    public override void InteractWithTask()
+    public override void ExecuteInteraction()
     {
         GoToWork();
     }
