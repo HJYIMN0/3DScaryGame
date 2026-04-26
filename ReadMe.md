@@ -1,12 +1,10 @@
 # TO DO
 ## High priority
-- Phone task
-- Video
+- Videos
 - Day 01
 - Volume e renderer 
 
 ## Scripting
-- in questo momento mi devo ricordare in ogni singola classe di mettere il controllo se phone task è stata fatta. forse dovrei mettere un metodo astratto in Abstract Task così da ricordarmene?
 - Save System
 - Dividere InkManager in InkManager e InkUIManager
 
