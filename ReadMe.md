@@ -35,10 +35,10 @@
 - la narrazione non è lineare. ogni tanto sei nel passato, ogni tanto nel presente. 
 - ogni tanto parli con qualcuno. cioè appare del testo come se stessi avendo una conversazione con qualcuno. magari nelle giornate da "normale" è quando esci per andare a lavoro. comunque inizialmente si lascia intendere che tu stia parlando con qualcuno. Verso la fine, la rivelazione "con chi pensi di stare parlando"? potremmo aggiungere dei finti found footage come interruzione tra un momento in cui hai visto il buco e subito dopo sei solo accanto. task: vai a letto. 
 
-# Video
+## Video
 - finire di dipingere le tele piccole e riprendere di sfondarle con un coltello
 - Blender continua a crashare come video editor. eventualmente stanotte proviamo a scaricare DaVinci o che so io
 - scavare buche sul terreno, in spiaggia...
 
-# Ideas
+## Ideas
 - Not playing manager : controlla se Vector3 del player è 0 da abbastanza tempo e fa partire qualche strana cosa. "non fare una scelta è già di per sé una scelta". 
