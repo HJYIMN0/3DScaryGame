@@ -3,6 +3,8 @@
 - Videos
 - Day 01
 - Volume e renderer 
+- Edit coffee Json and other Json(s)
+- Trovare un editor video
 
 ## Scripting
 - Save System
@@ -14,6 +16,7 @@
 - Shader blender pittorico
 - Hyper realistic clock
 - Hyper realistic phone
+- potremmo riusare la medusa
 
 ## Art
 - Main Menu 
@@ -34,5 +37,6 @@
 
 # Video
 - finire di dipingere le tele piccole e riprendere di sfondarle con un coltello
+- Blender continua a crashare come video editor. eventualmente stanotte proviamo a scaricare DaVinci o che so io
 - scavare buche sul terreno, in spiaggia...
 
