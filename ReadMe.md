@@ -40,3 +40,5 @@
 - Blender continua a crashare come video editor. eventualmente stanotte proviamo a scaricare DaVinci o che so io
 - scavare buche sul terreno, in spiaggia...
 
+# Ideas
+- Not playing manager : controlla se Vector3 del player è 0 da abbastanza tempo e fa partire qualche strana cosa. "non fare una scelta è già di per sé una scelta". 
