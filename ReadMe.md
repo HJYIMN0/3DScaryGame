@@ -36,10 +36,3 @@
 - finire di dipingere le tele piccole e riprendere di sfondarle con un coltello
 - scavare buche sul terreno, in spiaggia...
 
-
-# Gemini
-- 04Chromatic Aberration (anche in B/W!).Le linee nere si sdoppiano. La realtà sembra vibrare.
-- 05Lens Distortion (effetto barile).La stanza sembra curvarsi verso il buco al centro.5.
--  Consigli da Senior Programmer: Come implementarloIn Unity, non applicare questi effetti direttamente sulla camera.Crea un oggetto Global Volume nella scena.Crea un Volume Profile (es. Day01_Style).Aggiungi gli override: Color Adjustments (Saturazione -100), Vignette, Film Grain.
-
-
