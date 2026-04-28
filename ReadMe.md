@@ -29,7 +29,6 @@
 - check come usare fotogrammetria su Unity (meaning, come si fa il bake su Unity6? lo faccio su blender e poi esporto?)
 
 ## Writing
-- ogni azione (task) deve essere accompagnata da riflessioni, non i banali pensieri come quelli che abbiamo fatto per il caffè. cambiamolo ad esempio con "odio il caffè ma devo restare sveglio, devo produrre" (però scritto meglio). 
 - Finire Gdd
 - Organizzare un Day01
 - la narrazione non è lineare. ogni tanto sei nel passato, ogni tanto nel presente. 
