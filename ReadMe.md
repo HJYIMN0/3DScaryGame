@@ -3,12 +3,13 @@
 - Videos
 - Day 01
 - Volume e renderer 
-- Edit coffee Json and other Json(s)
-- Trovare un editor video
+- VFXs per il buco 
+- forse dovremmo evitare che in day 01 la prima cosa che fai è sistemare i vestiti. magari facciamo compiere almeno 3 altri tasks prima. 
 
 ## Scripting
 - Save System
 - Dividere InkManager in InkManager e InkUIManager
+
 
 
 ## 3D Modeling
