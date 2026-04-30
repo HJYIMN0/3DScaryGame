@@ -9,6 +9,7 @@
 ## Scripting
 - Save System
 - Dividere InkManager in InkManager e InkUIManager
+- ma invece di tutto il casino che abbiamo fatto per phone task dentro task manager perché non facciamo una nuova classe per il player tipo player task manager con un un bel bool has answered phone e semplicemente al task phone glielo mettiamo true
 
 
 
