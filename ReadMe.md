@@ -36,7 +36,6 @@
 
 ## Video
 - finire di dipingere le tele piccole e riprendere di sfondarle con un coltello
-- Blender continua a crashare come video editor. eventualmente stanotte proviamo a scaricare DaVinci o che so io
 - scavare buche sul terreno, in spiaggia...
 - Distruggere il telefono scansionato con fotogrammetria con il martello della campagna 
 
