@@ -383,6 +383,46 @@ PrefabInstance:
       propertyPath: m_Name
       value: VideoPlayerCanva
       objectReference: {fileID: 0}
+    - target: {fileID: 3633619523236502028, guid: 08ae45bab29853442b5c0147fab99c74, type: 3}
+      propertyPath: m_VideoClip
+      value: 
+      objectReference: {fileID: 32900000, guid: 5209aa9879204504789c510d6cdf81ea, type: 3}
+    - target: {fileID: 3633619523236502028, guid: 08ae45bab29853442b5c0147fab99c74, type: 3}
+      propertyPath: m_PlaybackSpeed
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3633619523236502028, guid: 08ae45bab29853442b5c0147fab99c74, type: 3}
+      propertyPath: m_ControlledAudioTrackCount
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3633619523236502028, guid: 08ae45bab29853442b5c0147fab99c74, type: 3}
+      propertyPath: m_DirectAudioMutes.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3633619523236502028, guid: 08ae45bab29853442b5c0147fab99c74, type: 3}
+      propertyPath: m_DirectAudioVolumes.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3633619523236502028, guid: 08ae45bab29853442b5c0147fab99c74, type: 3}
+      propertyPath: m_EnabledAudioTracks.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3633619523236502028, guid: 08ae45bab29853442b5c0147fab99c74, type: 3}
+      propertyPath: m_TargetAudioSources.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3633619523236502028, guid: 08ae45bab29853442b5c0147fab99c74, type: 3}
+      propertyPath: 'm_DirectAudioVolumes.Array.data[0]'
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3633619523236502028, guid: 08ae45bab29853442b5c0147fab99c74, type: 3}
+      propertyPath: 'm_EnabledAudioTracks.Array.data[0]'
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4074959181845344121, guid: 08ae45bab29853442b5c0147fab99c74, type: 3}
+      propertyPath: m_MatchWidthOrHeight
+      value: 0.5
+      objectReference: {fileID: 0}
     - target: {fileID: 5189925830558641105, guid: 08ae45bab29853442b5c0147fab99c74, type: 3}
       propertyPath: isPlayerInScene
       value: 0
