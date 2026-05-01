@@ -4,7 +4,9 @@
 - Day 01
 - Volume e renderer 
 - VFXs per il buco 
-- forse dovremmo evitare che in day 01 la prima cosa che fai è sistemare i vestiti. magari facciamo compiere almeno 3 altri tasks prima. 
+- forse dovremmo evitare che in day 01 la prima cosa che fai è sistemare i vestiti. magari facciamo compiere almeno 3 altri tasks prima.
+- nuovo testo inizio video Blender:
+"this tree is alive" (?)
 
 ## Scripting
 - Save System
@@ -41,7 +43,8 @@
 - Distruggere il telefono scansionato con fotogrammetria con il martello della campagna 
 
 ## Ideas
-- Not playing manager : controlla se Vector3 del player è 0 da abbastanza tempo e fa partire qualche strana cosa. "non fare una scelta è già di per sé una scelta". 
+- Not playing manager : controlla se Vector3 del player è 0 da abbastanza tempo e fa partire qualche strana cosa. "non fare una scelta è già di per sé una scelta".
+- a un certo punto entri in un nuovo corridoio della casa. è stretto e lungo. 
 
 # Gemini
 ## Baking
