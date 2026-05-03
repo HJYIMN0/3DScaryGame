@@ -40,9 +40,9 @@ m# TO DO
 
 ## Video
 - Per il video iniziale:
--- togliere gli allarmi? lasciamo solo il telefono?
--- allungherei un po' la parte "are we destined to be alone?".
--- gli fx di disturbo sono troppo presenti? Abbassiamone l'opacità 
+- - togliere gli allarmi? lasciamo solo il telefono?
+- - allungherei un po' la parte "are we destined to be alone?".
+- - gli fx di disturbo sono troppo presenti? Abbassiamone l'opacità 
 - Finire di dipingere le tele piccole e riprendere di sfondarle con un coltello
 - scavare buche sul terreno, in spiaggia...
 - Distruggere il telefono scansionato con fotogrammetria con il martello della campagna 
