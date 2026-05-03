@@ -1,5 +1,6 @@
 # TO DO
 ## High priority
+- Finire Gdd e Pitch.pdf
 - Videos
 - Day 01
 - Volume e renderer 
