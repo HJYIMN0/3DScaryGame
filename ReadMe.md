@@ -1,4 +1,4 @@
-m# TO DO
+# TO DO
 ## High priority
 - Videos
 - Day 01
