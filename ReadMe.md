@@ -1,4 +1,4 @@
-# TO DO
+m# TO DO
 ## High priority
 - Videos
 - Day 01
@@ -39,7 +39,11 @@
 - ogni tanto parli con qualcuno. cioè appare del testo come se stessi avendo una conversazione con qualcuno. magari nelle giornate da "normale" è quando esci per andare a lavoro. comunque inizialmente si lascia intendere che tu stia parlando con qualcuno. Verso la fine, la rivelazione "con chi pensi di stare parlando"? potremmo aggiungere dei finti found footage come interruzione tra un momento in cui hai visto il buco e subito dopo sei solo accanto. task: vai a letto. 
 
 ## Video
-- finire di dipingere le tele piccole e riprendere di sfondarle con un coltello
+- Per il video iniziale:
+-- togliere gli allarmi? lasciamo solo il telefono?
+-- allungherei un po' la parte "are we destined to be alone?".
+-- gli fx di disturbo sono troppo presenti? Abbassiamone l'opacità 
+- Finire di dipingere le tele piccole e riprendere di sfondarle con un coltello
 - scavare buche sul terreno, in spiaggia...
 - Distruggere il telefono scansionato con fotogrammetria con il martello della campagna 
 
