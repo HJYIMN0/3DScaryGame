@@ -30,6 +30,7 @@
 - Texture Dithering migliore
 - diversi video in cui si ripete la stessa azione
 - check come usare fotogrammetria su Unity (meaning, come si fa il bake su Unity6? lo faccio su blender e poi esporto?)
+- Voglio una casa più grande!
 
 ## Writing
 - Finire Gdd
@@ -44,7 +45,10 @@
 
 ## Ideas
 - Not playing manager : controlla se Vector3 del player è 0 da abbastanza tempo e fa partire qualche strana cosa. "non fare una scelta è già di per sé una scelta".
-- a un certo punto entri in un nuovo corridoio della casa. è stretto e lungo. 
+- a un certo punto entri in un nuovo corridoio della casa. è stretto e lungo.. Non c'era mai stato un corrdoio lì.
+- Magari interagire con il computer?
+- Non rispondere per troppo tempo al telefono comporta qualcosa.
+
 
 # Gemini
 ## Baking
