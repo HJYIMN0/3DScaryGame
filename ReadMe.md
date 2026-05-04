@@ -37,6 +37,7 @@
 
 ## Writing
 - Finire Gdd
+- What is a number that a man may know it, and a man, that he may know a number?"?
 - Organizzare un Day01
 - la narrazione non è lineare. ogni tanto sei nel passato, ogni tanto nel presente. 
 - ogni tanto parli con qualcuno. cioè appare del testo come se stessi avendo una conversazione con qualcuno. magari nelle giornate da "normale" è quando esci per andare a lavoro. comunque inizialmente si lascia intendere che tu stia parlando con qualcuno. Verso la fine, la rivelazione "con chi pensi di stare parlando"? potremmo aggiungere dei finti found footage come interruzione tra un momento in cui hai visto il buco e subito dopo sei solo accanto. task: vai a letto. 
