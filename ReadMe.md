@@ -40,7 +40,7 @@
 - What is a number that a man may know it, and a man, that he may know a number?"
 - No place to go
 Nothing to come back to
-Perhaps void is all I yield for. 
+Perhaps void is all I yield to. 
 Tomorrow is all I have left
 I pray it never comes. 
 But it comes and it comes. 
