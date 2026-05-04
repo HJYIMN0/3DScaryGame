@@ -37,7 +37,17 @@
 
 ## Writing
 - Finire Gdd
-- What is a number that a man may know it, and a man, that he may know a number?"?
+- What is a number that a man may know it, and a man, that he may know a number?"
+- No place to go
+Nothing to come back to
+Perhaps void is all I yield for. 
+Tomorrow is all I have left
+I pray it never comes. 
+But it comes and it comes. 
+Tomorrow always comes. 
+Not for me
+Not again
+Let me rot. 
 - Organizzare un Day01
 - la narrazione non è lineare. ogni tanto sei nel passato, ogni tanto nel presente. 
 - ogni tanto parli con qualcuno. cioè appare del testo come se stessi avendo una conversazione con qualcuno. magari nelle giornate da "normale" è quando esci per andare a lavoro. comunque inizialmente si lascia intendere che tu stia parlando con qualcuno. Verso la fine, la rivelazione "con chi pensi di stare parlando"? potremmo aggiungere dei finti found footage come interruzione tra un momento in cui hai visto il buco e subito dopo sei solo accanto. task: vai a letto. 
