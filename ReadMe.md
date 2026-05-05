@@ -8,8 +8,6 @@
 - forse dovremmo evitare che in day 01 la prima cosa che fai è sistemare i vestiti. magari facciamo compiere almeno 3 altri tasks prima.
 - nuovo testo inizio video Blender:
 "this tree is alive" (?)
-- sito con Google site
-- metti su artStation i shader che abbiamo fatto
 
 ## Scripting
 - Save System
