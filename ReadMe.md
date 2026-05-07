@@ -132,7 +132,7 @@ Se hai bakeato un'Ambient Occlusion, inseriscila nello slot Occlusion Map.
 Trascina il tuo modello FBX dalla finestra Project direttamente nella tua Scene o Hierarchy.
 Trascina il materiale Mat_OggettoScansionato appena creato sopra il modello nella scena.
 
-#Claude
+# Claude
 
 ## Outline con rumore: tratto irregolare
 
