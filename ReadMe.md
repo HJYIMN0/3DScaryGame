@@ -8,6 +8,7 @@
 - forse dovremmo evitare che in day 01 la prima cosa che fai è sistemare i vestiti. magari facciamo compiere almeno 3 altri tasks prima.
 - nuovo testo inizio video Blender:
 "this tree is alive" (?)
+- Forse potremmo farlo tipo racconto "non so perché bevevo il caffè... non è mai stata mia abitudine. " oppure indagine "sappiamo che bevve il caffè quel giorno"
 
 ## Scripting
 - Save System
