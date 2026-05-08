@@ -179,6 +179,55 @@ PrefabInstance:
       addedObject: {fileID: 1904050311}
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 7890130fe28bb0d498888e9461479305, type: 3}
+--- !u!1 &36265665
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 36265667}
+  - component: {fileID: 36265666}
+  m_Layer: 0
+  m_Name: Volume_Colors
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &36265666
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 36265665}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 172515602e62fb746b5d573b38a5fe58, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.RenderPipelines.Core.Runtime::UnityEngine.Rendering.Volume
+  m_IsGlobal: 1
+  priority: 0
+  blendDistance: 0
+  weight: 1
+  sharedProfile: {fileID: 11400000, guid: a087865575169b841b160f98203f0b54, type: 2}
+--- !u!4 &36265667
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 36265665}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 10.469008, y: 0.975, z: -10.054}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &184273292 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 2009034859644514949, guid: e88610d84eb21dd4c9cb9ebb2e83438b, type: 3}
@@ -542,7 +591,7 @@ GameObject:
   - component: {fileID: 1286286742}
   - component: {fileID: 1286286741}
   m_Layer: 0
-  m_Name: Volume
+  m_Name: Volume_BW
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1269,3 +1318,4 @@ SceneRoots:
   - {fileID: 637440696}
   - {fileID: 1334668141}
   - {fileID: 1286286742}
+  - {fileID: 36265667}

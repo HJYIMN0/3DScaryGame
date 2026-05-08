@@ -123,6 +123,9 @@ Material:
     - _MaxOutlineThickness: 3
     - _Metallic: 0
     - _MinOutlineThickness: 0.55
+    - _NoiseMax: 0.69
+    - _NoiseMin: -2.67
+    - _NoiseScale: 50
     - _NormalThreshold: 0.3
     - _OcclusionStrength: 1
     - _OutlineThickness: 3
