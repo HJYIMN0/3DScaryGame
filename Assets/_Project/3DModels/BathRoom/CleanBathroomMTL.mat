@@ -7,7 +7,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: BathTubeMTL
+  m_Name: CleanBathroomMTL
   m_Shader: {fileID: -6465566751694194690, guid: d7e7e4bae342d1543bacd40d7f81f58e, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
@@ -120,7 +120,7 @@ Material:
     - _SpecularSoftness: 0.02
     - _SrcBlend: 1
     - _SrcBlendAlpha: 1
-    - _Steps: 6.94
+    - _Steps: 3
     - _StepsSharpness: 0.8
     - _Surface: 0
     - _WorkflowMode: 1
@@ -131,7 +131,7 @@ Material:
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _MainColor: {r: 1, g: 1, b: 1, a: 1}
-    - _RimColor: {r: 0.26449978, g: 0.7660377, b: 0.26449978, a: 1}
+    - _RimColor: {r: 0.4490565, g: 0.4490565, b: 0.4490565, a: 1}
     - _ShadowColor: {r: 0, g: 0, b: 0, a: 1}
     - _SpecColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}
   m_BuildTextureStacks: []
