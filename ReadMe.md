@@ -1,9 +1,8 @@
 # TO DO
 ## High priority
-- Finire Gdd e Pitch.pdf
 - Videos
-- Day 01
-- Volume e renderer 
+- Concludere Day 01
+- Nuovi Volume e renderer per altre giornate
 - VFXs per il buco 
 - forse dovremmo evitare che in day 01 la prima cosa che fai è sistemare i vestiti. magari facciamo compiere almeno 3 altri tasks prima.
 - nuovo testo inizio video Blender:
@@ -14,8 +13,6 @@
 - Save System
 - Dividere InkManager in InkManager e InkUIManager
 - ma invece di tutto il casino che abbiamo fatto per phone task dentro task manager perché non facciamo una nuova classe per il player tipo player task manager con un un bel bool has answered phone e semplicemente al task phone glielo mettiamo true
-
-
 
 ## 3D Modeling
 - Nuova porta per l'ingresso.
@@ -36,17 +33,6 @@
 
 ## Writing
 - Finire Gdd
-- What is a number that a man may know it, and a man, that he may know a number?"
-- No place to go
-Nothing to come back to
-Perhaps void is all I yield to. 
-Tomorrow is all I have left
-I pray it never comes. 
-But it comes and it comes. 
-Tomorrow always comes. 
-Not for me
-Not again
-Let me rot. 
 - Organizzare un Day01
 - la narrazione non è lineare. ogni tanto sei nel passato, ogni tanto nel presente. 
 - ogni tanto parli con qualcuno. cioè appare del testo come se stessi avendo una conversazione con qualcuno. magari nelle giornate da "normale" è quando esci per andare a lavoro. comunque inizialmente si lascia intendere che tu stia parlando con qualcuno. Verso la fine, la rivelazione "con chi pensi di stare parlando"? potremmo aggiungere dei finti found footage come interruzione tra un momento in cui hai visto il buco e subito dopo sei solo accanto. task: vai a letto. 
@@ -65,7 +51,6 @@ Let me rot.
 - a un certo punto entri in un nuovo corridoio della casa. è stretto e lungo.. Non c'era mai stato un corrdoio lì.
 - Magari interagire con il computer?
 - Non rispondere per troppo tempo al telefono comporta qualcosa.
-
 
 # Gemini
 ## Baking
@@ -133,95 +118,4 @@ Se hai bakeato un'Ambient Occlusion, inseriscila nello slot Occlusion Map.
 Trascina il tuo modello FBX dalla finestra Project direttamente nella tua Scene o Hierarchy.
 Trascina il materiale Mat_OggettoScansionato appena creato sopra il modello nella scena.
 
-# Claude
-
-## Outline con rumore: tratto irregolare
-
-### Come funziona l'approccio
-
-Aggiungiamo un nodo **Simple Noise** campionato agli UV di schermo, remap­piamo il suo output `[0, 1]` nell'intervallo `[NoiseMin, NoiseMax]`, e sommiamo questo offset alla thickness già scalata per distanza (l'output del **Maximum** dell'iterazione precedente).
-
-Il risultato è una thickness che varia pixel per pixel: l'outline si altera in forma e spessore in modo organico.
-
----
-
-### Step 1 — Aggiungi le due proprietà
-
-Nel **Blackboard**:
-
-| Nome | Tipo | Default suggerito |
-|---|---|---|
-| `NoiseMin` | Float | `-0.03` |
-| `NoiseMax` | Float | `0.03` |
-
-`NoiseMin` negativo consente all'outline di assottigliarsi o sparire localmente, creando un tratto spezzato. Se vuoi che l'outline esista sempre, usa `0.0` come minimo.
-
----
-
-### Step 2 — Aggiungi il nodo Simple Noise
-
-- Aggiungi un nodo **Simple Noise**
-- Slot **UV** ← Out del nodo **UV** nel gruppo **Uv_00** *(è lo stesso UV di schermo già usato per il campionamento)*
-- Slot **Scale** ← valore hardcoded `50.0` *(controlla la frequenza spaziale del rumore — valori più alti = variazioni più fitte)*
-
----
-
-### Step 3 — Rimappa il rumore con un Lerp
-
-Aggiungi un nodo **Lerp**:
-- Slot **A** ← `PropertyNode` di `NoiseMin`
-- Slot **B** ← `PropertyNode` di `NoiseMax`
-- Slot **T** ← **Out** del Simple Noise
-
-Risultato: un valore che oscilla tra `NoiseMin` e `NoiseMax` in base al rumore.
-
----
-
-### Step 4 — Somma alla thickness scalata
-
-Aggiungi un nodo **Add** (chiamalo `FinalThickness`):
-- Slot **A** ← **Out** del nodo **Maximum** *(il MinOutlineThickness dell'iterazione precedente)*
-- Slot **B** ← **Out** del Lerp (Step 3)
-
----
-
-### Step 5 — Ricollega Tx e Ty
-
-Sostituisci le connessioni esistenti:
-
-**Gruppo Tx:**
-- ~~Maximum Out → Multiply slot **B**~~
-- Nuova: `FinalThickness` Out → Multiply in **Tx** slot **B**
-
-**Gruppo Ty:**
-- ~~Maximum Out → Multiply slot **B**~~
-- Nuova: `FinalThickness` Out → Multiply in **Ty** slot **B**
-
----
-
-### Schema finale del ramo
-
-```
-OutlineThickness ─────────────────────────────┐
-MaxOutlineDistance / Depth → Saturate ────────┤→ ScaledThickness → Maximum ──────────┐
-MinOutlineThickness ──────────────────────────┘                                       │
-                                                                                       ▼
-UV (Uv_00) → Simple Noise (Scale: 50) → Lerp(NoiseMin, NoiseMax, noise) ────→ FinalThickness (Add)
-                                                                                       │
-                                                               ┌───────────────────────┤
-                                                               ▼                       ▼
-                                                        Tx (slot B)            Ty (slot B)
-```
-
----
-
-### Comportamento dei parametri
-
-| `NoiseMin` | `NoiseMax` | Effetto |
-|---|---|---|
-| `0.0` | `0.05` | Tratto che si ispessisce soltanto |
-| `-0.03` | `0.03` | Tratto che si assottiglia e ispessisce simmetricamente |
-| `-0.05` | `0.0` | Tratto che tende a sparire (effetto molto spezzato) |
-| `-0.08` | `0.08` | Variazione ampia, aspetto molto irregolare |
-
-Se vuoi evitare completamente che il tratto sparisca, puoi aggiungere un nodo **Maximum** sull'output di `FinalThickness` con un piccolo valore costante (es. `0.001`) prima di collegarlo a **Tx** e **Ty**.
+# Proprietà intellettuali

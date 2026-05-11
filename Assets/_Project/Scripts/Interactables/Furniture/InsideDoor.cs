@@ -33,7 +33,7 @@ class InsideDoor : MonoBehaviour
 
             if (doorOpenSound != null && audioSource != null)
             {
-                AudioManager.Instance.PlaySfxSoundFromSource(audioSource, doorOpenSound);
+                AudioManager.Instance.PlaySfxFromPointAndDestroy(audioSource, doorOpenSound);
             }
         }
     }
@@ -51,7 +51,7 @@ class InsideDoor : MonoBehaviour
 
             if (doorOpenSound != null && audioSource != null)
             {
-                AudioManager.Instance.PlaySfxSoundFromSource(audioSource, doorOpenSound);
+                AudioManager.Instance.PlaySfxFromPointAndDestroy(audioSource, doorOpenSound);
             }
         }
     }

@@ -123,7 +123,7 @@ public abstract class AbstractInteractable : MonoBehaviour
         AudioSource audioSource = this.GetComponent<AudioSource>();
         if (task.TaskSfx != null && audioSource != null)
         {
-            AudioManager.Instance.PlaySfxSoundFromSource(audioSource, task.TaskSfx);
+            AudioManager.Instance.PlaySfxFromPointAndDestroy(audioSource, task.TaskSfx);
             Debug.Log($"Playing SFX for task '{task.TaskName}'.");
         }
         else

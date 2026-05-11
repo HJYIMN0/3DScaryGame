@@ -23,6 +23,12 @@ public class InteractablePhone : AbstractInteractable
             ShowDialogue(task.alreadyCompletedTaskJson, false);
         }
 
+        GenericAudioPlayer audioPlayer = GetComponent<GenericAudioPlayer>();
+        if (audioPlayer != null && audioPlayer.IsPlaying)
+        {
+            audioPlayer.Stop();
+        }
+
     }
 
 }

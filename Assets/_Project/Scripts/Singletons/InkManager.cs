@@ -24,7 +24,7 @@ public class InkManager : GenericSingleton<InkManager>
     private Story currentStory;
 
     private GameObject _player;
-    public bool IsStoryActive => currentStory != null;
+     public bool IsStoryActive => currentStory != null;
     private bool _isDialogueOpen = false;
     public bool IsDialogueOpen => _isDialogueOpen;
 
