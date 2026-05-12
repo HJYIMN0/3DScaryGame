@@ -53,69 +53,156 @@
 - Non rispondere per troppo tempo al telefono comporta qualcosa.
 
 # Gemini
-## Baking
- - Fase 1: ZBrush (Ottimizzazione e Creazione High/Low Poly)
-Nota tecnica: ZBrush lavora in modo ottimale con mesh dense. Assicurati che il software di fotogrammetria (es. RealityCapture, Metashape) abbia già convertito la tua "nuvola di punti" in una mesh grezza ad altissima risoluzione con i colori fusi nei vertici (Vertex Colors o Polypaint in ZBrush) o con una texture applicata.
-1. Importazione e Pulizia (High Poly)
-Importa il file (generalmente .obj o .fbx) in ZBrush tramite il menu Tool > Import.
-Attiva il Polypaint: Vai su Polypaint > Colorize per assicurarti di vedere i colori catturati dalla fotogrammetria.
-Pulisci la mesh: Usa pennelli come Smooth, TrimCurve o SelectLasso per eliminare la geometria indesiderata (es. parti del terreno o artefatti del processo di scansione).
-Chiudi i buchi: Se la scansione ha dei buchi, vai su Geometry > Modify Topology > Close Holes.
-2. Creazione del Low Poly
-Ora che hai il tuo "High Poly" pulito, devi creare la versione leggera per Unity. Hai due strade:
-Metodo A (Decimation Master - Consigliato per oggetti inanimati/statici): 1. Vai su ZPlugin > Decimation Master.
-2. Clicca su Pre-process Current.
-3. Imposta la percentuale di poligoni desiderata (es. 5% o 10% a seconda del dettaglio necessario).
-4. Clicca su Decimate Current. Otterrai una mesh leggera ma che mantiene i volumi generali.
-Metodo B (ZRemesher - Consigliato se l'oggetto deve essere animato o deformarsi):
-Duplica il tuo subtool High Poly.
-Sul duplicato, vai su Geometry > ZRemesher e imposta il Target Polygon Count desiderato, poi clicca il pulsante ZRemesher.
-3. Esportazione
-Rinomina il subtool pesante in NomeOggetto_HP ed esportalo come .obj o .fbx (assicurati che esporti i Vertex Colors).
-Rinomina il subtool leggero (decimato o remeshato) in NomeOggetto_LP ed esportalo.
-Fase 2: Blender (UV Mapping e Baking)
-Questo è il passaggio cruciale in cui trasferiamo i dettagli micro-geometrici e i colori fotografici dal modello pesante a quello leggero.
-1. Preparazione e UV Unwrapping
-Apri Blender e importa entrambi i file (NomeOggetto_HP e NomeOggetto_LP).
-Nascondi momentaneamente l'HP.
-Seleziona il modello LP, entra in Edit Mode (Tab), seleziona tutti i vertici (A) e procedi all'UV Unwrapping (U > Smart UV Project per oggetti inanimati complessi, oppure usa i Seams manuali per un controllo migliore). Questa è la "tela" su cui verranno dipinte le texture.
-2. Setup per il Baking (Cycles)
-Vai nel pannello Render Properties (l'icona della fotocamera a destra) e cambia il Render Engine da Eevee a Cycles.
-Scorri in basso fino a trovare la sezione Bake.
-Spunta la casella Selected to Active. Questo dice a Blender di prendere i dati dall'oggetto selezionato per primo (HP) e "cuocerli" sull'oggetto selezionato per ultimo (LP).
-Apri una finestra Shader Editor. Seleziona il tuo LP e creagli un nuovo Materiale.
-Nello Shader Editor, aggiungi un nodo Image Texture (Shift+A > Texture > Image Texture).
-Clicca su New nel nodo, crea una texture (es. 2048x2048 o 4096x4096), chiamala Oggetto_Normal e imposta il Color Space su Non-Color. Mantieni questo nodo selezionato (evidenziato in bianco): è qui che Blender salverà il bake.
-3. Baking della Normal Map (I dettagli geometrici)
-Nel pannello Bake, imposta Bake Type su Normal.
-Nella sezione Selected to Active, imposta un valore di Extrusion (es. 0.01m o 0.05m). Questo crea una gabbia virtuale. Se il bake presenta macchie nere o rosse, aumenta leggermente questo valore.
-Nell'Outliner (la lista degli oggetti), seleziona PRIMA l'High Poly (NomeOggetto_HP), tieni premuto Ctrl, e seleziona POI il Low Poly (NomeOggetto_LP).
-Clicca sul pulsante Bake. Una volta terminato, salva l'immagine generata dal pannello Image Editor (Alt+S).
-4. Baking della Diffuse/Albedo Map (I colori della scansione)
-Seleziona solo l'High Poly. Nello Shader Editor, assicurati che i suoi Vertex Colors siano collegati al Base Color del suo materiale (puoi usare il nodo Color Attribute).
-Seleziona il Low Poly, crea un nuovo nodo Image Texture, chiamalo Oggetto_Albedo (lascia Color Space su sRGB) e tienilo selezionato.
-Seleziona di nuovo HP, Ctrl + click su LP.
-Nel pannello Bake, cambia Bake Type in Diffuse.
-Importante: Sotto le opzioni del Diffuse Bake, togli le spunte a Direct e Indirect. Lascia spuntato SOLO Color.
-Clicca su Bake e salva l'immagine.
-Consiglio: Puoi ripetere questo processo cambiando il Bake Type per generare una Ambient Occlusion (AO) e una Roughness Map, molto utili per il PBR di Unity.
-5. Esportazione per Unity
-Elimina o disabilita l'High Poly.
-Seleziona il tuo Low Poly e vai su File > Export > FBX.
-Nelle impostazioni di esportazione FBX, spunta Limit to: Selected Objects.
-Fase 3: Unity 6 (Importazione e Setup del Materiale)
-Ora hai una mesh leggera e altamente performante, corredata dalle texture che la faranno apparire identica a quella fotogrammetrica da milioni di poligoni.
-1. Importazione
-Trascina il tuo file .fbx esportato da Blender e le texture generate (Oggetto_Albedo.png, Oggetto_Normal.png, ecc.) nella finestra Project di Unity 6.
-Cruciale: Seleziona la tua Normal Map nella finestra Project. Nell'Inspector a destra, cambia il Texture Type in Normal map e clicca su Apply in basso. Se non lo fai, Unity applicherà la texture come se fosse un colore standard, generando artefatti di luce.
-2. Setup del Materiale
-Fai click destro nella finestra Project > Create > Material. Chiamalo Mat_OggettoScansionato.
-A seconda della pipeline che stai usando in Unity 6 (URP, HDRP o Standard/Built-in), lo shader di default andrà benissimo (es. Universal Render Pipeline/Lit).
-Trascina la tua texture Oggetto_Albedo nello slot Base Map (o Albedo).
-Trascina la tua Oggetto_Normal nello slot Normal Map.
-Se hai bakeato un'Ambient Occlusion, inseriscila nello slot Occlusion Map.
-3. Assegnazione
-Trascina il tuo modello FBX dalla finestra Project direttamente nella tua Scene o Hierarchy.
-Trascina il materiale Mat_OggettoScansionato appena creato sopra il modello nella scena.
+## Volumetric Fog
+Realizzare una nebbia volumetrica che copra il pavimento di un'intera casa in Unity 6 richiede precisione. Non basta creare un cubo; dobbiamo assicurarci che lo shader "legga" la profondità della scena per non disegnare nebbia sopra i mobili o attraverso i muri.
+
+Ecco la guida definitiva, passo dopo passo.
+
+---
+
+### Fase 1: Preparazione di Unity 6 (URP)
+
+Prima di tutto, dobbiamo assicurarci che Unity sia configurato per permettere allo shader di vedere gli oggetti (Depth Texture).
+
+1. Vai nella cartella **Settings** del tuo progetto.
+2. Seleziona l'asset **Universal Render Pipeline Asset** (quello con l'icona tonda blu).
+3. Nell'Inspector, sotto la voce **General**, assicuratevi che la casella **Depth Texture** sia spuntata.
+4. Sotto **Quality**, assicurati che **HDR** sia attivo per una migliore resa luminosa.
+
+---
+
+### Fase 2: Creazione dello Shader "FloorFog"
+
+Dobbiamo scrivere un codice specifico che calcoli la nebbia solo "dentro" il volume del cubo, rispettando il pavimento.
+
+1. Nella finestra *Project*, fai tasto destro -> **Create -> Shader -> Universal Render Pipeline -> HLSL Shader** (o semplicemente un file di testo rinominato `.shader`).
+2. Chiamalo `FloorFogShader`.
+3. Incolla questo codice (ottimizzato per performance su grandi aree):
+
+```hlsl
+Shader "Custom/FloorFogAAA"
+{
+    Properties
+    {
+        _FogColor("Color", Color) = (0.5, 0.6, 0.7, 1)
+        _Density("Density", Range(0, 5)) = 1.0
+        _HeightFalloff("Height Falloff", Range(0, 10)) = 2.0
+        _NoiseScale("Noise Scale", Float) = 0.5
+        _StepSize("Step Size", Range(0.1, 2.0)) = 0.5
+        _MaxSteps("Max Steps", Int) = 32
+        _NoiseTex3D("3D Noise", 3D) = "white" {}
+    }
+
+    SubShader
+    {
+        Tags { "RenderPipeline" = "UniversalPipeline" "Queue" = "Transparent" "RenderType" = "Transparent" }
+        
+        Pass
+        {
+            ZWrite Off
+            Blend SrcAlpha OneMinusSrcAlpha
+            Cull Front // Importante: renderizziamo l'interno del cubo
+
+            HLSLPROGRAM
+            #pragma vertex vert
+            #pragma fragment frag
+            #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Core.hlsl"
+            #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/DeclareDepthTexture.hlsl"
+
+            struct Attributes { float4 positionOS : POSITION; };
+            struct Varyings { float4 positionCS : SV_POSITION; float4 screenPos : TEXCOORD0; };
+
+            float _Density, _HeightFalloff, _NoiseScale, _StepSize;
+            int _MaxSteps;
+            float4 _FogColor;
+            TEXTURE3D(_NoiseTex3D); SAMPLER(sampler_NoiseTex3D);
+
+            Varyings vert(Attributes input) {
+                Varyings output;
+                output.positionCS = TransformObjectToHClip(input.positionOS.xyz);
+                output.screenPos = ComputeScreenPos(output.positionCS);
+                return output;
+            }
+
+            float4 frag(Varyings input) : SV_Target {
+                float2 uv = input.screenPos.xy / input.screenPos.w;
+                float rawDepth = SampleSceneDepth(uv);
+                float3 sceneWorldPos = ComputeWorldSpacePosition(uv, rawDepth, UNITY_MATRIX_I_VP);
+                
+                float3 rayStart = _WorldSpaceCameraPos;
+                float3 rayDir = normalize(sceneWorldPos - rayStart);
+                float sceneDist = distance(rayStart, sceneWorldPos);
+                
+                // Iniziamo il raggio o dalla camera (se dentro) o dalla faccia del cubo
+                float currentDist = 0;
+                float transmittance = 1.0;
+                float3 finalColor = 0;
+
+                for (int i = 0; i < _MaxSteps; i++) {
+                    if (currentDist >= sceneDist || transmittance < 0.01) break;
+
+                    float3 p = rayStart + rayDir * currentDist;
+                    
+                    // Controlliamo se siamo vicini al pavimento (Height Falloff)
+                    float heightFactor = exp(-(p.y - (unity_ObjectToWorld._m13 - 0.5)) * _HeightFalloff);
+                    float noise = SAMPLE_TEXTURE3D(_NoiseTex3D, sampler_NoiseTex3D, p * _NoiseScale).r;
+                    float d = noise * _Density * heightFactor;
+
+                    if (d > 0.01) {
+                        float stepTransmittance = exp(-d * _StepSize);
+                        finalColor += _FogColor.rgb * d * transmittance * _StepSize;
+                        transmittance *= stepTransmittance;
+                    }
+                    currentDist += _StepSize;
+                }
+
+                return float4(finalColor, 1.0 - transmittance);
+            }
+            ENDHLSL
+        }
+    }
+}
+
+```
+
+---
+
+### Fase 3: Setup del Volume nella Hierarchy
+
+Ora creiamo l'oggetto fisico nella tua casa.
+
+1. **Crea il Cubo:** Tasto destro nella Hierarchy -> **3D Object -> Cube**. Chiamalo `GlobalFogVolume`.
+2. **Posizionamento:**
+* **Scale:** Imposta la scala X e Z in modo da coprire tutta la pianta della casa (es. `X: 50, Z: 50`).
+* **Scale Y:** Imposta l'altezza massima della nebbia. Se vuoi che arrivi alle ginocchia, metti `Scale Y: 1`.
+* **Position:** Posiziona il cubo in modo che la sua metà inferiore sia "affondata" nel pavimento.
+
+
+3. **Materiale:**
+* Crea un nuovo Materiale (`M_FloorFog`).
+* Cambia lo Shader in cima a `Custom/FloorFogAAA`.
+* Assegna una texture di Noise 3D (fondamentale, senza questa non vedrai nulla).
+* Trascina il materiale sul cubo.
+
+
+
+---
+
+### Fase 4: I Settings "Minuziosi" per il realismo
+
+Per rendere l'effetto AAA, regola questi parametri nell'Inspector del Materiale:
+
+* **Step Size:** Impostalo a `0.8` o `1.0`. Più è basso, più la nebbia è definita ma pesa sulla GPU. Visto che copre tutta la casa, non scendere troppo.
+* **Max Steps:** Tienilo tra `16` e `32`. Se vedi dei "gradini" nella nebbia, aumenta leggermente.
+* **Height Falloff:** Questo è il parametro magico. Portalo a `3.0` o superiore per fare in modo che la nebbia sia densa a terra e "svanisca" verso l'alto invece di avere un taglio netto in cima al cubo.
+* **Noise Scale:** Regola quanto sono grandi le "nuvole" di vapore sul pavimento. Prova `0.2`.
+
+### Cosa abbiamo ottenuto?
+
+Abbiamo creato un **Volume Intelligente**. Grazie al codice `SampleSceneDepth`, la nebbia saprà esattamente dove sono le gambe dei tavoli, i muri e le scale. Non "entrerà" dentro i mobili solidi, ma vi girerà intorno, creando un'atmosfera da film horror o thriller di alta qualità.
+
+**Ultimo consiglio Pro:** Se la casa ha più piani, non usare un unico cubo gigante, ma crea un `GlobalFogVolume` per ogni piano, così potrai gestire l'altezza della nebbia stanza per stanza.
 
 # Proprietà intellettuali
+## 3D Noise
+https://github.com/SebLague/Clouds
