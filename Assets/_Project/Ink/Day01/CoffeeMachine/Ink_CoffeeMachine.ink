@@ -24,12 +24,8 @@ Nothing better than coffee to start off my day
 I used to hate coffee.
 In truth, I still don't like it.
 Yet I drink it every day.
-I need it to keep going on.
-To submit my body to my consciousness. 
-What has my consciousness submit to?
+
 Am I more than what i choose to drink?
-Am I actually choosing to drink this coffe? Or did someone else chose it for me?
-Maybe it's better this way.
 -> END
 
 === Day100 ===

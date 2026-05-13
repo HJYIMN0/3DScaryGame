@@ -21,10 +21,9 @@ Bathroom text
 -> END
 
 === Day3 ===
-It's weird...
-Having to clean the place that cleans me.
+I’m cleaning the place that cleans me.
 Am I using a tool?
-Am I the my tool?
+Am I the tool?
 A cleaning tool.
 A cleaning tool that gets dirty.
 And I clean the dirty tool with a tool that gets dirty.
@@ -38,9 +37,7 @@ And dirtier.
 And dirtier.
 And dirtier.
 So I clean it.
-So it cleans me.
-And we get dirty again.
-...
+
 I don't want to get dirty again.
 
 -> END

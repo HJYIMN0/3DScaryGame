@@ -21,10 +21,7 @@ Bathroom text
 -> END
 
 === Day3 ===
-The bathroom is clean.
-Does it mean i'm clean as well?
-I don't think so.
-Cleaning is an important part of my routine.
+The bathroom is now clean.
 -> END
 
 === Day100 ===

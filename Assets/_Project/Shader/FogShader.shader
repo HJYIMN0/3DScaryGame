@@ -6,17 +6,17 @@
 //  Scala e posiziona il cubo per definire il volume della nebbia nel mondo.
 //
 //  TECNICHE:
-//  - Ray-AABB intersection in object space  â†’ volume preciso, rispetta scala/rotazione
-//  - FBM a due layer (base + detail erosion) â†’ forme organiche stile cloud
-//  - Henyey-Greenstein phase function        â†’ scattering realistico verso/contro luce
-//  - Beer-Lambert transmittance integration  â†’ fisica della luce energy-conserving
-//  - Screen-space hash jitter                â†’ zero banding, zero artefatti
-//  - Height gradient in object space         â†’ si controlla solo scalando il cubo
-//  - Box edge softening                      â†’ nessun bordo netto del volume
-//  - Multi-scatter approximation             â†’ nebbia densa sembra illuminata in modo uniforme
+//  - Ray-AABB intersection in object space  -> volume preciso, rispetta scala/rotazione
+//  - FBM a due layer (base + detail erosion) -> forme organiche stile cloud
+//  - Henyey-Greenstein phase function        -> scattering realistico verso/contro luce
+//  - Beer-Lambert transmittance integration  -> fisica della luce energy-conserving
+//  - Screen-space hash jitter                -> zero banding, zero artefatti
+//  - Height gradient in object space         -> si controlla solo scalando il cubo
+//  - Box edge softening                      -> nessun bordo netto del volume
+//  - Multi-scatter approximation             -> nebbia densa sembra illuminata in modo uniforme
 // =============================================================================
 
-Shader "Custom/AAA_VolumetricFog"
+Shader "Custom/FogShader"
 {
     Properties
     {
@@ -35,7 +35,7 @@ Shader "Custom/AAA_VolumetricFog"
         _HeightBias     ("Height Bias (0=basso denso, 1=alto denso)", Range(0, 1)) = 0.05
         _EdgeSoftness   ("Edge Softness",              Range(0.01, 0.49)) = 0.08
 
-        [Header(Noise Shape - FBM)]
+        [Header(Noise Shape FBM)]
         _NoiseTex3D       ("3D Noise Texture",         3D)               = "" {}
         _NoiseScaleBase   ("Base Noise Scale",         Float)            = 0.04
         _NoiseScaleDetail ("Detail Noise Scale",       Float)            = 0.15
@@ -47,6 +47,9 @@ Shader "Custom/AAA_VolumetricFog"
         _WindDir         ("Wind Direction (xyz)",      Vector)           = (1, 0, 0.3, 0)
         _WindSpeedBase   ("Wind Speed - Base Layer",   Float)            = 0.10
         _WindSpeedDetail ("Wind Speed - Detail Layer", Float)            = 0.22
+
+        [Header(Opacity)]
+        _OpacityScale    ("Opacity Scale",             Range(0, 1))      = 1.0
 
         [Header(Ray March Quality)]
         _StepCount       ("Step Count",                Range(32, 256))   = 96
@@ -107,6 +110,7 @@ Shader "Custom/AAA_VolumetricFog"
                 float  _WindSpeedDetail;
                 int    _StepCount;
                 float  _JitterStrength;
+                float  _OpacityScale;   // Moltiplicatore finale sull'alpha accumulato
             CBUFFER_END
 
             TEXTURE3D(_NoiseTex3D);
@@ -128,7 +132,7 @@ Shader "Custom/AAA_VolumetricFog"
             //  UTILITY FUNCTIONS
             // -----------------------------------------------------------------
 
-            // Hash PCG per jitter per-pixel â€“ elimina il banding senza texture
+            // Hash PCG per jitter per-pixel - elimina il banding senza texture
             float ScreenJitter(float2 pixelCoord)
             {
                 uint2 ip = (uint2)pixelCoord;
@@ -142,8 +146,8 @@ Shader "Custom/AAA_VolumetricFog"
             }
 
             // Henyey-Greenstein phase function.
-            // g > 0 â†’ forward scattering (nebbia illuminata verso la luce)
-            // g < 0 â†’ backward scattering
+            // g > 0 -> forward scattering (nebbia illuminata verso la luce)
+            // g < 0 -> backward scattering
             float PhaseHG(float cosTheta, float g)
             {
                 float g2    = g * g;
@@ -175,13 +179,13 @@ Shader "Custom/AAA_VolumetricFog"
                 // Il detail "erode" la forma base: crea bordi filamentosi e irregolari
                 float combined = nBase - nDetail * _DetailBlend;
 
-                // Contrasto e offset per controllare quanto Ã¨ piena/vuota la nebbia
+                // Contrasto e offset per controllare quanto e' piena/vuota la nebbia
                 return saturate(combined * _NoiseContrast + _NoiseOffset);
             }
 
             // Gradiente altezza in object-space (posOS.y in [-0.5, 0.5]).
-            // DensitÃ  massima al fondo del cubo, zero all'apice.
-            // HeightBias = 0 â†’ denso in basso; HeightBias = 1 â†’ denso in alto.
+            // Densita' massima al fondo del cubo, zero all'apice.
+            // HeightBias = 0 -> denso in basso; HeightBias = 1 -> denso in alto.
             float HeightGradient(float localY)
             {
                 float t = localY + 0.5;              // remap a [0,1]: 0=fondo, 1=cima
@@ -243,7 +247,7 @@ Shader "Custom/AAA_VolumetricFog"
                 float3 rayDirWS       = normalize(i.positionWS - rayOriginWS);
 
                 // Raggio in object space.
-                // rayDirOSUnnorm NON normalizzato: i valori t del AABB restano in unitÃ  WS.
+                // rayDirOSUnnorm NON normalizzato: i valori t del AABB restano in unita' WS.
                 float3 rayOriginOS    = TransformWorldToObject(rayOriginWS);
                 float3 rayDirOSUnnorm = mul((float3x3)UNITY_MATRIX_I_M, rayDirWS);
 
@@ -290,7 +294,7 @@ Shader "Custom/AAA_VolumetricFog"
 
                     float3 posWS = rayOriginWS + rayDirWS * t;
 
-                    // DensitÃ  locale: noise Ã— gradiente altezza Ã— fade bordi Ã— scala globale
+                    // Densita' locale: noise x gradiente altezza x fade bordi x scala globale
                     float noiseDensity = SampleDensity(posWS);
                     float heightGrad   = HeightGradient(posOS.y);
                     float edgeFade     = BoxEdgeFade(posOS, _EdgeSoftness);
@@ -298,12 +302,12 @@ Shader "Custom/AAA_VolumetricFog"
 
                     if (density > 0.0001)
                     {
-                        // Beer-Lambert: profonditÃ  ottica dello step
+                        // Beer-Lambert: profondita' ottica dello step
                         float tau       = density * stepSize;
                         float stepTrans = exp(-tau);
 
-                        // Integrazione energy-conserving: Î”L = albedo Ã— L_in Ã— (1 âˆ’ T_step)
-                        // Derivato da: âˆ«â‚€^Î”t Ïƒ_sÂ·LÂ·exp(âˆ’Ïƒ_tÂ·t)dt = albedoÂ·LÂ·(1âˆ’exp(âˆ’Ïƒ_tÂ·Î”t))
+                        // Integrazione energy-conserving: DeltaL = albedo x L_in x (1 - T_step)
+                        // Derivato da: integral000^Deltat sigma_s*L*exp(-sigma_t*t)dt = albedo*L*(1-exp(-sigma_t*Deltat))
                         float3 stepColor = _ScatterAlbedo * luminance * (1.0 - stepTrans);
                         accColor += transmittance * stepColor;
                         transmittance *= stepTrans;
@@ -313,8 +317,9 @@ Shader "Custom/AAA_VolumetricFog"
                     posOS += stepOS;   // incremento OS precomputato (no matrix multiply in loop)
                 }
 
-                // Alpha finale = opacitÃ  accumulata (complementare alla trasmittanza residua)
-                float alpha = saturate(1.0 - transmittance);
+                // Alpha finale = opacita' accumulata (complementare alla trasmittanza residua)
+                // _OpacityScale: controlla la traslucenza globale del volume (0=invisibile, 1=pieno)
+                float alpha = saturate(1.0 - transmittance) * _OpacityScale;
                 return float4(accColor, alpha);
             }
 
