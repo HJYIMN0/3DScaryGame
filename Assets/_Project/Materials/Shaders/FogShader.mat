@@ -112,7 +112,7 @@ Material:
     - _ColorMask: 15
     - _Cull: 2
     - _Cutoff: 0.5
-    - _Density: 6.09
+    - _Density: 2.91
     - _DetailAlbedoMapScale: 1
     - _DetailBlend: 0.477
     - _DetailNormalMapScale: 1
@@ -133,7 +133,7 @@ Material:
     - _NoiseScaleBase: 0.005
     - _NoiseScaleDetail: 5
     - _OcclusionStrength: 1
-    - _OpacityScale: 0.627
+    - _OpacityScale: 0.326
     - _Parallax: 0.005
     - _QueueOffset: 0
     - _ReceiveShadows: 1
