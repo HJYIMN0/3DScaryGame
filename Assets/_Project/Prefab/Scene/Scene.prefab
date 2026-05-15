@@ -433,6 +433,14 @@ PrefabInstance:
       value: Player
       objectReference: {fileID: 0}
     - target: {fileID: 5947498322111419284, guid: 91ed6dd3337550e4a8f29ea7a6380c9e, type: 3}
+      propertyPath: cameraRoot
+      value: 
+      objectReference: {fileID: 2276015083507672496}
+    - target: {fileID: 5947498322111419284, guid: 91ed6dd3337550e4a8f29ea7a6380c9e, type: 3}
+      propertyPath: cinemachineCamera
+      value: 
+      objectReference: {fileID: 1716179500902987915}
+    - target: {fileID: 5947498322111419284, guid: 91ed6dd3337550e4a8f29ea7a6380c9e, type: 3}
       propertyPath: _cinemachineCamera
       value: 
       objectReference: {fileID: 1716179500902987915}
@@ -484,6 +492,11 @@ PrefabInstance:
       addedObject: {fileID: 2384949570557158447}
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 91ed6dd3337550e4a8f29ea7a6380c9e, type: 3}
+--- !u!4 &2276015083507672496 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 3898449664601842066, guid: 91ed6dd3337550e4a8f29ea7a6380c9e, type: 3}
+  m_PrefabInstance: {fileID: 2993790909603284002}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &4696697548019454666 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 7539607904636589800, guid: 91ed6dd3337550e4a8f29ea7a6380c9e, type: 3}
