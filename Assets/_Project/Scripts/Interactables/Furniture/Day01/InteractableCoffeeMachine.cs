@@ -5,7 +5,7 @@ public class InteractableCoffeeMachine : AbstractInteractable
 {
     public override void ExecuteInteraction()
     {
-        if (!HasBeenInteractedWith)
+        if (!HasBeenCompleted)
         {
             MarkTaskAsComplete();
             ShowDialogue(task.inkJson, task.usesVariablesInInk);

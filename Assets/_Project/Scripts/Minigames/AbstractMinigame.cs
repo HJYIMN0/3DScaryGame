@@ -3,8 +3,8 @@ using UnityEngine;
 
 public abstract class AbstractMinigame : MonoBehaviour
 {
+    [SerializeField] protected AbstractInteractable interactable;
     [SerializeField] protected PlayerMovementController _playerMovementController;
-    [SerializeField] protected TaskSO mingameTask;
 
     public bool IsMiniGameActive { get; private set; } = false;
     public TaskManager taskManager { get; private set;  }
@@ -14,11 +14,13 @@ public abstract class AbstractMinigame : MonoBehaviour
         {
             Debug.LogWarning("PlayerMovementController reference is missing in " + gameObject.name);
         }
-        if (mingameTask == null)
+        if (interactable.TaskSO == null)
         {
             Debug.LogWarning("Minigame TaskSO reference is missing in " + gameObject.name);
         }
 
+        QuitMiniGame();
+        TogglePlayerControl(true);
         taskManager = TaskManager.Instance;
     }
 
@@ -26,7 +28,7 @@ public abstract class AbstractMinigame : MonoBehaviour
     public abstract void QuitMiniGame();
     public abstract void ResetMiniGame();
     public abstract void HandleMiniGameLogic();
-    public bool IsTaskCompleted() => taskManager.CompletedTasks.Contains(mingameTask);
+    public bool IsTaskCompleted() => taskManager.CompletedTasks.Contains(interactable.TaskSO);
 
     public void TogglePlayerControl()
     {
@@ -48,7 +50,19 @@ public abstract class AbstractMinigame : MonoBehaviour
         }
     }
 
-    
-
-
+    public void TogglePlayerControl(bool enableControl)
+    {
+        if (enableControl)
+        {
+            IsMiniGameActive = false;
+            _playerMovementController.StartLook();
+            _playerMovementController.StartMovement();
+        }
+        else
+        {
+            IsMiniGameActive = true;
+            _playerMovementController.StopLook();
+            _playerMovementController.StopMovement();
+        }
+    }  
 }

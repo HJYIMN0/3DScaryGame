@@ -12,7 +12,7 @@ public class InteractablePhone : AbstractInteractable
     }
     public override void ExecuteInteraction()
     {
-        if (!HasBeenInteractedWith)
+        if (!HasBeenCompleted)
         {
             ShowDialogue(task.inkJson, task.usesVariablesInInk);
             MarkTaskAsComplete();

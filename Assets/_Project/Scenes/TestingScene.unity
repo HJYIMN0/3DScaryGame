@@ -559,6 +559,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7415472208425594088, guid: 2c1e14954368ebf48bb7f15c79fdf8cd, type: 3}
+      propertyPath: interactable
+      value: 
+      objectReference: {fileID: 1389307655}
+    - target: {fileID: 7415472208425594088, guid: 2c1e14954368ebf48bb7f15c79fdf8cd, type: 3}
       propertyPath: _playerMovementController
       value: 
       objectReference: {fileID: 1563819652}

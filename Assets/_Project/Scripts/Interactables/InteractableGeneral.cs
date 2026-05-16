@@ -6,13 +6,13 @@ public class InteractableGeneral : AbstractInteractable
     {
         ShowDialogue(task.inkJson, task.usesVariablesInInk);
         
-        if (HasBeenInteractedWith) 
+        if (HasBeenCompleted) 
         {
             Debug.Log($"Player has already interacted with {name}. No need to interact again.");
             return;
         }
         Debug.Log($"Player interacted with {name}. Task completed!");
         TaskManager.Instance.CompleteTask(task.TaskName);
-        HasBeenInteractedWith = true;
+        HasBeenCompleted = true;
     }
 }

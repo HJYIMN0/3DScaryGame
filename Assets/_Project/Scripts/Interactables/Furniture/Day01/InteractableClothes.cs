@@ -17,7 +17,7 @@ public class InteractableClothes : AbstractInteractable
 
     public override void ExecuteInteraction()
     {
-        if (HasBeenInteractedWith) return;
+        if (HasBeenCompleted) return;
 
         taskManager.CompleteTask(task.TaskName);
         fadeInstance = Instantiate(fadeCanvaPrefab, Vector3.zero, Quaternion.identity);

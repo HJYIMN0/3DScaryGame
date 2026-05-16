@@ -16,7 +16,7 @@ public class InteractableBathroom : AbstractInteractable
 
     public override void ExecuteInteraction()
     {
-        if (HasBeenInteractedWith)
+        if (HasBeenCompleted)
         {
             Debug.Log("Bathroom has already been interacted with. No further action taken.");
             return;
@@ -35,7 +35,7 @@ public class InteractableBathroom : AbstractInteractable
                 }
             };
         }
-        HasBeenInteractedWith = true;
+        HasBeenCompleted = true;
     }
 
     private void ChangeBathroomState(Material mat)

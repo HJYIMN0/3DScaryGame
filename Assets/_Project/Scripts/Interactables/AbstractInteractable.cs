@@ -11,7 +11,8 @@ public abstract class AbstractInteractable : MonoBehaviour
     public TaskSO TaskSO => task;
     protected TaskManager taskManager;
 
-    public bool HasBeenInteractedWith { get; protected set; } = false;
+    public bool HasBeenCompleted { get; protected set; } = false;
+    public void SetHasBeenCompleted(bool value) => HasBeenCompleted = value;
 
     private PlayerInteractionController _playerInteractionController;
 
@@ -44,6 +45,7 @@ public abstract class AbstractInteractable : MonoBehaviour
     {
         Debug.Log("Player is here!");
         if (isCanvaInstantiated) return;
+        if (HasBeenCompleted) return;
 
         player.SetInteractableTaskForPlayer(this);
 
@@ -137,7 +139,7 @@ public abstract class AbstractInteractable : MonoBehaviour
     public virtual void MarkTaskAsComplete()
     {
         taskManager.CompleteTask(task.TaskName);
-        HasBeenInteractedWith = true;
+        HasBeenCompleted = true;
     }
 
     public void StartMiniGame()

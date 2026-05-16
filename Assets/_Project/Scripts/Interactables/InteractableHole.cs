@@ -11,7 +11,7 @@ public class InteractableHole : AbstractInteractable
     }
     public override void ExecuteInteraction()
     {
-        if (!HasBeenInteractedWith) 
+        if (!HasBeenCompleted) 
         {
             GameObject uiInstance = Instantiate(UiVideoCanva);
             uiInstance.GetComponent<VideoPlayerManager>().OnVideoEnd += () =>
@@ -22,7 +22,7 @@ public class InteractableHole : AbstractInteractable
                 taskManager.MarkAllTasksAsComplete();
             };
             TaskManager.Instance.CompleteTask(task.TaskName);
-            HasBeenInteractedWith = true;
+            HasBeenCompleted = true;
         }
         else
         {

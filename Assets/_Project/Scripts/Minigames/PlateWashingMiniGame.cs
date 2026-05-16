@@ -35,8 +35,6 @@ public class PlateWashingMiniGame : AbstractMinigame
     {
         base.Start();
 
-        QuitMiniGame(); // Assicura che la UI sia nascosta all'inizio.
-
         if (isDebugMode)
             StartMiniGame();
     }
@@ -86,7 +84,8 @@ public class PlateWashingMiniGame : AbstractMinigame
 
                 if (_completedCircles >= requiredCircles)
                 {
-                    taskManager.CompleteTask(mingameTask.name);
+                    taskManager.CompleteTask(interactable.TaskSO.TaskName);
+                    interactable.SetHasBeenCompleted(true);
                     QuitMiniGame();
                     return;
                 }
