@@ -15,6 +15,11 @@ public class PlayerInputController : MonoBehaviour, InputSystem_Actions.IPlayerA
 
     public Vector2 MoveInput { get; private set; }
     public Vector2 LookInput { get; private set; }
+    public void ResetLookInput()
+    {
+        LookInput = Vector2.zero;
+    }
+
     public bool JumpPressed { get; private set; }
     public bool IsSprinting { get; private set; }
     public bool IsCrouching { get; private set; }
@@ -26,7 +31,7 @@ public class PlayerInputController : MonoBehaviour, InputSystem_Actions.IPlayerA
     // Stato interno
     // -------------------------------------------------------------------------
 
-    private InputSystem_Actions _inputActions;
+    public InputSystem_Actions InputActions { get; private set; }
 
 
     // -------------------------------------------------------------------------
@@ -35,24 +40,24 @@ public class PlayerInputController : MonoBehaviour, InputSystem_Actions.IPlayerA
 
     private void Awake()
     {
-        _inputActions = new InputSystem_Actions();
-        _inputActions.Player.AddCallbacks(this);
+        InputActions = new InputSystem_Actions();
+        InputActions.Player.AddCallbacks(this);
     }
 
     private void OnEnable()
     {
-        _inputActions.Player.Enable();
+        InputActions.Player.Enable();
     }
 
     private void OnDisable()
     {
-        _inputActions.Player.Disable();
+        InputActions.Player.Disable();
     }
 
     private void OnDestroy()
     {
-        _inputActions.Player.RemoveCallbacks(this);
-        _inputActions.Dispose();
+        InputActions.Player.RemoveCallbacks(this);
+        InputActions.Dispose();
     }
 
     private void LateUpdate()
@@ -102,4 +107,11 @@ public class PlayerInputController : MonoBehaviour, InputSystem_Actions.IPlayerA
     }
     public void OnPrevious(InputAction.CallbackContext  context) { }
     public void OnNext(InputAction.CallbackContext context) { }
+
+    public void OnQuit(InputAction.CallbackContext context)
+    {
+        if (!context.started) return;
+
+        Debug.Log("Input: Quit premuto.");
+    }
 }

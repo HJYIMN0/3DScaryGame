@@ -1,15 +1,43 @@
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class PlayerInteractionController : MonoBehaviour
 {
+    [SerializeField] private bool isThisLevelPhoneLevel = false;
+
     public AbstractInteractable interactableTask { get; private set; }
     public InputSystem_Actions actions { get; private set; }
 
     private PlayerInputController _input;
     private PlayerDialogueController _dialogueController;
 
+    public bool HasAnsweredPhone { get; private set; }
+
+    public void SetHasAnsweredPhone(TaskSO phoneTask, bool hasAnswered)
+    {
+        if (phoneTask != null && phoneTask.isThisPhoneTask)
+        {
+            HasAnsweredPhone = hasAnswered;
+            Debug.Log("Player has answered the phone task: " + phoneTask.TaskName);
+        }
+    }
+
     private void Awake()
     {
+        //N.B Per ora questa roba non fa niente.
+        //Dovremmo fare un refactor di come funzionano TaskManager e AbstractTask per correggere
+        //E forse conviene tenerlo qui. 
+        //Per ora funziona e perciò non lo tocco.
+        //In futuro possiamo valutare di spostare questa roba in un altro script, magari un PhoneManager
+        if (isThisLevelPhoneLevel)
+        {
+            Debug.Log("This level is a phone level. Initializing phone-related properties.");
+            HasAnsweredPhone = false;
+        }
+        else
+        {
+            Debug.Log("This level is not a phone level. Phone-related properties will not be initialized.");
+        }
         _input = GetComponent<PlayerInputController>();
     }
 

@@ -65,13 +65,14 @@ public class PlayerMovementController : MonoBehaviour
     // -------------------------------------------------------------------------
 
     private CharacterController controller;
-    private PlayerInputController input;
+    public PlayerInputController Input { get; private set; }
 
     private float verticalVelocity;
     private float cameraPitch;
 
     private bool isGrounded;
     public bool CanMove { get; private set; } = true;
+    public bool CanLook { get; private set; } = true;
 
     // MODIFICA: Rimosse le variabili lastValidPosition e hasValidPosition
     // in quanto funzionali unicamente a un sistema di rollback difettoso.
@@ -83,7 +84,7 @@ public class PlayerMovementController : MonoBehaviour
     private void Awake()
     {
         controller = GetComponent<CharacterController>();
-        input = GetComponent<PlayerInputController>();
+        Input = GetComponent<PlayerInputController>();
 
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
@@ -180,10 +181,10 @@ public class PlayerMovementController : MonoBehaviour
 
     private void HandleJump()
     {
-        if (!CanMove || !isGrounded || input.IsCrouching)
+        if (!CanMove || !isGrounded || Input.IsCrouching)
             return;
 
-        if (input.JumpPressed)
+        if (Input.JumpPressed)
         {
             verticalVelocity = jumpForce;
         }
@@ -198,12 +199,12 @@ public class PlayerMovementController : MonoBehaviour
         if (!CanMove)
             return;
 
-        float speed = input.IsCrouching ? crouchSpeed :
-                      input.IsSprinting ? sprintSpeed :
+        float speed = Input.IsCrouching ? crouchSpeed :
+                      Input.IsSprinting ? sprintSpeed :
                       walkSpeed;
 
-        Vector3 horizontalMove = transform.right * input.MoveInput.x +
-                                 transform.forward * input.MoveInput.y;
+        Vector3 horizontalMove = transform.right * Input.MoveInput.x +
+                                 transform.forward * Input.MoveInput.y;
 
         if (horizontalMove.sqrMagnitude > 1f)
             horizontalMove.Normalize();
@@ -238,12 +239,12 @@ public class PlayerMovementController : MonoBehaviour
 
     private void HandleLook()
     {
-        if (input.LookInput == Vector2.zero)
+        if (!CanLook || Input.LookInput == Vector2.zero)
             return;
 
-        transform.Rotate(Vector3.up, input.LookInput.x * sensitivityX, Space.Self);
+        transform.Rotate(Vector3.up, Input.LookInput.x * sensitivityX, Space.Self);
 
-        cameraPitch -= input.LookInput.y * sensitivityY;
+        cameraPitch -= Input.LookInput.y * sensitivityY;
         cameraPitch = Mathf.Clamp(cameraPitch, bottomClamp, topClamp);
 
         cameraRoot.localRotation = Quaternion.Euler(cameraPitch, 0f, 0f);
@@ -255,8 +256,8 @@ public class PlayerMovementController : MonoBehaviour
 
     private void HandleCrouch()
     {
-        float targetHeight = input.IsCrouching ? crouchHeight : standingHeight;
-        float targetCameraY = input.IsCrouching ? cameraCrouchY : cameraStandingY;
+        float targetHeight = Input.IsCrouching ? crouchHeight : standingHeight;
+        float targetCameraY = Input.IsCrouching ? cameraCrouchY : cameraStandingY;
 
         controller.height = Mathf.Lerp(controller.height, targetHeight, crouchTransitionSpeed * Time.deltaTime);
 
@@ -275,6 +276,8 @@ public class PlayerMovementController : MonoBehaviour
 
     public void StopMovement() => CanMove = false;
     public void StartMovement() => CanMove = true;
+    public void StopLook() => CanLook = false;
+    public void StartLook() => CanLook = true;
 
     // -------------------------------------------------------------------------
     // Gizmos

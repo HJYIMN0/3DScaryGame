@@ -4,6 +4,7 @@ public abstract class AbstractInteractable : MonoBehaviour
 {
     [SerializeField] protected TaskSO task;
     [SerializeField] protected GameObject canvaPrefab;
+    [SerializeField] protected AbstractMinigame MiniGame;
 
     private bool isCanvaInstantiated = false;
     private GameObject canvaInstance;
@@ -66,7 +67,7 @@ public abstract class AbstractInteractable : MonoBehaviour
 
     public void InteractWithTask()
     {
-        if (!taskManager.HasAnsweredThePhone && !task.isThisPhoneTask)
+        if (taskManager.IsPhoneInScene && !taskManager.HasAnsweredThePhone && !task.isThisPhoneTask)
         { 
             Debug.Log("Player hasn't completed the phone task yet.");
             ShowDialogue(task.answerThePhoneText);
@@ -137,6 +138,19 @@ public abstract class AbstractInteractable : MonoBehaviour
     {
         taskManager.CompleteTask(task.TaskName);
         HasBeenInteractedWith = true;
+    }
+
+    public void StartMiniGame()
+    {
+        if (MiniGame != null)
+        {
+            MiniGame.StartMiniGame();
+            Debug.Log($"Starting mini-game for task '{task.TaskName}'.");
+        }
+        else
+        {
+            Debug.LogWarning($"No mini-game assigned for task '{task.TaskName}'.");
+        }
     }
 
 

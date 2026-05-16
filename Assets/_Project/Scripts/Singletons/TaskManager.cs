@@ -15,7 +15,7 @@ public class TaskManager : GenericSingleton<TaskManager>
 
     public List<TaskSO> GetTasksOfTheDay() => tasksOfTheDay;
 
-    public bool IsPhoneInScene {  get; private set; }
+    public bool IsPhoneInScene => tasksOfTheDay.Exists(t => t.isThisPhoneTask);
     public bool HasAnsweredThePhone { get; private set; }
 
     public void SetPhoneAnswered(bool value)
