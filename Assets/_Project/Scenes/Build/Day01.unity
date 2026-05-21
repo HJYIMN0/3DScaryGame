@@ -171,6 +171,26 @@ PrefabInstance:
       propertyPath: m_Name
       value: Scene
       objectReference: {fileID: 0}
+    - target: {fileID: 8864727621886039990, guid: 7890130fe28bb0d498888e9461479305, type: 3}
+      propertyPath: crouchHeight
+      value: 1.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 8864727621886039990, guid: 7890130fe28bb0d498888e9461479305, type: 3}
+      propertyPath: cameraCrouchY
+      value: 1.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 8864727621886039990, guid: 7890130fe28bb0d498888e9461479305, type: 3}
+      propertyPath: standingHeight
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 8864727621886039990, guid: 7890130fe28bb0d498888e9461479305, type: 3}
+      propertyPath: cameraStandingY
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 8864727621886039990, guid: 7890130fe28bb0d498888e9461479305, type: 3}
+      propertyPath: walkableLayer.m_Bits
+      value: 128
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -483,6 +503,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::InteractableCoffeeMachine
   task: {fileID: 11400000, guid: 16c4eab47f159c84c9eb855e299d0fb8, type: 2}
   canvaPrefab: {fileID: 5118407277419850778, guid: 7bc6925bac6833743ac4301f7508ebef, type: 3}
+  MiniGame: {fileID: 0}
 --- !u!65 &567504362
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -644,6 +665,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::InteractableBed
   task: {fileID: 11400000, guid: 67f3c46cd1477e144a7f255680b5281b, type: 2}
   canvaPrefab: {fileID: 5118407277419850778, guid: 7bc6925bac6833743ac4301f7508ebef, type: 3}
+  MiniGame: {fileID: 0}
   notAllTasksCompletedDialogueKey: I can't go to bed yet.
 --- !u!65 &983552272
 BoxCollider:
@@ -1063,6 +1085,22 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.x
       value: -90
       objectReference: {fileID: 0}
+    - target: {fileID: 260892257816841277, guid: e88610d84eb21dd4c9cb9ebb2e83438b, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.8
+      objectReference: {fileID: 0}
+    - target: {fileID: 260892257816841277, guid: e88610d84eb21dd4c9cb9ebb2e83438b, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.8
+      objectReference: {fileID: 0}
+    - target: {fileID: 260892257816841277, guid: e88610d84eb21dd4c9cb9ebb2e83438b, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 0.8
+      objectReference: {fileID: 0}
+    - target: {fileID: 260892257816841277, guid: e88610d84eb21dd4c9cb9ebb2e83438b, type: 3}
+      propertyPath: m_ConstrainProportionsScale
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 326926500839210248, guid: e88610d84eb21dd4c9cb9ebb2e83438b, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
@@ -1171,9 +1209,25 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.x
       value: -90
       objectReference: {fileID: 0}
+    - target: {fileID: 4493248410973832791, guid: e88610d84eb21dd4c9cb9ebb2e83438b, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.8
+      objectReference: {fileID: 0}
+    - target: {fileID: 4493248410973832791, guid: e88610d84eb21dd4c9cb9ebb2e83438b, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.8
+      objectReference: {fileID: 0}
+    - target: {fileID: 4493248410973832791, guid: e88610d84eb21dd4c9cb9ebb2e83438b, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 0.8
+      objectReference: {fileID: 0}
+    - target: {fileID: 4493248410973832791, guid: e88610d84eb21dd4c9cb9ebb2e83438b, type: 3}
+      propertyPath: m_ConstrainProportionsScale
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 4600867767042122188, guid: e88610d84eb21dd4c9cb9ebb2e83438b, type: 3}
       propertyPath: doorMeshes.Array.size
-      value: 4
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 4600867767042122188, guid: e88610d84eb21dd4c9cb9ebb2e83438b, type: 3}
       propertyPath: 'doorMeshes.Array.data[0]'
@@ -1207,13 +1261,57 @@ PrefabInstance:
       propertyPath: 'doorMeshes.Array.data[7]'
       value: 
       objectReference: {fileID: 184273292}
+    - target: {fileID: 4766127098721521011, guid: e88610d84eb21dd4c9cb9ebb2e83438b, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.8
+      objectReference: {fileID: 0}
+    - target: {fileID: 4766127098721521011, guid: e88610d84eb21dd4c9cb9ebb2e83438b, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.8
+      objectReference: {fileID: 0}
+    - target: {fileID: 4766127098721521011, guid: e88610d84eb21dd4c9cb9ebb2e83438b, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 0.8
+      objectReference: {fileID: 0}
+    - target: {fileID: 4766127098721521011, guid: e88610d84eb21dd4c9cb9ebb2e83438b, type: 3}
+      propertyPath: m_ConstrainProportionsScale
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 4874590364793629416, guid: e88610d84eb21dd4c9cb9ebb2e83438b, type: 3}
       propertyPath: doorDirection
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 4874590364793629416, guid: e88610d84eb21dd4c9cb9ebb2e83438b, type: 3}
+      propertyPath: doorMeshes.Array.size
       value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 4929040844988303855, guid: e88610d84eb21dd4c9cb9ebb2e83438b, type: 3}
       propertyPath: m_Layer
       value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 5205681585248967009, guid: e88610d84eb21dd4c9cb9ebb2e83438b, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 70
+      objectReference: {fileID: 0}
+    - target: {fileID: 5205681585248967009, guid: e88610d84eb21dd4c9cb9ebb2e83438b, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 70
+      objectReference: {fileID: 0}
+    - target: {fileID: 5205681585248967009, guid: e88610d84eb21dd4c9cb9ebb2e83438b, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 70
+      objectReference: {fileID: 0}
+    - target: {fileID: 5205681585248967009, guid: e88610d84eb21dd4c9cb9ebb2e83438b, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -6.57
+      objectReference: {fileID: 0}
+    - target: {fileID: 5205681585248967009, guid: e88610d84eb21dd4c9cb9ebb2e83438b, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0.68
+      objectReference: {fileID: 0}
+    - target: {fileID: 5205681585248967009, guid: e88610d84eb21dd4c9cb9ebb2e83438b, type: 3}
+      propertyPath: m_ConstrainProportionsScale
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5679223531716538473, guid: e88610d84eb21dd4c9cb9ebb2e83438b, type: 3}
       propertyPath: m_Name
@@ -1253,6 +1351,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9107368766931296386, guid: e88610d84eb21dd4c9cb9ebb2e83438b, type: 3}
       propertyPath: doorDirection
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 9107368766931296386, guid: e88610d84eb21dd4c9cb9ebb2e83438b, type: 3}
+      propertyPath: doorMeshes.Array.size
       value: 3
       objectReference: {fileID: 0}
     m_RemovedComponents: []
@@ -1318,6 +1420,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::InteractableBathroom
   task: {fileID: 11400000, guid: 299f6bff9b43c4b4da225e5dc07be78b, type: 2}
   canvaPrefab: {fileID: 5118407277419850778, guid: 7bc6925bac6833743ac4301f7508ebef, type: 3}
+  MiniGame: {fileID: 0}
   cleanMTL: {fileID: 2100000, guid: 76638177a7145ea42bb85260ef9a95d5, type: 2}
   bathroomObjs:
   - {fileID: 1646122756}
@@ -1666,16 +1769,28 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7302934530654056801, guid: ce59acc0564e64c4bad53f17530b4861, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.5343498
+      objectReference: {fileID: 0}
+    - target: {fileID: 7302934530654056801, guid: ce59acc0564e64c4bad53f17530b4861, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.5343498
+      objectReference: {fileID: 0}
+    - target: {fileID: 7302934530654056801, guid: ce59acc0564e64c4bad53f17530b4861, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 0.5343498
+      objectReference: {fileID: 0}
+    - target: {fileID: 7302934530654056801, guid: ce59acc0564e64c4bad53f17530b4861, type: 3}
       propertyPath: m_LocalPosition.x
       value: 10.749
       objectReference: {fileID: 0}
     - target: {fileID: 7302934530654056801, guid: ce59acc0564e64c4bad53f17530b4861, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.601
+      value: 0.061
       objectReference: {fileID: 0}
     - target: {fileID: 7302934530654056801, guid: ce59acc0564e64c4bad53f17530b4861, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 1.29
+      value: 0.93
       objectReference: {fileID: 0}
     - target: {fileID: 7302934530654056801, guid: ce59acc0564e64c4bad53f17530b4861, type: 3}
       propertyPath: m_LocalRotation.w

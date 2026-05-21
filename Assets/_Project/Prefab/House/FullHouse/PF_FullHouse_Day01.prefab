@@ -1589,6 +1589,14 @@ PrefabInstance:
       propertyPath: m_LocalPosition.y
       value: 4.4
       objectReference: {fileID: 0}
+    - target: {fileID: 5067877633515991621, guid: 7b8ed0bd47ce5d446b09f9f17c248eb2, type: 3}
+      propertyPath: m_Layer
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 5067877633515991621, guid: 7b8ed0bd47ce5d446b09f9f17c248eb2, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -2294,6 +2302,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::InteractableCLothes
   task: {fileID: 11400000, guid: 178361a3c17d3334e9a70366e64b9025, type: 2}
   canvaPrefab: {fileID: 5118407277419850778, guid: 7bc6925bac6833743ac4301f7508ebef, type: 3}
+  MiniGame: {fileID: 0}
   fadeDuration: 1
   holeGameObject: {fileID: 0}
   fadeCanvaPrefab: {fileID: 0}
