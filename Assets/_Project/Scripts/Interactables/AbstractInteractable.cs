@@ -14,7 +14,8 @@ public abstract class AbstractInteractable : MonoBehaviour
     public bool HasBeenCompleted { get; protected set; } = false;
     public void SetHasBeenCompleted(bool value) => HasBeenCompleted = value;
 
-    private PlayerInteractionController _playerInteractionController;
+    protected PlayerInteractionController _playerInteractionController;
+    protected InkManager _inkManager;
 
     protected virtual void Start()
     {
@@ -91,7 +92,8 @@ public abstract class AbstractInteractable : MonoBehaviour
         if (!task.isInkTask) return;
         if (dialogue != null)
         {
-            InkManager.Instance.StartDialogue(dialogue, usesVariables);
+            // MODIFICATO: da InkManager.Instance a _inkManager
+            _inkManager?.StartDialogue(dialogue, usesVariables);
             Debug.Log($"Showing dialogue for task '{task.TaskName}'.");
         }
         else
@@ -105,7 +107,8 @@ public abstract class AbstractInteractable : MonoBehaviour
         if (!task.isInkTask) return;
         if (dialogue != null)
         {
-            InkManager.Instance.StartDialogue(dialogue, usesVariables, differentDay);
+            // MODIFICATO: da InkManager.Instance a _inkManager
+            _inkManager?.StartDialogue(dialogue, usesVariables, differentDay);
             Debug.Log($"Showing dialogue for task '{task.TaskName}'.");
         }
         else
@@ -117,7 +120,8 @@ public abstract class AbstractInteractable : MonoBehaviour
     public virtual void ShowDialogue(string text)
     {
         if (string.IsNullOrEmpty(text)) return;
-        InkManager.Instance.StartDialogue(text);
+        // MODIFICATO: da InkManager.Instance a _inkManager
+        _inkManager?.StartDialogue(text);
         Debug.Log($"Showing dialogue: '{text}'.");
     }
 
@@ -155,7 +159,11 @@ public abstract class AbstractInteractable : MonoBehaviour
         }
     }
 
-
+    public virtual void OnDialogueEnd(TextAsset dialogue)
+    {
+        // Questo metodo può essere sovrascritto dalle classi figlie per gestire la fine del dialogo specifico del task
+        Debug.Log($"Dialogue ended for task '{task.TaskName}'.");
+    }
 
     private void OnTriggerEnter(Collider other)
     {
@@ -165,9 +173,14 @@ public abstract class AbstractInteractable : MonoBehaviour
 
             if (_playerInteractionController == null)
                 _playerInteractionController = other.gameObject.GetComponent<PlayerInteractionController>();
+
+            // AGGIUNTO: recupera InkManager dal player (ora è un componente su di esso)
+            if (_inkManager == null)
+                _inkManager = other.gameObject.GetComponent<InkManager>();
+
+            _inkManager.onDialogueEnd += OnDialogueEnd; // Sottoscrivi all'evento onDialogueEnd dell'InkManager
         }
     }
-
     private void OnTriggerExit(Collider other)
     {
         if (other.gameObject.CompareTag("Player"))
@@ -176,8 +189,14 @@ public abstract class AbstractInteractable : MonoBehaviour
             if (_playerInteractionController != null && _playerInteractionController.interactableTask == this)
             {
                 _playerInteractionController.ClearInteractableTaskForPlayer();
-                InkManager.Instance.ClearStoryAndTextAsset();
+                // MODIFICATO: da InkManager.Instance a _inkManager
+                _inkManager?.ClearStoryAndTextAsset();
                 Debug.Log("Player left, clearing interactable task for player.");
+            }
+            if (_inkManager != null)
+            {
+                _inkManager.onDialogueEnd -= OnDialogueEnd; // Annulla la sottoscrizione all'evento onDialogueEnd
+                Debug.Log("Player left, unsubscribing from onDialogueEnd event.");
             }
         }
     }

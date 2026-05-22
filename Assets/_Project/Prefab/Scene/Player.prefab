@@ -48,6 +48,8 @@ GameObject:
   - component: {fileID: 6280689935189432568}
   - component: {fileID: 3409986702014537947}
   - component: {fileID: 3649485324900732069}
+  - component: {fileID: 2319381600259745894}
+  - component: {fileID: 8439596772721907542}
   m_Layer: 3
   m_Name: Player
   m_TagString: Player
@@ -246,3 +248,31 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9034b574ed6228d438e30f5c2506c2bf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerDialogueController
+--- !u!114 &2319381600259745894
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3451561408740437267}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9d25f2510dd53134fa7fd76822103599, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::InkManager
+  dayVariableNameInInk: Day
+--- !u!114 &8439596772721907542
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3451561408740437267}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9036fc50ee4b2d24cb7ddbd9b5d6ff30, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::InkManagerUI
+  canvaPrefab: {fileID: 7238422366727227570, guid: a18d5ff0b34118d4d973a6db0e109845, type: 3}
+  choiceButtonPrefab: {fileID: 8314524371143384396, guid: ac88d3bd494c8d048935131f2892f1c8, type: 3}
+  choicesManagerPrefab: {fileID: 8991624549656314782, guid: 6b93953809fb86b44a058bfa6cd7f3b5, type: 3}

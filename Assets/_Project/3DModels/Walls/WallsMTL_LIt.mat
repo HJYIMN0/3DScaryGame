@@ -8,7 +8,7 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: WallsMTL_LIt
-  m_Shader: {fileID: -6465566751694194690, guid: 7bd16f70afc86b94796838cc47c11d74, type: 3}
+  m_Shader: {fileID: -6465566751694194690, guid: d7e7e4bae342d1543bacd40d7f81f58e, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords: []
