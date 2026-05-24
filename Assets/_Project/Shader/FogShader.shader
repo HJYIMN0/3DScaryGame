@@ -1,19 +1,6 @@
 // =============================================================================
 //  AAA_VolumetricFog.shader
 //  Nebbia volumetrica AAA per Unity 6 URP
-//
-//  USO: Crea un materiale con questo shader, applicalo a un cubo Unity standard.
-//  Scala e posiziona il cubo per definire il volume della nebbia nel mondo.
-//
-//  TECNICHE:
-//  - Ray-AABB intersection in object space  -> volume preciso, rispetta scala/rotazione
-//  - FBM a due layer (base + detail erosion) -> forme organiche stile cloud
-//  - Henyey-Greenstein phase function        -> scattering realistico verso/contro luce
-//  - Beer-Lambert transmittance integration  -> fisica della luce energy-conserving
-//  - Screen-space hash jitter                -> zero banding, zero artefatti
-//  - Height gradient in object space         -> si controlla solo scalando il cubo
-//  - Box edge softening                      -> nessun bordo netto del volume
-//  - Multi-scatter approximation             -> nebbia densa sembra illuminata in modo uniforme
 // =============================================================================
 
 Shader "Custom/FogShader"
@@ -23,6 +10,13 @@ Shader "Custom/FogShader"
         [Header(Color)]
         _FogColor      ("Fog Color",     Color)  = (0.80, 0.82, 0.87, 1)
         _AmbientColor  ("Ambient Color", Color)  = (0.45, 0.55, 0.70, 1)
+
+        // [AGGIUNTO] Colore ed intensità emissiva della nebbia.
+        // Simula luce autoprodotta (es. nebbia radioattiva, magica, volumetrica con neon).
+        // EmissiveIntensity = 0 -> nessuna emissione (comportamento originale invariato).
+        [Header(Emissive)]
+        _EmissiveColor     ("Emissive Color",     Color)  = (1, 1, 1, 1)
+        _EmissiveIntensity ("Emissive Intensity", Range(0, 10)) = 0.0
 
         [Header(Density and Scattering)]
         _Density        ("Density",                    Range(0, 10))     = 2.0
@@ -70,8 +64,6 @@ Shader "Custom/FogShader"
             Name "VolumetricFog_AAA"
             Tags { "LightMode" = "UniversalForward" }
 
-            // Cull Front: renderizza solo le back-face del cubo.
-            // ZTest Always: funziona sia da fuori che da dentro il volume.
             Cull Front
             ZWrite Off
             ZTest Always
@@ -93,6 +85,9 @@ Shader "Custom/FogShader"
             CBUFFER_START(UnityPerMaterial)
                 float4 _FogColor;
                 float4 _AmbientColor;
+                // [AGGIUNTO] Variabili emissive nel CBUFFER
+                float4 _EmissiveColor;
+                float  _EmissiveIntensity;
                 float  _Density;
                 float  _ScatterAlbedo;
                 float  _Anisotropy;
@@ -110,7 +105,7 @@ Shader "Custom/FogShader"
                 float  _WindSpeedDetail;
                 int    _StepCount;
                 float  _JitterStrength;
-                float  _OpacityScale;   // Moltiplicatore finale sull'alpha accumulato
+                float  _OpacityScale;
             CBUFFER_END
 
             TEXTURE3D(_NoiseTex3D);
@@ -129,10 +124,9 @@ Shader "Custom/FogShader"
             };
 
             // -----------------------------------------------------------------
-            //  UTILITY FUNCTIONS
+            //  UTILITY FUNCTIONS  (invariate)
             // -----------------------------------------------------------------
 
-            // Hash PCG per jitter per-pixel - elimina il banding senza texture
             float ScreenJitter(float2 pixelCoord)
             {
                 uint2 ip = (uint2)pixelCoord;
@@ -145,9 +139,6 @@ Shader "Custom/FogShader"
                 return float(n) * (1.0 / 4294967296.0);
             }
 
-            // Henyey-Greenstein phase function.
-            // g > 0 -> forward scattering (nebbia illuminata verso la luce)
-            // g < 0 -> backward scattering
             float PhaseHG(float cosTheta, float g)
             {
                 float g2    = g * g;
@@ -155,46 +146,32 @@ Shader "Custom/FogShader"
                 return (0.25 * INV_PI) * (1.0 - g2) / denom;
             }
 
-            // Dual-lobe phase: blend HG con scattering isotropico.
-            // MultiScatter approssima i rimbalzi multipli di luce in nebbia densa.
             float PhaseDualLobe(float cosTheta, float g, float multiScatter)
             {
                 return lerp(PhaseHG(cosTheta, g), 0.25 * INV_PI, multiScatter);
             }
 
-            // FBM density: layer base (low-freq shape) eroso da detail (high-freq).
-            // Tecnica derivata dal cloud rendering di produzione (Guerrilla, Nubis, etc.)
             float SampleDensity(float3 posWS)
             {
-                // Due layer di vento con direzioni leggermente diverse per sembrare turbolento
                 float3 windBase   = normalize(_WindDir.xyz + float3(1e-5, 0, 0)) * (_Time.y * _WindSpeedBase);
                 float3 windDetail = normalize(_WindDir.zxy + float3(0, 0.3, 0))  * (_Time.y * _WindSpeedDetail);
 
                 float nBase   = SAMPLE_TEXTURE3D_LOD(_NoiseTex3D, sampler_NoiseTex3D,
                                     posWS * _NoiseScaleBase   + windBase,   0).r;
-
                 float nDetail = SAMPLE_TEXTURE3D_LOD(_NoiseTex3D, sampler_NoiseTex3D,
                                     posWS * _NoiseScaleDetail + windDetail, 0).r;
 
-                // Il detail "erode" la forma base: crea bordi filamentosi e irregolari
                 float combined = nBase - nDetail * _DetailBlend;
-
-                // Contrasto e offset per controllare quanto e' piena/vuota la nebbia
                 return saturate(combined * _NoiseContrast + _NoiseOffset);
             }
 
-            // Gradiente altezza in object-space (posOS.y in [-0.5, 0.5]).
-            // Densita' massima al fondo del cubo, zero all'apice.
-            // HeightBias = 0 -> denso in basso; HeightBias = 1 -> denso in alto.
             float HeightGradient(float localY)
             {
-                float t = localY + 0.5;              // remap a [0,1]: 0=fondo, 1=cima
-                t = lerp(t, 1.0 - t, _HeightBias);   // flip opzionale
+                float t = localY + 0.5;
+                t = lerp(t, 1.0 - t, _HeightBias);
                 return pow(saturate(1.0 - t), _HeightFalloff);
             }
 
-            // Dissolvenza ai bordi del volume per eliminare i bordi netti del cubo.
-            // margin: distanza in OS units entro cui fare fade (relativa a half-extent 0.5)
             float BoxEdgeFade(float3 posOS, float margin)
             {
                 float3 d    = abs(posOS) - (0.5 - margin);
@@ -202,14 +179,9 @@ Shader "Custom/FogShader"
                 return saturate(1.0 - edge / margin);
             }
 
-            // Ray-AABB intersection in object space.
-            //
-            // IMPORTANTE: rdOS deve essere NON-normalizzato (= mul(UNITY_MATRIX_I_M, dir_WS_norm)).
-            // In questo modo i valori t corrispondono a distanze nel world-space,
-            // permettendo di confrontare tFar con la distanza della geometria opaca.
             bool RayBoxIntersect(float3 roOS, float3 rdOS, out float tNear, out float tFar)
             {
-                float3 invRD = 1.0 / rdOS;   // IEEE 754: inf corretto per componenti zero
+                float3 invRD = 1.0 / rdOS;
                 float3 t0    = (-0.5 - roOS) * invRD;
                 float3 t1    = ( 0.5 - roOS) * invRD;
                 float3 tmin  = min(t0, t1);
@@ -220,7 +192,7 @@ Shader "Custom/FogShader"
             }
 
             // -----------------------------------------------------------------
-            //  VERTEX SHADER
+            //  VERTEX SHADER  (invariato)
             // -----------------------------------------------------------------
             Varyings vert(Attributes v)
             {
@@ -236,54 +208,48 @@ Shader "Custom/FogShader"
             // -----------------------------------------------------------------
             float4 frag(Varyings i) : SV_Target
             {
-                // --- Depth scene opaca ---
                 float2 screenUV    = i.screenPos.xy / i.screenPos.w;
                 float  rawDepth    = SampleSceneDepth(screenUV);
                 float3 sceneWS     = ComputeWorldSpacePosition(screenUV, rawDepth, UNITY_MATRIX_I_VP);
                 float  sceneDistWS = length(sceneWS - _WorldSpaceCameraPos);
 
-                // --- Setup raggio (world space, normalizzato) ---
                 float3 rayOriginWS    = _WorldSpaceCameraPos;
                 float3 rayDirWS       = normalize(i.positionWS - rayOriginWS);
-
-                // Raggio in object space.
-                // rayDirOSUnnorm NON normalizzato: i valori t del AABB restano in unita' WS.
                 float3 rayOriginOS    = TransformWorldToObject(rayOriginWS);
                 float3 rayDirOSUnnorm = mul((float3x3)UNITY_MATRIX_I_M, rayDirWS);
 
-                // --- Intersezione AABB con il volume del cubo ---
                 float tNear, tFar;
                 if (!RayBoxIntersect(rayOriginOS, rayDirOSUnnorm, tNear, tFar)) discard;
 
                 tNear = max(tNear, 0.0001);
-                tFar  = min(tFar, sceneDistWS);   // il volume non attraversa geometria opaca
+                tFar  = min(tFar, sceneDistWS);
                 if (tNear >= tFar) discard;
 
-                // --- Illuminazione principale ---
                 Light  mainLight  = GetMainLight();
                 float3 lightDir   = normalize(mainLight.direction);
                 float3 lightColor = mainLight.color;
 
-                // Phase function: angolo tra raggio della camera e direzione luce
                 float cosTheta = dot(rayDirWS, lightDir);
                 float phase    = PhaseDualLobe(cosTheta, _Anisotropy, _MultiScatter);
 
-                // Luminanza costante lungo il raggio (luce diretta + ambiente)
                 float3 directLum  = lightColor * phase * _FogColor.rgb;
                 float3 ambientLum = _AmbientColor.rgb * _FogColor.rgb;
-                float3 luminance  = directLum + ambientLum;
 
-                // --- Jitter: offset random del primo sample per eliminare banding ---
+                // [AGGIUNTO] Contributo emissivo: colore autoprodotto dalla nebbia,
+                // indipendente dalla luce della scena. Si somma a directLum + ambientLum.
+                // Con _EmissiveIntensity = 0 il termine è zero: comportamento originale invariato.
+                float3 emissiveLum = _EmissiveColor.rgb * _EmissiveIntensity;
+
+                float3 luminance  = directLum + ambientLum + emissiveLum; // [MODIFICATO] aggiunto emissiveLum
+
                 int   steps    = clamp(_StepCount, 8, 256);
                 float stepSize = (tFar - tNear) / float(steps);
                 float jitter   = ScreenJitter(screenUV * _ScreenParams.xy);
                 float t        = tNear + jitter * stepSize * _JitterStrength;
 
-                // Precomputa incremento OS per evitare la moltiplicazione matriciale nel loop
                 float3 stepOS = rayDirOSUnnorm * stepSize;
                 float3 posOS  = rayOriginOS + rayDirOSUnnorm * t;
 
-                // --- Ray march ---
                 float3 accColor      = 0.0;
                 float  transmittance = 1.0;
 
@@ -294,7 +260,6 @@ Shader "Custom/FogShader"
 
                     float3 posWS = rayOriginWS + rayDirWS * t;
 
-                    // Densita' locale: noise x gradiente altezza x fade bordi x scala globale
                     float noiseDensity = SampleDensity(posWS);
                     float heightGrad   = HeightGradient(posOS.y);
                     float edgeFade     = BoxEdgeFade(posOS, _EdgeSoftness);
@@ -302,23 +267,17 @@ Shader "Custom/FogShader"
 
                     if (density > 0.0001)
                     {
-                        // Beer-Lambert: profondita' ottica dello step
                         float tau       = density * stepSize;
                         float stepTrans = exp(-tau);
-
-                        // Integrazione energy-conserving: DeltaL = albedo x L_in x (1 - T_step)
-                        // Derivato da: integral000^Deltat sigma_s*L*exp(-sigma_t*t)dt = albedo*L*(1-exp(-sigma_t*Deltat))
                         float3 stepColor = _ScatterAlbedo * luminance * (1.0 - stepTrans);
                         accColor += transmittance * stepColor;
                         transmittance *= stepTrans;
                     }
 
                     t     += stepSize;
-                    posOS += stepOS;   // incremento OS precomputato (no matrix multiply in loop)
+                    posOS += stepOS;
                 }
 
-                // Alpha finale = opacita' accumulata (complementare alla trasmittanza residua)
-                // _OpacityScale: controlla la traslucenza globale del volume (0=invisibile, 1=pieno)
                 float alpha = saturate(1.0 - transmittance) * _OpacityScale;
                 return float4(accColor, alpha);
             }

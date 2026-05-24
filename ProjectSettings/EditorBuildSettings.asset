@@ -12,9 +12,6 @@ EditorBuildSettings:
     path: Assets/_Project/Scenes/Build/Day00.unity
     guid: 4add11178bb0288438a4f00142999fd1
   - enabled: 1
-    path: Assets/_Project/Scenes/Build/MainMenu.unity
-    guid: 824b7f9d444dc624db030ea04d10194e
-  - enabled: 1
     path: Assets/_Project/Scenes/Build/Day01_Cutscene.unity
     guid: 44f98f6bf1ff40f479d394106f1edc3e
   - enabled: 1

@@ -17,7 +17,7 @@ public class GameFlowManager : GenericSingleton<GameFlowManager>
     {
         Debug.Log($"GameFlowManager started. Current day: {currentDay}, Current scene: {CurrentScene}");
     }
-    public void LoadScene(int day)
+    public void LoadScene(int day, float fadeDuration)
     {
         if (day < 0 || day >= gameScenes.Length)
         {
@@ -27,6 +27,17 @@ public class GameFlowManager : GenericSingleton<GameFlowManager>
         
         StartCoroutine(FadeToLoad(day, gameScenes[day], fadeCanvaPrefab, fadeDuration));
     }
+    public void LoadScene(int day)
+    {
+        if (day < 0 || day >= gameScenes.Length)
+        {
+            Debug.LogError($"Invalid day index: {day}. Cannot load scene.");
+            return;
+        }
+
+        StartCoroutine(FadeToLoad(day, gameScenes[day], fadeCanvaPrefab, fadeDuration));
+    }
+
 
     private IEnumerator FadeToLoad(int day, string sceneName, GameObject objToFade, float fadeDuration)
     {
