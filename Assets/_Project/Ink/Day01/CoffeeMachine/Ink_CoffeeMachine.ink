@@ -23,9 +23,17 @@ Nothing better than coffee to start off my day
 === Day3 ===
 I used to hate coffee.
 In truth, I still don't like it.
-Yet I drink it every day.
 
-Am I more than what i choose to drink?
++ [Drink the coffee]
+    Yet I drink it every day.
+    -> Reflection
+
++ [Don't drink the coffee]
+    Today, I leave it untouched.
+    -> Reflection
+
+=== Reflection ===
+Am I more than what I choose to drink?
 -> END
 
 === Day100 ===

@@ -32,6 +32,17 @@ public abstract class AbstractInteractable : MonoBehaviour
         }
     }
 
+    private void Update()
+    {
+        if (canvaInstance != null && canvaInstance.activeSelf)
+        {
+            if (MiniGame.IsMiniGameActive || HasBeenCompleted)
+            {
+                DeactivateCanvas();
+            }
+        }
+    }
+
     public void DeactivateCanvas()
     {
         if (isCanvaInstantiated && canvaInstance != null)

@@ -6,9 +6,9 @@ public class PlayerInteractionController : MonoBehaviour
     [SerializeField] private bool isThisLevelPhoneLevel = false;
 
     public AbstractInteractable interactableTask { get; private set; }
-    public InputSystem_Actions actions { get; private set; }
+    public InputSystem_Actions Actions { get; private set; }
 
-    private PlayerInputController _input;
+    public PlayerInputController Input { get; private set; }
     private PlayerDialogueController _dialogueController;
 
     public bool HasAnsweredPhone { get; private set; }
@@ -38,12 +38,12 @@ public class PlayerInteractionController : MonoBehaviour
         {
             Debug.Log("This level is not a phone level. Phone-related properties will not be initialized.");
         }
-        _input = GetComponent<PlayerInputController>();
+        Input = GetComponent<PlayerInputController>();
     }
 
     private void Start()
     {
-        _input.OnInteractAction += HandleInteraction;
+        Input.OnInteractAction += HandleInteraction;
     }
 
     //private void Update()

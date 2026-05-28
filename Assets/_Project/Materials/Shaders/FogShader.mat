@@ -119,7 +119,7 @@ Material:
     - _DstBlend: 0
     - _DstBlendAlpha: 0
     - _EdgeSoftness: 0.344
-    - _EmissiveIntensity: 2.04
+    - _EmissiveIntensity: 3.05
     - _EnvironmentReflections: 1
     - _GlossMapScale: 0
     - _Glossiness: 0

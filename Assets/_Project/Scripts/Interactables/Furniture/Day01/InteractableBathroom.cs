@@ -35,6 +35,7 @@ public class InteractableBathroom : AbstractInteractable
                 }
             };
         }
+        ShowDialogue(TaskSO.inkJson, true);
         HasBeenCompleted = true;
     }
 

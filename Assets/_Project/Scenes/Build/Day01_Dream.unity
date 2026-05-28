@@ -7316,33 +7316,13 @@ PrefabInstance:
       propertyPath: m_Name
       value: FogBox
       objectReference: {fileID: 0}
-    - target: {fileID: 1028601330947337663, guid: 053bffc15844cb5428386e0aa61ef331, type: 3}
-      propertyPath: m_Layer
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1028601330947337663, guid: 053bffc15844cb5428386e0aa61ef331, type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2355022326492416741, guid: 053bffc15844cb5428386e0aa61ef331, type: 3}
-      propertyPath: m_LocalScale.x
-      value: 606.756
-      objectReference: {fileID: 0}
-    - target: {fileID: 2355022326492416741, guid: 053bffc15844cb5428386e0aa61ef331, type: 3}
-      propertyPath: m_LocalScale.y
-      value: 144.02142
-      objectReference: {fileID: 0}
-    - target: {fileID: 2355022326492416741, guid: 053bffc15844cb5428386e0aa61ef331, type: 3}
-      propertyPath: m_LocalScale.z
-      value: 606.756
-      objectReference: {fileID: 0}
     - target: {fileID: 2355022326492416741, guid: 053bffc15844cb5428386e0aa61ef331, type: 3}
       propertyPath: m_LocalPosition.x
       value: 4.83
       objectReference: {fileID: 0}
     - target: {fileID: 2355022326492416741, guid: 053bffc15844cb5428386e0aa61ef331, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -36
+      value: -41
       objectReference: {fileID: 0}
     - target: {fileID: 2355022326492416741, guid: 053bffc15844cb5428386e0aa61ef331, type: 3}
       propertyPath: m_LocalPosition.z
@@ -7376,10 +7356,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 7100977216791229809, guid: 053bffc15844cb5428386e0aa61ef331, type: 3}
-      propertyPath: 'm_Materials.Array.data[0]'
-      value: 
-      objectReference: {fileID: 2100000, guid: 808482d81d2c2934ebfd86e54145e74d, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -8076,7 +8052,7 @@ MeshRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1473427176}
-  m_Enabled: 1
+  m_Enabled: 0
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
