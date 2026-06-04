@@ -4,15 +4,16 @@ using UnityEngine;
 public abstract class AbstractMinigame : MonoBehaviour
 {
     [SerializeField] protected AbstractInteractable interactable;
-    [SerializeField] protected PlayerMovementController _playerMovementController;
+    [SerializeField] protected PlayerInputController _playerInputController;
 
     public bool IsMiniGameActive { get; private set; } = false;
+    public bool HasMiniGameBeenCompleted => interactable.HasBeenCompleted;
     public TaskManager taskManager { get; private set;  }
     public virtual void Start()
     {
-        if (_playerMovementController == null)
+        if (_playerInputController == null)
         {
-            Debug.LogWarning("PlayerMovementController reference is missing in " + gameObject.name);
+            Debug.LogWarning("PlayerInputController reference is missing in " + gameObject.name);
         }
         if (interactable.TaskSO == null)
         {
@@ -32,17 +33,17 @@ public abstract class AbstractMinigame : MonoBehaviour
 
     public void TogglePlayerControl()
     {
-        if (_playerMovementController.CanLook && _playerMovementController.CanMove)
+        if (_playerInputController.InputActions.Player.Look.enabled && _playerInputController.InputActions.Player.Move.enabled)
         {
             IsMiniGameActive = true;
-            _playerMovementController.StopLook();
-            _playerMovementController.StopMovement();
+            _playerInputController.InputActions.Player.Look.Disable();
+            _playerInputController.InputActions.Player.Move.Disable();
         }
-        else if (!_playerMovementController.CanLook && !_playerMovementController.CanMove)
+        else if (!_playerInputController.InputActions.Player.Look.enabled && !_playerInputController.InputActions.Player.Move.enabled)
         {
             IsMiniGameActive = false;
-            _playerMovementController.StartLook();
-            _playerMovementController.StartMovement();
+            _playerInputController.InputActions.Player.Look.Enable();
+            _playerInputController.InputActions.Player.Move.Enable();
         }
         else
         {
@@ -55,14 +56,14 @@ public abstract class AbstractMinigame : MonoBehaviour
         if (enableControl)
         {
             IsMiniGameActive = false;
-            _playerMovementController.StartLook();
-            _playerMovementController.StartMovement();
+            _playerInputController.InputActions.Player.Look.Enable();
+            _playerInputController.InputActions.Player.Move.Enable();
         }
         else
         {
             IsMiniGameActive = true;
-            _playerMovementController.StopLook();
-            _playerMovementController.StopMovement();
+            _playerInputController.InputActions.Player.Look.Disable();
+            _playerInputController.InputActions.Player.Move.Disable();
         }
     }  
 }

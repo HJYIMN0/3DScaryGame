@@ -1,69 +1,79 @@
-﻿using System;
-using UnityEngine;
-using UnityEngine.EventSystems;
+﻿using UnityEngine;
 
 public class PlayerDialogueController : MonoBehaviour
 {
-    private PlayerInteractionController playerInteractionController;
-    private PlayerMovementController playerMovementController;
-    private PlayerInputController playerInputController;
-    private InkManager inkManager;
-    private InkManagerUI inkManagerUI;
+    private PlayerInteractionController _playerInteractionController;
+    private PlayerMovementController _playerMovementController;
+    private PlayerInputController _input;
+    private InkManager _inkManager;
+    private InkManagerUI _inkManagerUI;
 
-    public bool IsDialogueActive => inkManager != null && inkManager.IsStoryActive;
+    public bool IsDialogueActive => _inkManager != null && _inkManager.IsStoryActive;
+    public bool HasActiveChoices => _inkManagerUI != null && _inkManagerUI.HasActiveChoices;
 
     private void Awake()
     {
-        playerInteractionController = GetComponent<PlayerInteractionController>();
-        playerInteractionController.enabled = true;
-        playerMovementController = GetComponent<PlayerMovementController>();
-        playerMovementController.enabled = true;
-        playerInputController = GetComponent<PlayerInputController>();
-        inkManager = GetComponent<InkManager>();
-        inkManagerUI = GetComponent<InkManagerUI>();
+        _playerInteractionController = GetComponent<PlayerInteractionController>();
+        _playerMovementController = GetComponent<PlayerMovementController>();
+        _input = GetComponent<PlayerInputController>();
+        _inkManager = GetComponent<InkManager>();
+        _inkManagerUI = GetComponent<InkManagerUI>();
 
         this.enabled = false;
     }
 
     private void OnEnable()
     {
-        playerMovementController.StopMovement();
-        playerInputController.OnAttackAction += HandleDialogue;
-        Debug.Log("PlayerDialogueController enabled and subscribed to OnAttackAction.");
+        _playerMovementController.StopMovement();
     }
 
     private void OnDisable()
     {
-        playerMovementController.StartMovement();
-        playerInputController.OnAttackAction -= HandleDialogue;
+        _playerMovementController.StartMovement();
     }
 
-    // Rimosso OnDestroy(). È ridondante poiché OnDisable viene sempre chiamato durante la distruzione.
+    private void Update()
+    {
+        // Avanzamento dialogo / attacco
+        if (_input.InputActions.Player.Attack.WasPressedThisFrame())
+            HandleDialogue();
+
+        // Navigazione scelte — solo quando ci sono scelte attive
+        if (HasActiveChoices)
+        {
+            if (_input.InputActions.Player.Previous.WasPressedThisFrame())
+                _inkManagerUI.SelectPreviousChoice();
+
+            if (_input.InputActions.Player.Next.WasPressedThisFrame())
+                _inkManagerUI.SelectNextChoice();
+
+            if (_input.InputActions.Player.Jump.WasPressedThisFrame())
+                _inkManagerUI.ConfirmSelectedChoice();
+        }
+    }
 
     private void HandleDialogue()
     {
-        if (inkManager.IsStoryActive)
+        if (_inkManager.IsStoryActive)
         {
-            // MODIFICATO: rimosso IsPointerOverGameObject() — non affidabile con UI sempre presente.
-            // Si blocca direttamente se ci sono scelte in attesa di essere compiute.
-            if (inkManagerUI.HasActiveChoices) return;
-
-            inkManager.ContinueDialogue();
+            if (HasActiveChoices) return;
+            _inkManager.ContinueDialogue();
             return;
         }
 
-        if (inkManager.IsDialogueOpen)
+        if (_inkManager.IsDialogueOpen)
         {
-            inkManager.EndDialogue();
+            _inkManager.EndDialogue();
             return;
         }
 
-        if (playerInteractionController != null &&
-            playerInteractionController.interactableTask != null &&
-            playerInteractionController.interactableTask.TaskSO != null)
+        if (_playerInteractionController != null &&
+            _playerInteractionController.interactableTask != null &&
+            _playerInteractionController.interactableTask.TaskSO != null)
         {
-            inkManager.StartDialogue(playerInteractionController.interactableTask.TaskSO.inkJson,
-                                      playerInteractionController.interactableTask.TaskSO.usesVariablesInInk);
+            _inkManager.StartDialogue(
+                _playerInteractionController.interactableTask.TaskSO.inkJson,
+                _playerInteractionController.interactableTask.TaskSO.usesVariablesInInk);
         }
     }
 }

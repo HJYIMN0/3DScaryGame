@@ -43,7 +43,7 @@ public class PlateWashingMiniGame : AbstractMinigame
     {
         if (!IsMiniGameActive) return;
 
-        if (_playerMovementController.Input.InputActions.Player.Quit.IsPressed())
+        if (_playerInputController.InputActions.Player.Quit.IsPressed())
         {
             QuitMiniGame();
             return;
@@ -54,7 +54,7 @@ public class PlateWashingMiniGame : AbstractMinigame
 
     public override void HandleMiniGameLogic()
     {
-        _playerLookInput = _playerMovementController.Input.LookInput;
+        _playerLookInput = _playerInputController.InputActions.Player.Look.ReadValue<Vector2>();
 
         if (_playerLookInput == Vector2.zero) return;
 
@@ -99,7 +99,7 @@ public class PlateWashingMiniGame : AbstractMinigame
     {
         if (IsTaskCompleted()) return;
 
-        _playerMovementController.Input.ResetLookInput();
+        _playerInputController.InputActions.Player.Look.Enable();
         TogglePlayerControl();
         ToggleUI(true);
 

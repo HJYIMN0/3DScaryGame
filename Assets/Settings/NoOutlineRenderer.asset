@@ -48,7 +48,8 @@ MonoBehaviour:
   - {fileID: 7833122117494664109}
   - {fileID: -5910075479667618529}
   - {fileID: 3341419555171934666}
-  m_RendererFeatureMap: ad6b866f10d7b46c1f4daa06aa31fbadca2191bf611b5f2e
+  - {fileID: 7897948988623893734}
+  m_RendererFeatureMap: ad6b866f10d7b46c1f4daa06aa31fbadca2191bf611b5f2ee6341591c2269b6d
   m_UseNativeRenderPass: 1
   xrSystemData: {fileID: 0}
   postProcessData: {fileID: 11400000, guid: 41439944d30ece34e96484bdb6645b55, type: 2}
@@ -145,3 +146,23 @@ MonoBehaviour:
     BlurQuality: 0
     Falloff: 100
     SampleCount: -1
+--- !u!114 &7897948988623893734
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b00045f12942b46c698459096c89274e, type: 3}
+  m_Name: Volumetric Fog
+  m_EditorClassIdentifier: Unity.RenderPipelines.Universal.Runtime::UnityEngine.Rendering.Universal.FullScreenPassRendererFeature
+  m_Active: 1
+  injectionPoint: 550
+  fetchColorBuffer: 1
+  requirements: 0
+  passMaterial: {fileID: 2100000, guid: fedf334cf2cc1b44d9ae7b524decb528, type: 2}
+  passIndex: 0
+  bindDepthStencilAttachment: 0
+  m_Version: 1

@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 676925595c357a04d8fabf7433210257
+guid: c40dcf84c7902c14eb29685e8744f678
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -112,10 +112,3 @@ TextureImporter:
   userData: 
   assetBundleName: 
   assetBundleVariant: 
-AssetOrigin:
-  serializedVersion: 1
-  productId: 12964
-  packageName: Yughues Free Sand Materials
-  packageVersion: 1.1
-  assetPath: Assets/YughuesFreeSandMaterials/Preview/Sc_Preview/Lightmap-0_comp_dir.png
-  uploadId: 751419

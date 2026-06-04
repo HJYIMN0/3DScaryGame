@@ -36,7 +36,7 @@ public abstract class AbstractInteractable : MonoBehaviour
     {
         if (canvaInstance != null && canvaInstance.activeSelf)
         {
-            if (MiniGame.IsMiniGameActive || HasBeenCompleted)
+            if (MiniGame != null && MiniGame.IsMiniGameActive || HasBeenCompleted)
             {
                 DeactivateCanvas();
             }

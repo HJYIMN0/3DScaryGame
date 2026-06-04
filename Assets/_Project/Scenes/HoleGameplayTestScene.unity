@@ -590,6 +590,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c36d17fdc168de84ab01180119525317, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerController
+--- !u!114 &1909054306 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 495009132191114489, guid: 7890130fe28bb0d498888e9461479305, type: 3}
+  m_PrefabInstance: {fileID: 1028528749}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 368f20f7ea043944983c815f7964faf1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerInputController
 --- !u!1 &2064131701
 GameObject:
   m_ObjectHideFlags: 0
@@ -711,6 +722,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 467339126763607270, guid: 2615b63fc32547f468056d2a9d3f4d29, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 1582882141331500770, guid: 2615b63fc32547f468056d2a9d3f4d29, type: 3}
       propertyPath: m_Name
       value: DrillableWall
@@ -723,6 +738,10 @@ PrefabInstance:
       propertyPath: _raycastCamera
       value: 
       objectReference: {fileID: 1299530278}
+    - target: {fileID: 3233388396127396515, guid: 2615b63fc32547f468056d2a9d3f4d29, type: 3}
+      propertyPath: _playerInputController
+      value: 
+      objectReference: {fileID: 1909054306}
     - target: {fileID: 3233388396127396515, guid: 2615b63fc32547f468056d2a9d3f4d29, type: 3}
       propertyPath: _playerMovementController
       value: 

@@ -27,7 +27,6 @@ public class DrillableWallMinigame : AbstractMinigame
     // MODIFICATO: rimossa _mainCamera assegnata via Camera.main — ora si usa _raycastCamera serializzata.
     private Texture2D _wallTexture;
     private Renderer _renderer;
-    private PlayerInteractionController _interactionController;
 
     private int _erasedPixelCount = 0;
     private int _totalPixelCount;
@@ -74,15 +73,6 @@ public class DrillableWallMinigame : AbstractMinigame
             mc.sharedMesh = GetComponent<MeshFilter>().sharedMesh;
         }
 
-        _interactionController = _playerMovementController.GetComponent<PlayerInteractionController>();
-
-        if (_interactionController == null)
-        {
-            Debug.LogError("[DrillableWallMinigame] PlayerInteractionController non trovato su " +
-                           _playerMovementController.gameObject.name +
-                           ". Verifica che sia sullo stesso GameObject di PlayerMovementController.");
-        }
-
         // AGGIUNTO: la camera del minigioco deve essere disattiva all'avvio
         if (_miniGameCamera != null)
             _miniGameCamera.gameObject.SetActive(false);
@@ -92,7 +82,6 @@ public class DrillableWallMinigame : AbstractMinigame
 
     private void Update()
     {
-        if (_interactionController == null) return;
         if (!IsMiniGameActive) return;
 
         UpdateVirtualCursorFromGamepad();
@@ -104,7 +93,7 @@ public class DrillableWallMinigame : AbstractMinigame
         CinemachineBrain brain = CinemachineBrain.GetActiveBrain(0);
         if (brain != null && brain.IsBlending) return;
 
-        if (_interactionController.Input.InputActions.Player.Attack.WasPressedThisFrame())
+        if (_playerInputController.InputActions.Player.Attack.WasPressedThisFrame())
         {
             HandleMiniGameLogic();
         }
@@ -134,6 +123,8 @@ public class DrillableWallMinigame : AbstractMinigame
 
     public override void StartMiniGame()
     {
+        if (HasMiniGameBeenCompleted) return;
+
         TogglePlayerControl();
 
         // MODIFICATO: attiviamo la CinemachineCamera dedicata.
@@ -159,6 +150,12 @@ public class DrillableWallMinigame : AbstractMinigame
 
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
+
+        if (HasCompletitionBeenReached())
+        {
+            taskManager.CompleteTask(interactable.TaskSO.TaskName);
+            interactable.SetHasBeenCompleted(true);
+        }
     }
 
     public override void ResetMiniGame()
@@ -199,6 +196,7 @@ public class DrillableWallMinigame : AbstractMinigame
         int pixelY = Mathf.FloorToInt(uv.y * _wallTexture.height);
 
         EraseWithBrush(pixelX, pixelY);
+        interactable.PLayTaskSfx();
     }
 
     // MODIFICATO: rinominato da EraseCircle a EraseWithBrush.
@@ -251,17 +249,26 @@ public class DrillableWallMinigame : AbstractMinigame
 
         _wallTexture.Apply();
         Debug.Log("Applied changes to texture after erasing at (" + centerX + ", " + centerY + ")");
-
-        CheckCompletionThreshold();
-    }
-
-    private void CheckCompletionThreshold()
-    {
-        float exposedPercentage = (float)_erasedPixelCount / _totalPixelCount;
-        if (exposedPercentage >= quitMiniGameAlphaThreshold)
+        if (HasCompletitionBeenReached())
         {
-            Debug.Log($"[DrillableWallMinigame] Soglia raggiunta ({exposedPercentage:P0}). Chiusura minigioco.");
+            Debug.Log("MiniGame completed after erasing at (" + centerX + ", " + centerY + ")");
             QuitMiniGame();
         }
+    }
+
+    //private void CheckCompletionThreshold()
+    //{
+    //    float exposedPercentage = (float)_erasedPixelCount / _totalPixelCount;
+    //    if (exposedPercentage >= quitMiniGameAlphaThreshold)
+    //    {
+    //        Debug.Log($"[DrillableWallMinigame] Soglia raggiunta ({exposedPercentage:P0}). Chiusura minigioco.");
+    //        QuitMiniGame();
+    //    }
+    //}
+
+    public bool HasCompletitionBeenReached()
+    {
+        float exposedPercentage = (float)_erasedPixelCount / _totalPixelCount;
+        return exposedPercentage >= quitMiniGameAlphaThreshold;
     }
 }

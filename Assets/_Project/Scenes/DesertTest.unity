@@ -168,6 +168,63 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1001 &775681011
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 5730394927422541865, guid: e00243cc933d5c246841bba6fdf6e3e2, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 115.88098
+      objectReference: {fileID: 0}
+    - target: {fileID: 5730394927422541865, guid: e00243cc933d5c246841bba6fdf6e3e2, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 29.20871
+      objectReference: {fileID: 0}
+    - target: {fileID: 5730394927422541865, guid: e00243cc933d5c246841bba6fdf6e3e2, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -67.19258
+      objectReference: {fileID: 0}
+    - target: {fileID: 5730394927422541865, guid: e00243cc933d5c246841bba6fdf6e3e2, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5730394927422541865, guid: e00243cc933d5c246841bba6fdf6e3e2, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5730394927422541865, guid: e00243cc933d5c246841bba6fdf6e3e2, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5730394927422541865, guid: e00243cc933d5c246841bba6fdf6e3e2, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5730394927422541865, guid: e00243cc933d5c246841bba6fdf6e3e2, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5730394927422541865, guid: e00243cc933d5c246841bba6fdf6e3e2, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5730394927422541865, guid: e00243cc933d5c246841bba6fdf6e3e2, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7694996301517935287, guid: e00243cc933d5c246841bba6fdf6e3e2, type: 3}
+      propertyPath: m_Name
+      value: Volumetric Fog Controller
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: e00243cc933d5c246841bba6fdf6e3e2, type: 3}
 --- !u!1001 &779326727
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -182,11 +239,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4654327983979443348, guid: 7890130fe28bb0d498888e9461479305, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -60.8
+      value: -74
       objectReference: {fileID: 0}
     - target: {fileID: 4654327983979443348, guid: 7890130fe28bb0d498888e9461479305, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 56
+      value: 213.2
       objectReference: {fileID: 0}
     - target: {fileID: 4654327983979443348, guid: 7890130fe28bb0d498888e9461479305, type: 3}
       propertyPath: m_LocalRotation.w
@@ -441,7 +498,7 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -486, y: -117, z: 0}
   m_LocalScale: {x: 10, y: 10, z: 10}
-  m_ConstrainProportionsScale: 1
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -527,3 +584,4 @@ SceneRoots:
   - {fileID: 643150031}
   - {fileID: 1268516586}
   - {fileID: 779326727}
+  - {fileID: 775681011}

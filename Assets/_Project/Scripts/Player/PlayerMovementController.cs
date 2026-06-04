@@ -1,5 +1,4 @@
 using Unity.Cinemachine;
-using Unity.VisualScripting;
 using UnityEngine;
 
 [RequireComponent(typeof(CharacterController))]
@@ -22,9 +21,7 @@ public class PlayerMovementController : MonoBehaviour
     [SerializeField] private float walkSpeed = 4f;
     [SerializeField] private float sprintSpeed = 7f;
     [SerializeField] private float crouchSpeed = 2f;
-
     [SerializeField] private float jumpForce = 5f;
-    [SerializeField] private float gravity = 20f;
 
     // -------------------------------------------------------------------------
     // Look
@@ -33,7 +30,6 @@ public class PlayerMovementController : MonoBehaviour
     [Header("Look")]
     [SerializeField] private float sensitivityX = 0.15f;
     [SerializeField] private float sensitivityY = 0.15f;
-
     [SerializeField] private float topClamp = 80f;
     [SerializeField] private float bottomClamp = -80f;
 
@@ -42,7 +38,6 @@ public class PlayerMovementController : MonoBehaviour
     // -------------------------------------------------------------------------
 
     [Header("Ground Check")]
-
     [SerializeField] private LayerMask walkableLayer;
     [SerializeField] private float groundCheckRadius = 0.3f;
     [SerializeField] private float groundCheckDistance = 0.4f;
@@ -54,28 +49,25 @@ public class PlayerMovementController : MonoBehaviour
     [Header("Crouch")]
     [SerializeField] private float standingHeight = 2f;
     [SerializeField] private float crouchHeight = 1f;
-
     [SerializeField] private float cameraStandingY = 1.6f;
     [SerializeField] private float cameraCrouchY = 0.8f;
-
     [SerializeField] private float crouchTransitionSpeed = 10f;
 
     // -------------------------------------------------------------------------
     // Stato
     // -------------------------------------------------------------------------
 
-    private CharacterController controller;
-    public PlayerInputController Input { get; private set; }
+    private CharacterController _controller;
+    private PlayerInputController _input;
 
-    private float verticalVelocity;
-    private float cameraPitch;
+    private float _cameraPitch;
+    private bool _isGrounded;
 
-    private bool isGrounded;
+    // Velocità verticale usata SOLO per il salto — SimpleMove gestisce la gravità da solo
+    private float _verticalVelocity;
+
     public bool CanMove { get; private set; } = true;
     public bool CanLook { get; private set; } = true;
-
-    // MODIFICA: Rimosse le variabili lastValidPosition e hasValidPosition
-    // in quanto funzionali unicamente a un sistema di rollback difettoso.
 
     // -------------------------------------------------------------------------
     // Unity
@@ -83,8 +75,8 @@ public class PlayerMovementController : MonoBehaviour
 
     private void Awake()
     {
-        controller = GetComponent<CharacterController>();
-        Input = GetComponent<PlayerInputController>();
+        _controller = GetComponent<CharacterController>();
+        _input = GetComponent<PlayerInputController>();
 
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
@@ -95,9 +87,6 @@ public class PlayerMovementController : MonoBehaviour
     private void Update()
     {
         UpdateGroundState();
-
-        HandleGravity();
-        HandleJump();
         HandleMovement();
         HandleLook();
         HandleCrouch();
@@ -120,19 +109,13 @@ public class PlayerMovementController : MonoBehaviour
         cinemachineCamera.Follow = null;
         cinemachineCamera.LookAt = null;
 
-        // Si mantiene questa logica distruttiva per fedeltà alla richiesta, 
-        // sebbene in un ambiente di produzione andrebbe evitata configurando il prefab correttamente.
         var cinemachineComponents = cinemachineCamera.GetComponents<CinemachineComponentBase>();
         for (int i = cinemachineComponents.Length - 1; i >= 0; i--)
-        {
             Destroy(cinemachineComponents[i]);
-        }
 
         Camera mainCam = Camera.main;
         if (mainCam != null && mainCam.GetComponent<CinemachineBrain>() == null)
-        {
             mainCam.gameObject.AddComponent<CinemachineBrain>();
-        }
     }
 
     // -------------------------------------------------------------------------
@@ -142,52 +125,13 @@ public class PlayerMovementController : MonoBehaviour
     private void UpdateGroundState()
     {
         Vector3 origin = transform.position
-                       + controller.center
-                       + Vector3.down * (controller.height * 0.5f - groundCheckRadius);
+                       + _controller.center
+                       + Vector3.down * (_controller.height * 0.5f - groundCheckRadius);
 
-        // MODIFICA: Questo è ora l'unico punto in cui viene eseguito lo SphereCast.
-        isGrounded = Physics.SphereCast(
-            origin,
-            groundCheckRadius,
-            Vector3.down,
-            out _,
-            groundCheckDistance,
-            walkableLayer,
-            QueryTriggerInteraction.Ignore
-        );
-    }
-
-    // -------------------------------------------------------------------------
-    // Gravity
-    // -------------------------------------------------------------------------
-
-    private void HandleGravity()
-    {
-        if (isGrounded && verticalVelocity < 0f)
-        {
-            // Reset della velocità verticale se si è a terra
-            verticalVelocity = -2f;
-        }
-        else
-        {
-            // Applicazione costante della gravità
-            verticalVelocity -= gravity * Time.deltaTime;
-        }
-    }
-
-    // -------------------------------------------------------------------------
-    // Jump
-    // -------------------------------------------------------------------------
-
-    private void HandleJump()
-    {
-        if (!CanMove || !isGrounded || Input.IsCrouching)
-            return;
-
-        if (Input.JumpPressed)
-        {
-            verticalVelocity = jumpForce;
-        }
+        _isGrounded = Physics.SphereCast(
+            origin, groundCheckRadius, Vector3.down,
+            out _, groundCheckDistance, walkableLayer,
+            QueryTriggerInteraction.Ignore);
     }
 
     // -------------------------------------------------------------------------
@@ -196,41 +140,39 @@ public class PlayerMovementController : MonoBehaviour
 
     private void HandleMovement()
     {
-        if (!CanMove)
-            return;
+        if (!CanMove) return;
 
-        float speed = Input.IsCrouching ? crouchSpeed :
-                      Input.IsSprinting ? sprintSpeed :
+        Vector2 moveInput = _input.InputActions.Player.Move.ReadValue<Vector2>();
+        bool isSprinting = _input.InputActions.Player.Sprint.IsPressed();
+        bool isCrouching = _input.InputActions.Player.Crouch.IsPressed();
+        bool jumpPressed = _input.InputActions.Player.Jump.WasPressedThisFrame();
+
+        float speed = isCrouching ? crouchSpeed :
+                      isSprinting ? sprintSpeed :
                       walkSpeed;
 
-        Vector3 horizontalMove = transform.right * Input.MoveInput.x +
-                                 transform.forward * Input.MoveInput.y;
+        Vector3 horizontalMove = transform.right * moveInput.x
+                               + transform.forward * moveInput.y;
 
         if (horizontalMove.sqrMagnitude > 1f)
             horizontalMove.Normalize();
 
-        horizontalMove *= speed;
+        // SimpleMove applica gravità internamente — passiamo solo la componente orizzontale
+        _controller.SimpleMove(horizontalMove * speed);
 
-        Vector3 finalMove = horizontalMove + Vector3.up * verticalVelocity;
-
-        // Esecuzione dello spostamento
-        CollisionFlags flags = controller.Move(finalMove * Time.deltaTime);
-
-        // Correzione della velocità in caso di impatto col soffitto
-        if ((flags & CollisionFlags.Above) != 0 && verticalVelocity > 0f)
+        // Salto: impulso verticale manuale applicato con Move() solo nel frame della pressione.
+        // SimpleMove ignora la Y, quindi usiamo Move() esclusivamente per l'impulso verticale.
+        if (_isGrounded && !isCrouching && jumpPressed)
         {
-            verticalVelocity = 0f;
+            _verticalVelocity = jumpForce;
         }
 
-        // Correzione in caso di impatto col pavimento per non accumulare gravità residua
-        if ((flags & CollisionFlags.Below) != 0 && verticalVelocity < -2f)
+        if (_verticalVelocity > 0f)
         {
-            verticalVelocity = -2f;
+            _controller.Move(Vector3.up * _verticalVelocity * Time.deltaTime);
+            // Decadimento dell'impulso — si esaurisce naturalmente frame per frame
+            _verticalVelocity -= 20f * Time.deltaTime;
         }
-
-        // MODIFICA: Tutta la logica di rollback (lastValidPosition) che causava
-        // l'incastro ai margini del walkableLayer è stata sradicata. Il CharacterController
-        // è ora libero di cadere e muoversi, fermato unicamente dalla geometria dei collider.
     }
 
     // -------------------------------------------------------------------------
@@ -239,15 +181,17 @@ public class PlayerMovementController : MonoBehaviour
 
     private void HandleLook()
     {
-        if (!CanLook || Input.LookInput == Vector2.zero)
-            return;
+        if (!CanLook) return;
 
-        transform.Rotate(Vector3.up, Input.LookInput.x * sensitivityX, Space.Self);
+        Vector2 lookInput = _input.InputActions.Player.Look.ReadValue<Vector2>();
+        if (lookInput == Vector2.zero) return;
 
-        cameraPitch -= Input.LookInput.y * sensitivityY;
-        cameraPitch = Mathf.Clamp(cameraPitch, bottomClamp, topClamp);
+        transform.Rotate(Vector3.up, lookInput.x * sensitivityX, Space.Self);
 
-        cameraRoot.localRotation = Quaternion.Euler(cameraPitch, 0f, 0f);
+        _cameraPitch -= lookInput.y * sensitivityY;
+        _cameraPitch = Mathf.Clamp(_cameraPitch, bottomClamp, topClamp);
+
+        cameraRoot.localRotation = Quaternion.Euler(_cameraPitch, 0f, 0f);
     }
 
     // -------------------------------------------------------------------------
@@ -256,14 +200,16 @@ public class PlayerMovementController : MonoBehaviour
 
     private void HandleCrouch()
     {
-        float targetHeight = Input.IsCrouching ? crouchHeight : standingHeight;
-        float targetCameraY = Input.IsCrouching ? cameraCrouchY : cameraStandingY;
+        bool isCrouching = _input.InputActions.Player.Crouch.IsPressed();
 
-        controller.height = Mathf.Lerp(controller.height, targetHeight, crouchTransitionSpeed * Time.deltaTime);
+        float targetHeight = isCrouching ? crouchHeight : standingHeight;
+        float targetCameraY = isCrouching ? cameraCrouchY : cameraStandingY;
 
-        Vector3 center = controller.center;
-        center.y = controller.height * 0.5f;
-        controller.center = center;
+        _controller.height = Mathf.Lerp(_controller.height, targetHeight, crouchTransitionSpeed * Time.deltaTime);
+
+        Vector3 center = _controller.center;
+        center.y = _controller.height * 0.5f;
+        _controller.center = center;
 
         Vector3 camPos = cameraRoot.localPosition;
         camPos.y = Mathf.Lerp(camPos.y, targetCameraY, crouchTransitionSpeed * Time.deltaTime);
@@ -285,18 +231,14 @@ public class PlayerMovementController : MonoBehaviour
 
     private void OnDrawGizmos()
     {
-        if (controller == null)
-            return;
+        if (_controller == null) return;
 
         Vector3 origin = transform.position
-                       + controller.center
-                       + Vector3.down * (controller.height * 0.5f - groundCheckRadius);
+                       + _controller.center
+                       + Vector3.down * (_controller.height * 0.5f - groundCheckRadius);
 
-        Gizmos.color = isGrounded ? Color.green : Color.red;
+        Gizmos.color = _isGrounded ? Color.green : Color.red;
         Gizmos.DrawWireSphere(origin, groundCheckRadius);
         Gizmos.DrawLine(origin, origin + Vector3.down * groundCheckDistance);
     }
-
-    // MODIFICA: Rimosso HasWalkableGroundBelow() poiché totalmente ridondante
-    // rispetto a UpdateGroundState() e asservito unicamente alla logica di rollback fallata.
 }

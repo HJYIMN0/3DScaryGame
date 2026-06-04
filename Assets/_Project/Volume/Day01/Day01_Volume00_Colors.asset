@@ -118,7 +118,7 @@ MonoBehaviour:
   active: 0
   intensity:
     m_OverrideState: 1
-    m_Value: 0.36
+    m_Value: 1
   xMultiplier:
     m_OverrideState: 0
     m_Value: 0
@@ -297,16 +297,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 70afe9e12c7a7ed47911bb608a23a8ff, type: 3}
   m_Name: SplitToning
   m_EditorClassIdentifier: Unity.RenderPipelines.Universal.Runtime::UnityEngine.Rendering.Universal.SplitToning
-  active: 0
+  active: 1
   shadows:
     m_OverrideState: 1
-    m_Value: {r: 0.3433962, g: 0.3433962, b: 0.3433962, a: 1}
+    m_Value: {r: 0.5849056, g: 0.5849056, b: 0.5849056, a: 1}
   highlights:
     m_OverrideState: 1
     m_Value: {r: 1, g: 1, b: 1, a: 1}
   balance:
     m_OverrideState: 1
-    m_Value: 100
+    m_Value: -38
 --- !u!114 &-13867484179180708
 MonoBehaviour:
   m_ObjectHideFlags: 3
@@ -319,7 +319,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3eb4b772797da9440885e8bd939e9560, type: 3}
   m_Name: ColorCurves
   m_EditorClassIdentifier: Unity.RenderPipelines.Universal.Runtime::UnityEngine.Rendering.Universal.ColorCurves
-  active: 0
+  active: 1
   master:
     m_OverrideState: 0
     m_Value:
@@ -566,8 +566,8 @@ MonoBehaviour:
         serializedVersion: 2
         m_Curve:
         - serializedVersion: 3
-          time: 0.20280112
-          value: 0.41071427
+          time: 0.27966574
+          value: 0.2295857
           inSlope: 0
           outSlope: 0
           tangentMode: 0
@@ -575,8 +575,8 @@ MonoBehaviour:
           inWeight: 0
           outWeight: 0
         - serializedVersion: 3
-          time: 0.7204482
-          value: 0.27738082
+          time: 0.7142062
+          value: 0.41420102
           inSlope: 0
           outSlope: 0
           tangentMode: 0
@@ -629,7 +629,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 97c23e3b12dc18c42a140437e53d3951, type: 3}
   m_Name: Tonemapping
   m_EditorClassIdentifier: Unity.RenderPipelines.Universal.Runtime::UnityEngine.Rendering.Universal.Tonemapping
-  active: 1
+  active: 0
   mode:
     m_OverrideState: 1
     m_Value: 2
@@ -738,7 +738,7 @@ MonoBehaviour:
   active: 0
   mode:
     m_OverrideState: 1
-    m_Value: 1
+    m_Value: 2
   gaussianStart:
     m_OverrideState: 1
     m_Value: 0

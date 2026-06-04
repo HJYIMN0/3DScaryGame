@@ -1,4 +1,3 @@
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class PlayerInteractionController : MonoBehaviour
@@ -6,9 +5,8 @@ public class PlayerInteractionController : MonoBehaviour
     [SerializeField] private bool isThisLevelPhoneLevel = false;
 
     public AbstractInteractable interactableTask { get; private set; }
-    public InputSystem_Actions Actions { get; private set; }
 
-    public PlayerInputController Input { get; private set; }
+    private PlayerInputController _input;
     private PlayerDialogueController _dialogueController;
 
     public bool HasAnsweredPhone { get; private set; }
@@ -24,41 +22,28 @@ public class PlayerInteractionController : MonoBehaviour
 
     private void Awake()
     {
-        //N.B Per ora questa roba non fa niente.
-        //Dovremmo fare un refactor di come funzionano TaskManager e AbstractTask per correggere
-        //E forse conviene tenerlo qui. 
-        //Per ora funziona e perciò non lo tocco.
-        //In futuro possiamo valutare di spostare questa roba in un altro script, magari un PhoneManager
+        _input = GetComponent<PlayerInputController>();
+        _dialogueController = GetComponent<PlayerDialogueController>();
+
         if (isThisLevelPhoneLevel)
-        {
-            Debug.Log("This level is a phone level. Initializing phone-related properties.");
-            HasAnsweredPhone = false;
-        }
+            Debug.Log("This level is a phone level.");
         else
-        {
-            Debug.Log("This level is not a phone level. Phone-related properties will not be initialized.");
-        }
-        Input = GetComponent<PlayerInputController>();
+            Debug.Log("This level is not a phone level.");
     }
 
-    private void Start()
+    private void Update()
     {
-        Input.OnInteractAction += HandleInteraction;
+        // Polling diretto — un solo frame di input per pressione
+        if (_input.InputActions.Player.Interact.WasPressedThisFrame())
+            HandleInteraction();
     }
-
-    //private void Update()
-    //{
-    //    if (interactableTask != null)
-    //    {
-    //        Debug.Log("Player is near interactable task: " + interactableTask.name);
-    //    }
-    //}
 
     public void SetInteractableTaskForPlayer(AbstractInteractable taskToInteractWith)
     {
         Debug.Log("Setting interactable task for player: " + taskToInteractWith.name);
         interactableTask = taskToInteractWith;
     }
+
     public void ClearInteractableTaskForPlayer()
     {
         Debug.Log("Clearing interactable task for player.");
@@ -67,15 +52,8 @@ public class PlayerInteractionController : MonoBehaviour
 
     private void HandleInteraction()
     {
-        if (_dialogueController == null)
-        {
-            _dialogueController = GetComponent<PlayerDialogueController>();
-        }
-
-        if (_dialogueController.IsDialogueActive)
-        {
-         return;   
-        }
+        if (_dialogueController != null && _dialogueController.IsDialogueActive)
+            return;
 
         if (interactableTask != null)
         {
