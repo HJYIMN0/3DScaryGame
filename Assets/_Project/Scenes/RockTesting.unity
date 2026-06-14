@@ -504,15 +504,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4654327983979443348, guid: 7890130fe28bb0d498888e9461479305, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -1.803
+      value: -1.708
       objectReference: {fileID: 0}
     - target: {fileID: 4654327983979443348, guid: 7890130fe28bb0d498888e9461479305, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 3.5
+      value: 3.127
       objectReference: {fileID: 0}
     - target: {fileID: 4654327983979443348, guid: 7890130fe28bb0d498888e9461479305, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0.978
+      value: 1.193
       objectReference: {fileID: 0}
     - target: {fileID: 4654327983979443348, guid: 7890130fe28bb0d498888e9461479305, type: 3}
       propertyPath: m_LocalRotation.w
@@ -757,6 +757,10 @@ PrefabInstance:
     - target: {fileID: 7167906877110368205, guid: fc664d82fa598c2419e152f85321327f, type: 3}
       propertyPath: m_Name
       value: Hole01
+      objectReference: {fileID: 0}
+    - target: {fileID: 7167906877110368205, guid: fc664d82fa598c2419e152f85321327f, type: 3}
+      propertyPath: m_Layer
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 7508158083618467191, guid: fc664d82fa598c2419e152f85321327f, type: 3}
       propertyPath: m_LocalPosition.x

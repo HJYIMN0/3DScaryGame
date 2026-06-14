@@ -128,7 +128,7 @@ Material:
     - _Ambient_Light: 2
     - _Ambient_Light_Scale: 1.15
     - _Anisotropy: 1
-    - _Anisotropy_Blend: 0.786
+    - _Anisotropy_Blend: 0.714
     - _Blend: 0
     - _BlendModePreserveSpecular: 1
     - _Blur_Texture_Blend: 1
