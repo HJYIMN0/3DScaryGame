@@ -10,8 +10,8 @@ public class PlateWashingMiniGame : AbstractMinigame
     [SerializeField] private float lookSensitivity = 300f;
     [SerializeField] private int requiredCircles = 3;
     [SerializeField] private bool isDebugMode = false;
+    [SerializeField] private bool canReplayMiniGame = true;
 
-    // AGGIUNTO: presi via GetComponent poiché il componente vive sull'oggetto UI.
     private CanvasGroup _canvasGroup;
     private RectTransform _uiPanelRect;
 
@@ -21,16 +21,14 @@ public class PlateWashingMiniGame : AbstractMinigame
     private float _accumulatedAngle;
     private int _completedCircles;
 
-    // AGGIUNTO: soglia minima di distanza dal centro per validare la rotazione.
-    // Evita falsi positivi quando il cursore è fermo o quasi al centro.
     private const float MinCircleRadius = 20f;
-
 
     private void Awake()
     {
         _canvasGroup = GetComponent<CanvasGroup>();
         _uiPanelRect = GetComponent<RectTransform>();
     }
+
     public override void Start()
     {
         base.Start();
@@ -66,10 +64,6 @@ public class PlateWashingMiniGame : AbstractMinigame
 
         _cursorRect.anchoredPosition = _cursorPos;
 
-        // AGGIUNTO: conteggio giri tramite accumulo angolare.
-        // Atan2 restituisce l'angolo della posizione corrente rispetto al centro.
-        // DeltaAngle calcola la differenza firmata tra i due angoli (-180..180),
-        // così l'accumulo funziona sia in senso orario che antiorario.
         if (_prevCursorPos.magnitude > MinCircleRadius && _cursorPos.magnitude > MinCircleRadius)
         {
             float prevAngle = Mathf.Atan2(_prevCursorPos.y, _prevCursorPos.x) * Mathf.Rad2Deg;
@@ -79,7 +73,6 @@ public class PlateWashingMiniGame : AbstractMinigame
             if (Mathf.Abs(_accumulatedAngle) >= 360f)
             {
                 _completedCircles++;
-                // Sottrae 360° firmati per non perdere la frazione d'angolo eccedente.
                 _accumulatedAngle -= Mathf.Sign(_accumulatedAngle) * 360f;
 
                 if (_completedCircles >= requiredCircles)
@@ -97,13 +90,23 @@ public class PlateWashingMiniGame : AbstractMinigame
 
     public override void StartMiniGame()
     {
-        if (IsTaskCompleted()) return;
+        if (IsTaskCompleted() && !canReplayMiniGame)
+        {
+            Debug.Log("This task has already been completed!");
+            return;
+        }
 
+        // CORREZIONE CRITICA: Ordine delle operazioni.
+        // Prima chiamiamo TogglePlayerControl. Questo disabiliterà sia 'Move' che 'Look' del giocatore 
+        // nel caso standard, e imposterà IsMiniGameActive a true.
+        TogglePlayerControl(false);
+
+        // Successivamente, forziamo l'abilitazione della singola azione 'Look' in modo 
+        // che possa essere letta da HandleMiniGameLogic.
         _playerInputController.InputActions.Player.Look.Enable();
-        TogglePlayerControl();
+
         ToggleUI(true);
 
-        // Reset completo dello stato del cursore e dei contatori.
         _cursorPos = Vector2.zero;
         _prevCursorPos = Vector2.zero;
         _accumulatedAngle = 0f;
@@ -113,7 +116,8 @@ public class PlateWashingMiniGame : AbstractMinigame
 
     public override void QuitMiniGame()
     {
-        TogglePlayerControl();
+        TogglePlayerControl(true);
+
         ToggleUI(false);
     }
 
@@ -127,9 +131,6 @@ public class PlateWashingMiniGame : AbstractMinigame
 
     private void ToggleUI(bool enable)
     {
-        // MODIFICATO: sostituito SetActive con CanvasGroup.
-        // alpha controlla la visibilità; blocksRaycasts impedisce interazioni
-        // con la UI quando è nascosta; interactable blocca gli elementi interni.
         _canvasGroup.alpha = enable ? 1f : 0f;
         _canvasGroup.blocksRaycasts = enable;
         _canvasGroup.interactable = enable;

@@ -31,29 +31,14 @@ public abstract class AbstractMinigame : MonoBehaviour
     public abstract void HandleMiniGameLogic();
     public bool IsTaskCompleted() => taskManager.CompletedTasks.Contains(interactable.TaskSO);
 
-    public void TogglePlayerControl()
+    /// <summary>
+    /// true if minigame is over and player can move
+    /// False if minigame started and player can not move
+    /// </summary>
+    /// <param name="canMove"></param>
+    public void TogglePlayerControl(bool canMove)
     {
-        if (_playerInputController.InputActions.Player.Look.enabled && _playerInputController.InputActions.Player.Move.enabled)
-        {
-            IsMiniGameActive = true;
-            _playerInputController.InputActions.Player.Look.Disable();
-            _playerInputController.InputActions.Player.Move.Disable();
-        }
-        else if (!_playerInputController.InputActions.Player.Look.enabled && !_playerInputController.InputActions.Player.Move.enabled)
-        {
-            IsMiniGameActive = false;
-            _playerInputController.InputActions.Player.Look.Enable();
-            _playerInputController.InputActions.Player.Move.Enable();
-        }
-        else
-        {
-            Debug.LogWarning("PlayerMovementController is in an inconsistent state in " + gameObject.name);
-        }
-    }
-
-    public void TogglePlayerControl(bool enableControl)
-    {
-        if (enableControl)
+        if (canMove)
         {
             IsMiniGameActive = false;
             _playerInputController.InputActions.Player.Look.Enable();
