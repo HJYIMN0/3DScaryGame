@@ -123,9 +123,15 @@ public class InkManager : MonoBehaviour
         Debug.Log("Continue Dialogue has been called.");
 
         // AGGIUNTO: se ci sono scelte attive, il player deve scegliere prima di proseguire
-        if (currentStory != null && currentStory.currentChoices.Count > 0)
+        if (currentStory.currentChoices.Count > 0)
         {
-            Debug.Log("Waiting for player choice. ContinueDialogue blocked.");
+            Debug.Log(
+                $"Story has {currentStory.currentChoices.Count} choices");
+
+            _inkManagerUI.ShowChoices(
+                currentStory.currentChoices,
+                SelectChoice);
+
             return;
         }
 
@@ -148,12 +154,15 @@ public class InkManager : MonoBehaviour
         }
     }
 
-    // AGGIUNTO: chiamato da InkManagerUI quando il player preme un bottone di scelta.
-    // Registra la scelta in Ink, nasconde i bottoni e continua il flusso normalmente.
     public void SelectChoice(int index)
     {
+        Debug.Log(
+            $"Ink choice selected : {index}");
+
         currentStory.ChooseChoiceIndex(index);
-        _inkManagerUI?.HideChoices();
+
+        _inkManagerUI.HideChoices();
+
         ContinueDialogue();
     }
 

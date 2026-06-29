@@ -67,13 +67,15 @@ public class PlayerDialogueController : MonoBehaviour
             return;
         }
 
-        if (_playerInteractionController != null &&
-            _playerInteractionController.interactableTask != null &&
-            _playerInteractionController.interactableTask.TaskSO != null)
+        // MODIFICATO: prima questo branch chiamava _inkManager.StartDialogue() direttamente,
+        // duplicando (e bypassando) la logica che InteractWithTask()/ExecuteInteraction() già
+        // gestisce in AbstractInteractable (es. InteractablePhone marca il task come completato,
+        // ferma l'audio, gestisce isThisPhoneTask). Ora passa sempre dallo stesso punto
+        // d'ingresso usato da PlayerInteractionController per il tasto Interact, così l'avvio
+        // dell'interazione è unificato in un solo posto indipendentemente dal tasto premuto.
+        if (_playerInteractionController != null && _playerInteractionController.interactableTask != null)
         {
-            _inkManager.StartDialogue(
-                _playerInteractionController.interactableTask.TaskSO.inkJson,
-                _playerInteractionController.interactableTask.TaskSO.usesVariablesInInk);
+            _playerInteractionController.interactableTask.InteractWithTask();
         }
     }
 }

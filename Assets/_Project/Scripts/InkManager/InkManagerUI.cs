@@ -45,41 +45,60 @@ public class InkManagerUI : MonoBehaviour
             canvaPrefabText.text = text;
     }
 
-    // MODIFICATO: firma cambiata — non riceve più List<Choice> direttamente.
-    // Le scelte e il callback vengono memorizzati internamente.
     public void ShowChoices(List<Choice> choices, Action<int> onChoiceSelected)
     {
+        // MODIFICA:
+        // prima di mostrare nuove scelte assicuriamoci che
+        // qualsiasi stato precedente sia stato eliminato.
+
         HideChoices();
+
+        // MODIFICA:
+        // memorizziamo internamente la lista corrente
+        // e il callback da eseguire alla conferma.
 
         _choices = choices;
         _onChoiceSelected = onChoiceSelected;
-        _selectedIndex = choices.Count > 0 ? 0 : -1; // AGGIUNTO: pre-seleziona la prima scelta
 
-        Cursor.lockState = CursorLockMode.None;
-        Cursor.visible = true;
+        // MODIFICA:
+        // se esiste almeno una scelta, selezioniamo
+        // automaticamente la prima.
+
+        _selectedIndex = choices.Count > 0 ? 0 : -1;
 
         playerMovementController.StopLook();
 
         for (int i = 0; i < choices.Count; i++)
         {
             int capturedIndex = i;
-            GameObject btn = Instantiate(choiceButtonPrefab, choiceContainerLayout);
-            btn.GetComponentInChildren<TextMeshProUGUI>().text = choices[i].text;
 
-            // AGGIUNTO: disabilita la navigation automatica di Unity sul Button.
-            // Senza questo, Select() o SetSelectedGameObject() triggerano la navigation
-            // built-in che sposta la selezione da sola, causando il doppio-click.
-            Button button = btn.GetComponent<Button>();
+            GameObject btn =
+                Instantiate(choiceButtonPrefab,
+                            choiceContainerLayout);
+
+            btn.GetComponentInChildren<TextMeshProUGUI>().text =
+                choices[i].text;
+
+            Button button =
+                btn.GetComponent<Button>();
+
+            // MODIFICA:
+            // disabilitiamo completamente
+            // la navigation automatica di Unity.
+
             Navigation nav = button.navigation;
             nav.mode = Navigation.Mode.None;
             button.navigation = nav;
 
-            button.onClick.AddListener(() => SelectAndConfirm(capturedIndex));
+            button.onClick.AddListener(() =>
+                SelectAndConfirm(capturedIndex));
+
             _activeChoiceButtons.Add(btn);
         }
 
-        // AGGIUNTO: evidenzia visivamente la prima scelta al momento della comparsa
         UpdateSelectionHighlight();
+
+        Debug.Log($"ShowChoices() : {choices.Count} choices");
     }
 
     // AGGIUNTO: helper privato — aggiorna l'aspetto visivo dei bottoni in base a _selectedIndex.
@@ -87,15 +106,24 @@ public class InkManagerUI : MonoBehaviour
     // Se non hai un sistema di highlight, puoi personalizzare questa logica.
     private void UpdateSelectionHighlight()
     {
-        if (_selectedIndex < 0 || _selectedIndex >= _activeChoiceButtons.Count) return;
+        if (_selectedIndex < 0)
+            return;
 
-        Button btn = _activeChoiceButtons[_selectedIndex].GetComponent<Button>();
-        if (btn == null) return;
+        if (_selectedIndex >= _activeChoiceButtons.Count)
+            return;
 
-        // MODIFICATO: rimosso btn.Select() — con Navigation.None è sufficiente
-        // SetSelectedGameObject, che applica correttamente il ColorBlock senza
-        // interferenze dalla navigation automatica di Unity.
-        EventSystem.current.SetSelectedGameObject(btn.gameObject);
+        Button btn =
+            _activeChoiceButtons[_selectedIndex]
+            .GetComponent<Button>();
+
+        if (btn == null)
+            return;
+
+        EventSystem.current
+            .SetSelectedGameObject(btn.gameObject);
+
+        Debug.Log(
+            $"Selected choice {_selectedIndex}");
     }
 
     // AGGIUNTO: helper privato che combina selezione e conferma per i click sui bottoni.
@@ -125,29 +153,41 @@ public class InkManagerUI : MonoBehaviour
 
     public void ConfirmSelectedChoice()
     {
-        if (!HasActiveChoices) return;
-        if (_selectedIndex < 0 || _selectedIndex >= _choices.Count) return;
-        if (_onChoiceSelected == null) return;
+        if (!HasActiveChoices)
+            return;
 
-        // MODIFICATO: invoca il callback con l'indice interno salvato —
-        // non serve più passarlo dall'esterno.
+        if (_selectedIndex < 0)
+            return;
+
+        if (_selectedIndex >= _choices.Count)
+            return;
+
+        if (_onChoiceSelected == null)
+            return;
+
+        Debug.Log(
+            $"Confirming choice {_selectedIndex}");
+
+        // MODIFICA:
+        // invochiamo solamente il callback.
+
+        // NON puliamo lo stato qui.
+
+        // Infatti SelectChoice()
+        // potrebbe richiamare immediatamente
+        // ContinueDialogue()
+        // che potrebbe creare nuove scelte.
+
         _onChoiceSelected.Invoke(_selectedIndex);
-
-        // AGGIUNTO: pulizia dello stato interno dopo la conferma
-        _choices.Clear();
-        _onChoiceSelected = null;
-        _selectedIndex = -1;
     }
-
     public void HideChoices()
     {
         foreach (var btn in _activeChoiceButtons)
             Destroy(btn);
         _activeChoiceButtons.Clear();
 
-        // AGGIUNTO: pulizia dello stato interno anche alla chiusura manuale
+        // NON cancellare la callback qui
         _choices.Clear();
-        _onChoiceSelected = null;
         _selectedIndex = -1;
 
         playerMovementController.StartLook();
@@ -168,8 +208,8 @@ public class InkManagerUI : MonoBehaviour
         {
             HideChoices();
 
-            Cursor.lockState = CursorLockMode.Locked;
-            Cursor.visible = false;
+            //Cursor.lockState = CursorLockMode.Locked;
+            //Cursor.visible = false;
 
             canvaInstance.SetActive(false);
             IsDialogueOpen = false;

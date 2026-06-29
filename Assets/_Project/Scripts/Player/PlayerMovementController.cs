@@ -1,7 +1,10 @@
 using Unity.Cinemachine;
 using UnityEngine;
 
-[RequireComponent(typeof(CharacterController))]
+// MODIFICA: Rimossa la dipendenza da CharacterController.
+// Aggiunte dipendenze a Rigidbody e CapsuleCollider, necessari per un setup fisico standard.
+[RequireComponent(typeof(Rigidbody))]
+[RequireComponent(typeof(CapsuleCollider))]
 [RequireComponent(typeof(PlayerInputController))]
 public class PlayerMovementController : MonoBehaviour
 {
@@ -57,14 +60,17 @@ public class PlayerMovementController : MonoBehaviour
     // Stato
     // -------------------------------------------------------------------------
 
-    private CharacterController _controller;
+    // MODIFICA: Riferimenti sostituiti per adattarsi al sistema fisico.
+    private Rigidbody _rb;
+    private CapsuleCollider _collider;
     private PlayerInputController _input;
 
     private float _cameraPitch;
     private bool _isGrounded;
 
-    // Velocità verticale usata SOLO per il salto — SimpleMove gestisce la gravità da solo
-    private float _verticalVelocity;
+    // MODIFICA: Introdotta variabile di caching per catturare l'input di salto 
+    // in Update e consumarlo in FixedUpdate.
+    private bool _jumpRequested;
 
     public bool CanMove { get; private set; } = true;
     public bool CanLook { get; private set; } = true;
@@ -75,7 +81,8 @@ public class PlayerMovementController : MonoBehaviour
 
     private void Awake()
     {
-        _controller = GetComponent<CharacterController>();
+        _rb = GetComponent<Rigidbody>();
+        _collider = GetComponent<CapsuleCollider>();
         _input = GetComponent<PlayerInputController>();
 
         Cursor.lockState = CursorLockMode.Locked;
@@ -86,10 +93,18 @@ public class PlayerMovementController : MonoBehaviour
 
     private void Update()
     {
+        // La lettura degli input e le modifiche alla telecamera rimangono nell'Update
+        // per mantenere la reattività al framerate visivo.
         UpdateGroundState();
-        HandleMovement();
         HandleLook();
         HandleCrouch();
+        CaptureJumpInput();
+    }
+
+    // MODIFICA: Introdotto FixedUpdate per processare esclusivamente la fisica del Rigidbody.
+    private void FixedUpdate()
+    {
+        HandleMovement();
     }
 
     // -------------------------------------------------------------------------
@@ -124,9 +139,10 @@ public class PlayerMovementController : MonoBehaviour
 
     private void UpdateGroundState()
     {
+        // MODIFICA: Il calcolo dell'origine sfrutta ora i parametri del CapsuleCollider
         Vector3 origin = transform.position
-                       + _controller.center
-                       + Vector3.down * (_controller.height * 0.5f - groundCheckRadius);
+                       + _collider.center
+                       + Vector3.down * (_collider.height * 0.5f - groundCheckRadius);
 
         _isGrounded = Physics.SphereCast(
             origin, groundCheckRadius, Vector3.down,
@@ -135,8 +151,21 @@ public class PlayerMovementController : MonoBehaviour
     }
 
     // -------------------------------------------------------------------------
-    // Movement
+    // Movement & Jump
     // -------------------------------------------------------------------------
+
+    private void CaptureJumpInput()
+    {
+        if (!CanMove) return;
+
+        bool isCrouching = _input.InputActions.Player.Crouch.IsPressed();
+
+        // Salviamo la richiesta di salto se le condizioni sono soddisfatte
+        if (_isGrounded && !isCrouching && _input.InputActions.Player.Jump.WasPressedThisFrame())
+        {
+            _jumpRequested = true;
+        }
+    }
 
     private void HandleMovement()
     {
@@ -145,34 +174,33 @@ public class PlayerMovementController : MonoBehaviour
         Vector2 moveInput = _input.InputActions.Player.Move.ReadValue<Vector2>();
         bool isSprinting = _input.InputActions.Player.Sprint.IsPressed();
         bool isCrouching = _input.InputActions.Player.Crouch.IsPressed();
-        bool jumpPressed = _input.InputActions.Player.Jump.WasPressedThisFrame();
 
         float speed = isCrouching ? crouchSpeed :
                       isSprinting ? sprintSpeed :
                       walkSpeed;
 
-        Vector3 horizontalMove = transform.right * moveInput.x
-                               + transform.forward * moveInput.y;
+        Vector3 moveDirection = transform.right * moveInput.x
+                              + transform.forward * moveInput.y;
 
-        if (horizontalMove.sqrMagnitude > 1f)
-            horizontalMove.Normalize();
+        if (moveDirection.sqrMagnitude > 1f)
+            moveDirection.Normalize();
 
-        // SimpleMove applica gravità internamente — passiamo solo la componente orizzontale
-        _controller.SimpleMove(horizontalMove * speed);
+        // ERRORE RIMOSSO: Eliminato SimpleMove.
+        // Calcolo della velocità target orizzontale.
+        Vector3 targetVelocity = moveDirection * speed;
 
-        // Salto: impulso verticale manuale applicato con Move() solo nel frame della pressione.
-        // SimpleMove ignora la Y, quindi usiamo Move() esclusivamente per l'impulso verticale.
-        if (_isGrounded && !isCrouching && jumpPressed)
+        // Manteniamo la velocità verticale attuale generata dalla gravità del Rigidbody
+        targetVelocity.y = _rb.linearVelocity.y;
+
+        // Esecuzione del salto consumando la richiesta
+        if (_jumpRequested)
         {
-            _verticalVelocity = jumpForce;
+            targetVelocity.y = jumpForce;
+            _jumpRequested = false;
         }
 
-        if (_verticalVelocity > 0f)
-        {
-            _controller.Move(Vector3.up * _verticalVelocity * Time.deltaTime);
-            // Decadimento dell'impulso — si esaurisce naturalmente frame per frame
-            _verticalVelocity -= 20f * Time.deltaTime;
-        }
+        // Applicazione finale della velocità al corpo fisico
+        _rb.linearVelocity = targetVelocity;
     }
 
     // -------------------------------------------------------------------------
@@ -186,6 +214,8 @@ public class PlayerMovementController : MonoBehaviour
         Vector2 lookInput = _input.InputActions.Player.Look.ReadValue<Vector2>();
         if (lookInput == Vector2.zero) return;
 
+        // La rotazione del transform orizzontale funziona correttamente con il Rigidbody
+        // purché le rotazioni nel componente Rigidbody siano bloccate (Freeze Rotation X,Y,Z).
         transform.Rotate(Vector3.up, lookInput.x * sensitivityX, Space.Self);
 
         _cameraPitch -= lookInput.y * sensitivityY;
@@ -205,11 +235,12 @@ public class PlayerMovementController : MonoBehaviour
         float targetHeight = isCrouching ? crouchHeight : standingHeight;
         float targetCameraY = isCrouching ? cameraCrouchY : cameraStandingY;
 
-        _controller.height = Mathf.Lerp(_controller.height, targetHeight, crouchTransitionSpeed * Time.deltaTime);
+        // MODIFICA: La transizione ora manipola le proprietà del CapsuleCollider.
+        _collider.height = Mathf.Lerp(_collider.height, targetHeight, crouchTransitionSpeed * Time.deltaTime);
 
-        Vector3 center = _controller.center;
-        center.y = _controller.height * 0.5f;
-        _controller.center = center;
+        Vector3 center = _collider.center;
+        center.y = _collider.height * 0.5f;
+        _collider.center = center;
 
         Vector3 camPos = cameraRoot.localPosition;
         camPos.y = Mathf.Lerp(camPos.y, targetCameraY, crouchTransitionSpeed * Time.deltaTime);
@@ -220,7 +251,13 @@ public class PlayerMovementController : MonoBehaviour
     // API
     // -------------------------------------------------------------------------
 
-    public void StopMovement() => CanMove = false;
+    public void StopMovement()
+    {
+        CanMove = false;
+        // Azzera immediatamente la velocità orizzontale per impedire scivolamenti inerziali
+        _rb.linearVelocity = new Vector3(0f, _rb.linearVelocity.y, 0f);
+    }
+
     public void StartMovement() => CanMove = true;
     public void StopLook() => CanLook = false;
     public void StartLook() => CanLook = true;
@@ -231,11 +268,13 @@ public class PlayerMovementController : MonoBehaviour
 
     private void OnDrawGizmos()
     {
-        if (_controller == null) return;
+        // MODIFICA: Gizmos aggiornati per utilizzare i dati del CapsuleCollider.
+        if (_collider == null) _collider = GetComponent<CapsuleCollider>();
+        if (_collider == null) return;
 
         Vector3 origin = transform.position
-                       + _controller.center
-                       + Vector3.down * (_controller.height * 0.5f - groundCheckRadius);
+                       + _collider.center
+                       + Vector3.down * (_collider.height * 0.5f - groundCheckRadius);
 
         Gizmos.color = _isGrounded ? Color.green : Color.red;
         Gizmos.DrawWireSphere(origin, groundCheckRadius);

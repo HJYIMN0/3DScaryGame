@@ -8,7 +8,7 @@ public abstract class AbstractMinigame : MonoBehaviour
 
     public bool IsMiniGameActive { get; private set; } = false;
     public bool HasMiniGameBeenCompleted => interactable.HasBeenCompleted;
-    public TaskManager taskManager { get; private set;  }
+    public TaskManager taskManager { get; private set; }
     public virtual void Start()
     {
         if (_playerInputController == null)
@@ -65,5 +65,5 @@ public abstract class AbstractMinigame : MonoBehaviour
             _playerInputController.InputActions.Player.Look.Disable();
             _playerInputController.InputActions.Player.Move.Disable();
         }
-    }  
+    }
 }

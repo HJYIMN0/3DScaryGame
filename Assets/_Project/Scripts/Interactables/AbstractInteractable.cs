@@ -20,8 +20,8 @@ public abstract class AbstractInteractable : MonoBehaviour
     protected virtual void Start()
     {
         taskManager = TaskManager.Instance;
-        
-        if (task != null && !task.isTaskSecret) 
+
+        if (task != null && !task.isTaskSecret)
         {
             taskManager.AddTask(task);
             Debug.Log($"Added task '{task.TaskName}' to DayManager.");
@@ -53,7 +53,12 @@ public abstract class AbstractInteractable : MonoBehaviour
         }
     }
 
-    public void EvaluateCanvaStatus(PlayerInteractionController player, GameObject canvaObj)
+    // MODIFICATO: rimosso il parametro "canvaObj". Era ridondante: l'unico punto da cui
+    // veniva chiamato questo metodo (il vecchio OnTriggerEnter) passava sempre "canvaPrefab",
+    // che è già un campo di questa classe. Se da qualche altra parte nel progetto chiami
+    // EvaluateCanvaStatus passando un prefab diverso, segnalamelo: con questa modifica
+    // quel comportamento andrebbe perso.
+    public void EvaluateCanvaStatus(PlayerInteractionController player)
     {
         Debug.Log("Player is here!");
         if (isCanvaInstantiated) return;
@@ -70,7 +75,7 @@ public abstract class AbstractInteractable : MonoBehaviour
         }
         else if (!isCanvaInstantiated && canvaInstance == null)
         {
-            canvaInstance = Instantiate(canvaObj, Vector3.zero, Quaternion.identity);
+            canvaInstance = Instantiate(canvaPrefab, Vector3.zero, Quaternion.identity);
             canvaInstance.transform.SetParent(transform);
             canvaInstance.GetComponent<InteractionCanvaManager>().Initialize(this);
             canvaInstance.SetActive(true);
@@ -82,7 +87,7 @@ public abstract class AbstractInteractable : MonoBehaviour
     public void InteractWithTask()
     {
         if (taskManager.IsPhoneInScene && !taskManager.HasAnsweredThePhone && !task.isThisPhoneTask)
-        { 
+        {
             Debug.Log("Player hasn't completed the phone task yet.");
             ShowDialogue(task.answerThePhoneText);
             return;
@@ -147,7 +152,7 @@ public abstract class AbstractInteractable : MonoBehaviour
         else
         {
             Debug.LogWarning($"No SFX assigned for task '{task.TaskName}'. or No AudioSource Component");
-            
+
         }
     }
 
@@ -176,39 +181,40 @@ public abstract class AbstractInteractable : MonoBehaviour
         Debug.Log($"Dialogue ended for task '{task.TaskName}'.");
     }
 
-    private void OnTriggerEnter(Collider other)
+    // MODIFICATO: OnTriggerEnter è stato rimosso da qui. Il rilevamento del trigger ora
+    // avviene solo in PlayerInteractionController (come richiesto), che chiama questo
+    // metodo pubblico passando se stesso. La logica interna è identica a prima: cambia solo
+    // chi la innesca (prima questa classe faceva GetComponent sul Player per procurarsi
+    // il riferimento, ora lo riceve già pronto).
+    public void OnPlayerEnter(PlayerInteractionController player)
     {
-        if (other.gameObject.CompareTag("Player"))
-        {
-            EvaluateCanvaStatus(other.gameObject.GetComponent<PlayerInteractionController>(), canvaPrefab);
+        EvaluateCanvaStatus(player);
 
-            if (_playerInteractionController == null)
-                _playerInteractionController = other.gameObject.GetComponent<PlayerInteractionController>();
+        if (_playerInteractionController == null)
+            _playerInteractionController = player;
 
-            // AGGIUNTO: recupera InkManager dal player (ora è un componente su di esso)
-            if (_inkManager == null)
-                _inkManager = other.gameObject.GetComponent<InkManager>();
+        // AGGIUNTO: recupera InkManager dal player (ora è un componente su di esso)
+        if (_inkManager == null)
+            _inkManager = player.GetComponent<InkManager>();
 
-            _inkManager.onDialogueEnd += OnDialogueEnd; // Sottoscrivi all'evento onDialogueEnd dell'InkManager
-        }
+        _inkManager.onDialogueEnd += OnDialogueEnd; // Sottoscrivi all'evento onDialogueEnd dell'InkManager
     }
-    private void OnTriggerExit(Collider other)
+
+    // MODIFICATO: OnTriggerExit rimosso da qui per lo stesso motivo di OnPlayerEnter sopra.
+    public void OnPlayerExit(PlayerInteractionController player)
     {
-        if (other.gameObject.CompareTag("Player"))
+        DeactivateCanvas();
+        if (_playerInteractionController != null && _playerInteractionController.interactableTask == this)
         {
-            DeactivateCanvas();
-            if (_playerInteractionController != null && _playerInteractionController.interactableTask == this)
-            {
-                _playerInteractionController.ClearInteractableTaskForPlayer();
-                // MODIFICATO: da InkManager.Instance a _inkManager
-                _inkManager?.ClearStoryAndTextAsset();
-                Debug.Log("Player left, clearing interactable task for player.");
-            }
-            if (_inkManager != null)
-            {
-                _inkManager.onDialogueEnd -= OnDialogueEnd; // Annulla la sottoscrizione all'evento onDialogueEnd
-                Debug.Log("Player left, unsubscribing from onDialogueEnd event.");
-            }
+            _playerInteractionController.ClearInteractableTaskForPlayer();
+            // MODIFICATO: da InkManager.Instance a _inkManager
+            _inkManager?.ClearStoryAndTextAsset();
+            Debug.Log("Player left, clearing interactable task for player.");
+        }
+        if (_inkManager != null)
+        {
+            _inkManager.onDialogueEnd -= OnDialogueEnd; // Annulla la sottoscrizione all'evento onDialogueEnd
+            Debug.Log("Player left, unsubscribing from onDialogueEnd event.");
         }
     }
 }
