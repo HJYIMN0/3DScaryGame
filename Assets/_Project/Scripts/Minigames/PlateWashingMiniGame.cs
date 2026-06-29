@@ -1,14 +1,21 @@
 using UnityEngine;
+using UnityEngine.UI;
 
 [RequireComponent(typeof(CanvasGroup))]
 public class PlateWashingMiniGame : AbstractMinigame
 {
     [Header("UI References")]
-    [SerializeField] private RectTransform _cursorRect;
+    [Tooltip("Reference here the map used to clean!")]
+    [SerializeField] private RectTransform cursorRect;
+    [Tooltip("Reference here the plate in the ui from inspector")]
+    [SerializeField] private Image plateImage;
+    [Tooltip("All the different plates images you need to clean")]
+    [SerializeField] private Sprite[] plateSprites;
 
     [Header("Minigame Settings")]
     [SerializeField] private float lookSensitivity = 300f;
     [SerializeField] private int requiredCircles = 3;
+    [SerializeField] private int numberOfPlates = 3;
     [SerializeField] private bool isDebugMode = false;
     [SerializeField] private bool canReplayMiniGame = true;
 
@@ -20,6 +27,7 @@ public class PlateWashingMiniGame : AbstractMinigame
     private Vector2 _prevCursorPos;
     private float _accumulatedAngle;
     private int _completedCircles;
+    private int _completedPlates;
 
     private const float MinCircleRadius = 20f;
 
@@ -62,7 +70,7 @@ public class PlateWashingMiniGame : AbstractMinigame
         _cursorPos.x = Mathf.Clamp(_cursorPos.x, -halfSize.x, halfSize.x);
         _cursorPos.y = Mathf.Clamp(_cursorPos.y, -halfSize.y, halfSize.y);
 
-        _cursorRect.anchoredPosition = _cursorPos;
+        cursorRect.anchoredPosition = _cursorPos;
 
         if (_prevCursorPos.magnitude > MinCircleRadius && _cursorPos.magnitude > MinCircleRadius)
         {
@@ -77,10 +85,15 @@ public class PlateWashingMiniGame : AbstractMinigame
 
                 if (_completedCircles >= requiredCircles)
                 {
-                    taskManager.CompleteTask(interactable.TaskSO.TaskName);
-                    interactable.SetHasBeenCompleted(true);
-                    QuitMiniGame();
-                    return;
+                    if (_completedPlates >= plateSprites.Length) 
+                    {
+                        taskManager.CompleteTask(interactable.TaskSO.TaskName);
+                        interactable.SetHasBeenCompleted(true);
+                        QuitMiniGame();
+                        return;
+                    }
+                    _completedPlates++;
+                    plateImage.sprite = plateSprites[_completedPlates];
                 }
             }
         }
@@ -111,7 +124,7 @@ public class PlateWashingMiniGame : AbstractMinigame
         _prevCursorPos = Vector2.zero;
         _accumulatedAngle = 0f;
         _completedCircles = 0;
-        _cursorRect.anchoredPosition = Vector2.zero;
+        cursorRect.anchoredPosition = Vector2.zero;
     }
 
     public override void QuitMiniGame()
