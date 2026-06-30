@@ -123,9 +123,11 @@ public class DrillableWallMinigame : AbstractMinigame
 
     public override void StartMiniGame()
     {
+        base.StartMiniGame();
+
         if (HasMiniGameBeenCompleted) return;
 
-        TogglePlayerControl(false);
+        TogglePlayerControl(false, true);
 
         // MODIFICATO: attiviamo la CinemachineCamera dedicata.
         // Cinemachine, vedendo una camera attiva con priorità più alta,
@@ -141,7 +143,9 @@ public class DrillableWallMinigame : AbstractMinigame
 
     public override void QuitMiniGame()
     {
-        TogglePlayerControl(true);
+        base.QuitMiniGame();
+
+        TogglePlayerControl(true, true);
 
         // MODIFICATO: disattiviamo la CinemachineCamera del minigioco.
         // Cinemachine torna automaticamente alla camera del player.

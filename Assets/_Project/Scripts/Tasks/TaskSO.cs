@@ -1,3 +1,4 @@
+using Ink.Parsed;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -15,7 +16,7 @@ public class TaskSO : ScriptableObject
     public bool isTaskSecret = false;
 
     [Header("Ink Attributes")]
-    public bool isInkTask = false;
+    public bool IsInkTask => inkJson != null;
     public TextAsset inkJson;
     public bool usesVariablesInInk = false;
     public TextAsset alreadyCompletedTaskJson;

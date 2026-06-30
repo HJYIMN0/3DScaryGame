@@ -16,6 +16,15 @@ public abstract class AbstractInteractable : MonoBehaviour
 
     protected PlayerInteractionController _playerInteractionController;
     protected InkManager _inkManager;
+    public InkManager GetInkManager() 
+    {
+        if (_inkManager == null)
+        {
+            Debug.LogWarning("You tried to access to PlayerInkManager but it is null");
+            return null;
+        }
+        return _inkManager;
+    }
 
     protected virtual void Start()
     {
@@ -105,7 +114,7 @@ public abstract class AbstractInteractable : MonoBehaviour
     /// <param name="usesVariables"></param>
     public virtual void ShowDialogue(TextAsset dialogue, bool usesVariables)
     {
-        if (!task.isInkTask) return;
+        if (!task.IsInkTask) return;
         if (dialogue != null)
         {
             // MODIFICATO: da InkManager.Instance a _inkManager
@@ -120,7 +129,7 @@ public abstract class AbstractInteractable : MonoBehaviour
 
     public virtual void ShowDialogue(TextAsset dialogue, bool usesVariables, int differentDay)
     {
-        if (!task.isInkTask) return;
+        if (!task.IsInkTask) return;
         if (dialogue != null)
         {
             // MODIFICATO: da InkManager.Instance a _inkManager

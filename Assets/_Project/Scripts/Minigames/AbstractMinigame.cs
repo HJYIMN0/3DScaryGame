@@ -6,6 +6,7 @@ public abstract class AbstractMinigame : MonoBehaviour
     [SerializeField] protected AbstractInteractable interactable;
     [SerializeField] protected PlayerInputController _playerInputController;
 
+    protected bool isDialogueActive = false;
     public bool IsMiniGameActive { get; private set; } = false;
     public bool HasMiniGameBeenCompleted => interactable.HasBeenCompleted;
     public TaskManager taskManager { get; private set; }
@@ -21,12 +22,18 @@ public abstract class AbstractMinigame : MonoBehaviour
         }
 
         QuitMiniGame();
-        TogglePlayerControl(true);
+        TogglePlayerControl(true, true);
         taskManager = TaskManager.Instance;
     }
 
-    public abstract void StartMiniGame();
-    public abstract void QuitMiniGame();
+    public virtual void StartMiniGame()
+    {
+        IsMiniGameActive = true;
+    }
+    public virtual void QuitMiniGame()
+    {
+        IsMiniGameActive = false;
+    }
     public abstract void ResetMiniGame();
     public abstract void HandleMiniGameLogic();
     public bool IsTaskCompleted() => taskManager.CompletedTasks.Contains(interactable.TaskSO);
@@ -36,19 +43,18 @@ public abstract class AbstractMinigame : MonoBehaviour
     /// False if minigame started and player can not move
     /// </summary>
     /// <param name="canMove"></param>
-    public void TogglePlayerControl(bool canMove)
+    public void TogglePlayerControl(bool canMove, bool canLook)
     {
-        if (canMove)
-        {
-            IsMiniGameActive = false;
+        if (canLook)
             _playerInputController.InputActions.Player.Look.Enable();
+
+        if (canMove)
             _playerInputController.InputActions.Player.Move.Enable();
-        }
-        else
-        {
-            IsMiniGameActive = true;
+
+        if (!canLook)
             _playerInputController.InputActions.Player.Look.Disable();
+
+        if (!canMove)
             _playerInputController.InputActions.Player.Move.Disable();
-        }
     }
 }

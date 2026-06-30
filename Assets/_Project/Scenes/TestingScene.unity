@@ -574,14 +574,6 @@ PrefabInstance:
       value: PF_KitchenSink
       objectReference: {fileID: 0}
     - target: {fileID: 7583263401368593735, guid: fb745d070b559e74cadb3acb0d550f5f, type: 3}
-      propertyPath: cursorRect
-      value: 
-      objectReference: {fileID: 1847379110}
-    - target: {fileID: 7583263401368593735, guid: fb745d070b559e74cadb3acb0d550f5f, type: 3}
-      propertyPath: plateImage
-      value: 
-      objectReference: {fileID: 1851645895}
-    - target: {fileID: 7583263401368593735, guid: fb745d070b559e74cadb3acb0d550f5f, type: 3}
       propertyPath: _playerInputController
       value: 
       objectReference: {fileID: 1563819658}
@@ -849,7 +841,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &1678356374
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -879,22 +871,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!224 &1847379110 stripped
-RectTransform:
-  m_CorrespondingSourceObject: {fileID: 2588906253199366606, guid: fb745d070b559e74cadb3acb0d550f5f, type: 3}
-  m_PrefabInstance: {fileID: 1389307652}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &1851645895 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 211291713304081508, guid: fb745d070b559e74cadb3acb0d550f5f, type: 3}
-  m_PrefabInstance: {fileID: 1389307652}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
 --- !u!224 &2074912707 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 3963636482592311230, guid: ac88d3bd494c8d048935131f2892f1c8, type: 3}

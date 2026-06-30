@@ -18,9 +18,9 @@ MonoBehaviour:
   canvaObj: {fileID: 0}
   TaskSfx: {fileID: 0}
   isTaskSecret: 0
-  isInkTask: 0
-  inkJson: {fileID: 0}
-  usesVariablesInInk: 0
+  isInkTask: 1
+  inkJson: {fileID: 4900000, guid: 15e3bd5a229ddae438605a63814cf833, type: 3}
+  usesVariablesInInk: 1
   alreadyCompletedTaskJson: {fileID: 0}
   isThisPhoneTask: 0
   answerThePhoneText: Answer the phone!

@@ -1,7 +1,5 @@
 using UnityEngine;
 using UnityEngine.UI;
-
-[RequireComponent(typeof(CanvasGroup))]
 public class PlateWashingMiniGame : AbstractMinigame
 {
     [Header("UI References")]
@@ -15,9 +13,20 @@ public class PlateWashingMiniGame : AbstractMinigame
     [Header("Minigame Settings")]
     [SerializeField] private float lookSensitivity = 300f;
     [SerializeField] private int requiredCircles = 3;
-    [SerializeField] private int numberOfPlates = 3;
+    [Tooltip("Set this as true if you want the minigame to start as soon as you press play on Unity")]
     [SerializeField] private bool isDebugMode = false;
     [SerializeField] private bool canReplayMiniGame = true;
+
+    [Header("Dirt stain settings")]
+    [SerializeField] private CanvasGroup dirtStain;
+    [SerializeField] private float fadeSpeed = 4f;
+
+    [Header("Ink knot settings")]
+    [Tooltip("Verify the knot name before the number in the ink file then paste it here. Remember: You must also add the _")]
+    [SerializeField] private string inkKnotName = "plate_";
+
+    private float _targetAlpha = 1f;
+
 
     private CanvasGroup _canvasGroup;
     private RectTransform _uiPanelRect;
@@ -30,6 +39,7 @@ public class PlateWashingMiniGame : AbstractMinigame
     private int _completedPlates;
 
     private const float MinCircleRadius = 20f;
+    private InkManager _inkManager => interactable.GetInkManager();
 
     private void Awake()
     {
@@ -41,6 +51,9 @@ public class PlateWashingMiniGame : AbstractMinigame
     {
         base.Start();
 
+        if (plateSprites.Length > 0)
+            plateImage.sprite = plateSprites[0];
+
         if (isDebugMode)
             StartMiniGame();
     }
@@ -48,6 +61,13 @@ public class PlateWashingMiniGame : AbstractMinigame
     private void Update()
     {
         if (!IsMiniGameActive) return;
+
+        if (isDialogueActive)
+        {
+            if (!_inkManager.IsDialogueOpen)
+                isDialogueActive = false;
+            return;
+        }
 
         if (_playerInputController.InputActions.Player.Quit.IsPressed())
         {
@@ -58,12 +78,23 @@ public class PlateWashingMiniGame : AbstractMinigame
         HandleMiniGameLogic();
     }
 
+    // MODIFICATO: HandleMiniGameLogic ora è solo un orchestratore che chiama i metodi
+    // dedicati in ordine. La logica interna di ognuno è identica a prima, solo spostata.
     public override void HandleMiniGameLogic()
     {
         _playerLookInput = _playerInputController.InputActions.Player.Look.ReadValue<Vector2>();
 
         if (_playerLookInput == Vector2.zero) return;
 
+        EvaluateMousePosition();
+        EvaluateAlpha();
+        EvaluateCirclesNumber();
+    }
+
+    // AGGIUNTO: estratto da HandleMiniGameLogic. Aggiorna la posizione del cursore
+    // in base all'input Look, applicando il clamp ai limiti del pannello UI.
+    private void EvaluateMousePosition()
+    {
         _cursorPos += _playerLookInput * lookSensitivity * Time.deltaTime;
 
         Vector2 halfSize = _uiPanelRect.rect.size * 0.5f;
@@ -71,7 +102,23 @@ public class PlateWashingMiniGame : AbstractMinigame
         _cursorPos.y = Mathf.Clamp(_cursorPos.y, -halfSize.y, halfSize.y);
 
         cursorRect.anchoredPosition = _cursorPos;
+    }
 
+    // AGGIUNTO: estratto da HandleMiniGameLogic. Gestisce solo il fade dello sporco,
+    // logica identica a prima (Lerp verso _targetAlpha).
+    private void EvaluateAlpha()
+    {
+        dirtStain.alpha = Mathf.Lerp(dirtStain.alpha, _targetAlpha, Time.deltaTime * fadeSpeed);
+    }
+
+    // AGGIUNTO: estratto da HandleMiniGameLogic. Calcola l'angolo accumulato e conta
+    // i cerchi completati. CORRETTO: _prevCursorPos = _cursorPos viene ora eseguito
+    // sempre a fine metodo, fuori dall'if — esattamente come nella versione originale.
+    // Era stato spostato erroneamente dentro l'if in una modifica precedente, il che
+    // congelava _prevCursorPos non appena il cursore rientrava sotto MinCircleRadius,
+    // rompendo il calcolo dell'angolo e quindi sia il conteggio dei giri che il fade alpha.
+    private void EvaluateCirclesNumber()
+    {
         if (_prevCursorPos.magnitude > MinCircleRadius && _cursorPos.magnitude > MinCircleRadius)
         {
             float prevAngle = Mathf.Atan2(_prevCursorPos.y, _prevCursorPos.x) * Mathf.Rad2Deg;
@@ -83,22 +130,61 @@ public class PlateWashingMiniGame : AbstractMinigame
                 _completedCircles++;
                 _accumulatedAngle -= Mathf.Sign(_accumulatedAngle) * 360f;
 
+                float progress = (float)_completedCircles / requiredCircles;
+                _targetAlpha = 1f - progress;
+
+                Debug.Log($"[PlateWashing] Cerchio completato: {_completedCircles}/{requiredCircles}");
+
                 if (_completedCircles >= requiredCircles)
                 {
-                    if (_completedPlates >= plateSprites.Length) 
+                    dirtStain.alpha = 1;
+                    _prevCursorPos = _cursorPos;
+                    _completedCircles = 0;
+                    _accumulatedAngle = 0;
+
+                    if (_completedPlates >= plateSprites.Length - 1)
                     {
                         taskManager.CompleteTask(interactable.TaskSO.TaskName);
                         interactable.SetHasBeenCompleted(true);
                         QuitMiniGame();
                         return;
                     }
+
                     _completedPlates++;
                     plateImage.sprite = plateSprites[_completedPlates];
+
+                    EvaluateInkDialogueProgress();
                 }
             }
         }
 
+        // CORRETTO: spostato fuori dall'if, ripristinando il comportamento originale
         _prevCursorPos = _cursorPos;
+    }
+
+    private void EvaluateInkDialogueProgress()
+    {
+        TextAsset inkJson = interactable.TaskSO.inkJson;
+        if (inkJson == null) return;
+
+        string knot = $"{inkKnotName}{_completedPlates - 1}";
+
+        isDialogueActive = true;
+        _inkManager.StartDialogue(inkJson, false, false);
+
+        if (_inkManager.HasKnot(knot))
+        {
+            _inkManager.JumpToKnot(knot);
+        }
+        else
+        {
+            // AGGIUNTO: nessun dialogo scritto per questo piatto, chiudi subito senza
+            // mostrare nulla. EndDialogue ripristina lo stato esattamente come se il
+            // dialogo non fosse mai iniziato (incluso il toggle di PlayerDialogueController).
+            Debug.Log($"[PlateWashing] Nessun knot '{knot}' trovato, salto il dialogo per questo piatto.");
+            _inkManager.EndDialogue();
+            isDialogueActive = false;
+        }
     }
 
     public override void StartMiniGame()
@@ -109,16 +195,17 @@ public class PlateWashingMiniGame : AbstractMinigame
             return;
         }
 
-        // CORREZIONE CRITICA: Ordine delle operazioni.
-        // Prima chiamiamo TogglePlayerControl. Questo disabiliterà sia 'Move' che 'Look' del giocatore 
-        // nel caso standard, e imposterà IsMiniGameActive a true.
-        TogglePlayerControl(false);
+        base.StartMiniGame();
 
-        // Successivamente, forziamo l'abilitazione della singola azione 'Look' in modo 
-        // che possa essere letta da HandleMiniGameLogic.
-        _playerInputController.InputActions.Player.Look.Enable();
+        TogglePlayerControl(false, true);
 
         ToggleUI(true);
+
+        TextAsset inkJson = interactable.TaskSO.inkJson;
+        _inkManager.StartDialogue(inkJson, false, false);
+        _inkManager.JumpToKnot("tutorial");
+        isDialogueActive = true;
+
 
         _cursorPos = Vector2.zero;
         _prevCursorPos = Vector2.zero;
@@ -129,7 +216,13 @@ public class PlateWashingMiniGame : AbstractMinigame
 
     public override void QuitMiniGame()
     {
-        TogglePlayerControl(true);
+        base.QuitMiniGame();
+        _completedCircles = 0;
+        _accumulatedAngle = 0f;
+        dirtStain.alpha = 1f;
+        plateImage.sprite = plateSprites[_completedCircles];
+
+        TogglePlayerControl(true, true);
 
         ToggleUI(false);
     }
@@ -139,6 +232,8 @@ public class PlateWashingMiniGame : AbstractMinigame
         QuitMiniGame();
         _completedCircles = 0;
         _accumulatedAngle = 0f;
+        dirtStain.alpha = 1f;
+        plateImage.sprite = plateSprites[_completedCircles];
         StartMiniGame();
     }
 

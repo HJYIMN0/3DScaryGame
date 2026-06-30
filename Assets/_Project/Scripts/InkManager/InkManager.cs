@@ -1,7 +1,6 @@
 using Ink.Runtime;
 using System;
 using UnityEngine;
-using UnityEngine.EventSystems;
 
 public class InkManager : MonoBehaviour
 {
@@ -164,6 +163,23 @@ public class InkManager : MonoBehaviour
         _inkManagerUI.HideChoices();
 
         ContinueDialogue();
+    }
+
+    public void JumpToKnot(string knot)
+    {
+        if (currentStory == null)
+        {
+            Debug.LogWarning("[InkManager] JumpToKnot called but currentStory is null.");
+            return;
+        }
+        currentStory.ChoosePathString(knot);
+        ContinueDialogue();
+    }
+
+    public bool HasKnot(string knot)
+    {
+        if (currentStory == null) return false;
+        return currentStory.KnotContainerWithName(knot) != null;
     }
 
     public void EndDialogue()
