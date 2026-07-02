@@ -93,7 +93,7 @@ public class DrillableWallMinigame : AbstractMinigame
         CinemachineBrain brain = CinemachineBrain.GetActiveBrain(0);
         if (brain != null && brain.IsBlending) return;
 
-        if (_playerInputController.InputActions.Player.Attack.WasPressedThisFrame())
+        if (playerInputController.InputActions.Player.Attack.WasPressedThisFrame())
         {
             HandleMiniGameLogic();
         }
@@ -157,7 +157,7 @@ public class DrillableWallMinigame : AbstractMinigame
 
         if (HasCompletitionBeenReached())
         {
-            taskManager.CompleteTask(interactable.TaskSO.TaskName);
+            taskManager.CompleteTask(interactable.TaskSO);
             interactable.SetHasBeenCompleted(true);
         }
     }

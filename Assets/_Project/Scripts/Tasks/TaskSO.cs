@@ -1,6 +1,5 @@
-using Ink.Parsed;
 using UnityEngine;
-using UnityEngine.UI;
+
 
 [CreateAssetMenu(fileName = "New Task", menuName = "Task")]
 public class TaskSO : ScriptableObject

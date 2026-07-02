@@ -19,7 +19,7 @@ public class InteractableClothes : AbstractInteractable
     {
         if (HasBeenCompleted) return;
 
-        taskManager.CompleteTask(task.TaskName);
+        taskManager.CompleteTask(task);
         fadeInstance = Instantiate(fadeCanvaPrefab, Vector3.zero, Quaternion.identity);
         fadeInstance.GetComponent<Fader>().StartCoroutine(fadeInstance.GetComponent<Fader>().FadeIn(fadeDuration));
         StartCoroutine(WaitAndFadeOut());

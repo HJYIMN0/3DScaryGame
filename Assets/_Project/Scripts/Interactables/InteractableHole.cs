@@ -21,7 +21,7 @@ public class InteractableHole : AbstractInteractable
                 ShowDialogue(task.inkJson, true);
                 taskManager.MarkAllTasksAsComplete();
             };
-            TaskManager.Instance.CompleteTask(task.TaskName);
+            TaskManager.Instance.CompleteTask(task);
             HasBeenCompleted = true;
         }
         else

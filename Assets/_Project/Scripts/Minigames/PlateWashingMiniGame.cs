@@ -1,3 +1,4 @@
+using Unity.Cinemachine;
 using UnityEngine;
 using UnityEngine.UI;
 public class PlateWashingMiniGame : AbstractMinigame
@@ -12,7 +13,10 @@ public class PlateWashingMiniGame : AbstractMinigame
 
     [Header("Minigame Settings")]
     [SerializeField] private float lookSensitivity = 300f;
-    [SerializeField] private int requiredCircles = 3;
+    // MODIFICATO: sostituito requiredCircles (int, giri necessari) con
+    // necessaryCleanAmount (float, secondi di "pulizia" necessari dentro il rect
+    // del piatto). Non contiamo più i giri, solo il tempo passato dentro l'area.
+    [SerializeField] private float necessaryCleanAmount = 3f;
     [Tooltip("Set this as true if you want the minigame to start as soon as you press play on Unity")]
     [SerializeField] private bool isDebugMode = false;
     [SerializeField] private bool canReplayMiniGame = true;
@@ -33,12 +37,11 @@ public class PlateWashingMiniGame : AbstractMinigame
 
     private Vector2 _playerLookInput;
     private Vector2 _cursorPos;
-    private Vector2 _prevCursorPos;
-    private float _accumulatedAngle;
-    private int _completedCircles;
+    // AGGIUNTO: quantità di pulizia accumulata, cresce mentre il cursore resta
+    // dentro il rect del piatto. Sostituisce _accumulatedAngle/_completedCircles.
+    private float _currentCleanAmount;
     private int _completedPlates;
 
-    private const float MinCircleRadius = 20f;
     private InkManager _inkManager => interactable.GetInkManager();
 
     private void Awake()
@@ -69,7 +72,7 @@ public class PlateWashingMiniGame : AbstractMinigame
             return;
         }
 
-        if (_playerInputController.InputActions.Player.Quit.IsPressed())
+        if (playerInputController.InputActions.Player.Quit.IsPressed())
         {
             QuitMiniGame();
             return;
@@ -78,21 +81,19 @@ public class PlateWashingMiniGame : AbstractMinigame
         HandleMiniGameLogic();
     }
 
-    // MODIFICATO: HandleMiniGameLogic ora è solo un orchestratore che chiama i metodi
-    // dedicati in ordine. La logica interna di ognuno è identica a prima, solo spostata.
     public override void HandleMiniGameLogic()
     {
-        _playerLookInput = _playerInputController.InputActions.Player.Look.ReadValue<Vector2>();
+        _playerLookInput = playerInputController.InputActions.Player.Look.ReadValue<Vector2>();
 
         if (_playerLookInput == Vector2.zero) return;
 
         EvaluateMousePosition();
         EvaluateAlpha();
-        EvaluateCirclesNumber();
+        // MODIFICATO: chiamavamo EvaluateCirclesNumber(), ora chiamiamo il nuovo
+        // EvaluateCleanAmount() che non richiede più movimento circolare.
+        EvaluateCleanAmount();
     }
 
-    // AGGIUNTO: estratto da HandleMiniGameLogic. Aggiorna la posizione del cursore
-    // in base all'input Look, applicando il clamp ai limiti del pannello UI.
     private void EvaluateMousePosition()
     {
         _cursorPos += _playerLookInput * lookSensitivity * Time.deltaTime;
@@ -104,62 +105,47 @@ public class PlateWashingMiniGame : AbstractMinigame
         cursorRect.anchoredPosition = _cursorPos;
     }
 
-    // AGGIUNTO: estratto da HandleMiniGameLogic. Gestisce solo il fade dello sporco,
-    // logica identica a prima (Lerp verso _targetAlpha).
     private void EvaluateAlpha()
     {
         dirtStain.alpha = Mathf.Lerp(dirtStain.alpha, _targetAlpha, Time.deltaTime * fadeSpeed);
     }
-
-    // AGGIUNTO: estratto da HandleMiniGameLogic. Calcola l'angolo accumulato e conta
-    // i cerchi completati. CORRETTO: _prevCursorPos = _cursorPos viene ora eseguito
-    // sempre a fine metodo, fuori dall'if — esattamente come nella versione originale.
-    // Era stato spostato erroneamente dentro l'if in una modifica precedente, il che
-    // congelava _prevCursorPos non appena il cursore rientrava sotto MinCircleRadius,
-    // rompendo il calcolo dell'angolo e quindi sia il conteggio dei giri che il fade alpha.
-    private void EvaluateCirclesNumber()
+    private void EvaluateCleanAmount()
     {
-        if (_prevCursorPos.magnitude > MinCircleRadius && _cursorPos.magnitude > MinCircleRadius)
+        RectTransform plateRect = plateImage.rectTransform;
+        Vector2 plateCenter = plateRect.anchoredPosition;
+        Vector2 plateHalfSize = plateRect.rect.size * 0.5f;
+
+        bool isInsidePlate =
+            Mathf.Abs(_cursorPos.x - plateCenter.x) <= plateHalfSize.x &&
+            Mathf.Abs(_cursorPos.y - plateCenter.y) <= plateHalfSize.y;
+
+        if (!isInsidePlate) return;
+
+        _currentCleanAmount += Time.deltaTime;
+
+        float progress = _currentCleanAmount / necessaryCleanAmount;
+        _targetAlpha = 1f - progress;
+
+        if (_currentCleanAmount >= necessaryCleanAmount)
         {
-            float prevAngle = Mathf.Atan2(_prevCursorPos.y, _prevCursorPos.x) * Mathf.Rad2Deg;
-            float currAngle = Mathf.Atan2(_cursorPos.y, _cursorPos.x) * Mathf.Rad2Deg;
-            _accumulatedAngle += Mathf.DeltaAngle(prevAngle, currAngle);
+            dirtStain.alpha = 1;
+            _currentCleanAmount = 0f;
 
-            if (Mathf.Abs(_accumulatedAngle) >= 360f)
+            Debug.Log($"[PlateWashing] Piatto pulito: {_completedPlates + 1}/{plateSprites.Length}");
+
+            if (_completedPlates >= plateSprites.Length - 1)
             {
-                _completedCircles++;
-                _accumulatedAngle -= Mathf.Sign(_accumulatedAngle) * 360f;
-
-                float progress = (float)_completedCircles / requiredCircles;
-                _targetAlpha = 1f - progress;
-
-                Debug.Log($"[PlateWashing] Cerchio completato: {_completedCircles}/{requiredCircles}");
-
-                if (_completedCircles >= requiredCircles)
-                {
-                    dirtStain.alpha = 1;
-                    _prevCursorPos = _cursorPos;
-                    _completedCircles = 0;
-                    _accumulatedAngle = 0;
-
-                    if (_completedPlates >= plateSprites.Length - 1)
-                    {
-                        taskManager.CompleteTask(interactable.TaskSO.TaskName);
-                        interactable.SetHasBeenCompleted(true);
-                        QuitMiniGame();
-                        return;
-                    }
-
-                    _completedPlates++;
-                    plateImage.sprite = plateSprites[_completedPlates];
-
-                    EvaluateInkDialogueProgress();
-                }
+                taskManager.CompleteTask(interactable.TaskSO);
+                interactable.SetHasBeenCompleted(true);
+                QuitMiniGame();
+                return;
             }
-        }
 
-        // CORRETTO: spostato fuori dall'if, ripristinando il comportamento originale
-        _prevCursorPos = _cursorPos;
+            _completedPlates++;
+            plateImage.sprite = plateSprites[_completedPlates];
+
+            EvaluateInkDialogueProgress();
+        }
     }
 
     private void EvaluateInkDialogueProgress()
@@ -178,9 +164,6 @@ public class PlateWashingMiniGame : AbstractMinigame
         }
         else
         {
-            // AGGIUNTO: nessun dialogo scritto per questo piatto, chiudi subito senza
-            // mostrare nulla. EndDialogue ripristina lo stato esattamente come se il
-            // dialogo non fosse mai iniziato (incluso il toggle di PlayerDialogueController).
             Debug.Log($"[PlateWashing] Nessun knot '{knot}' trovato, salto il dialogo per questo piatto.");
             _inkManager.EndDialogue();
             isDialogueActive = false;
@@ -208,21 +191,23 @@ public class PlateWashingMiniGame : AbstractMinigame
 
 
         _cursorPos = Vector2.zero;
-        _prevCursorPos = Vector2.zero;
-        _accumulatedAngle = 0f;
-        _completedCircles = 0;
+        // MODIFICATO: non c'è più _prevCursorPos/_accumulatedAngle da resettare,
+        // resettiamo invece _currentCleanAmount.
+        _currentCleanAmount = 0f;
         cursorRect.anchoredPosition = Vector2.zero;
     }
 
     public override void QuitMiniGame()
     {
         base.QuitMiniGame();
-        _completedCircles = 0;
-        _accumulatedAngle = 0f;
+        _currentCleanAmount = 0f;
         dirtStain.alpha = 1f;
-        plateImage.sprite = plateSprites[_completedCircles];
+        plateImage.sprite = plateSprites[_completedPlates];
 
-        TogglePlayerControl(true, true);
+        if (playerInputController != null )
+        {
+            TogglePlayerControl(true, true);
+        }
 
         ToggleUI(false);
     }
@@ -230,10 +215,9 @@ public class PlateWashingMiniGame : AbstractMinigame
     public override void ResetMiniGame()
     {
         QuitMiniGame();
-        _completedCircles = 0;
-        _accumulatedAngle = 0f;
+        _currentCleanAmount = 0f;
         dirtStain.alpha = 1f;
-        plateImage.sprite = plateSprites[_completedCircles];
+        plateImage.sprite = plateSprites[0];
         StartMiniGame();
     }
 

@@ -55,20 +55,18 @@ public class TaskManager : GenericSingleton<TaskManager>
             Debug.LogWarning($"Task '{task.TaskName}' not found in today's tasks.");
         }
     }
-    public void CompleteTask(string TaskId)
+    public void CompleteTask(TaskSO task)
     {
-        TaskSO task = tasksOfTheDay.Find(t =>
-            t.TaskName.Equals(TaskId, System.StringComparison.OrdinalIgnoreCase));
-        if (task != null && !CompletedTasks.Contains(task))
+        if (tasksOfTheDay.Contains(task) && !CompletedTasks.Contains(task))
         {
             CompletedTasks.Add(task);
             Debug.Log($"Task '{task.TaskName}' completed.");
 
             OnTaskComplete?.Invoke(task);
         }
-        else if (task == null)
+        else if (!tasksOfTheDay.Contains(task))
         {
-            Debug.LogWarning($"Task with ID '{TaskId}' not found in today's tasks.");
+            Debug.LogWarning($"Task '{task.TaskName}' not found in today's tasks.");
         }
         else
         {

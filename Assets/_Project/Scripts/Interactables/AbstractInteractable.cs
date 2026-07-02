@@ -167,14 +167,16 @@ public abstract class AbstractInteractable : MonoBehaviour
 
     public virtual void MarkTaskAsComplete()
     {
-        taskManager.CompleteTask(task.TaskName);
+        taskManager.CompleteTask(task);
         HasBeenCompleted = true;
     }
-
     public void StartMiniGame()
     {
         if (MiniGame != null)
         {
+            if (_playerInteractionController != null)
+                MiniGame.SetPlayerInputController(_playerInteractionController.GetComponent<PlayerInputController>());
+
             MiniGame.StartMiniGame();
             Debug.Log($"Starting mini-game for task '{task.TaskName}'.");
         }

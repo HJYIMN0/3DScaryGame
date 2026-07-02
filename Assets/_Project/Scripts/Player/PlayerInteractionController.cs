@@ -116,6 +116,8 @@ public class PlayerInteractionController : MonoBehaviour
         if (minigame != null && minigame != activeMinigame)
         {
             activeMinigame = minigame;
+            activeMinigame.SetPlayerInputController(this.gameObject.GetComponent<PlayerInputController>());
+
             Debug.Log($"Setting active Minigame for player as {minigame}");
         }
     }
@@ -124,6 +126,7 @@ public class PlayerInteractionController : MonoBehaviour
     {
         if (activeMinigame == null) return;
 
+        activeMinigame.SetPlayerInputController(null);
         activeMinigame = null;
         Debug.Log("active minigame is now null");
     }

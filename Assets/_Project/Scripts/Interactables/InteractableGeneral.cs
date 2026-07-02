@@ -12,7 +12,7 @@ public class InteractableGeneral : AbstractInteractable
             return;
         }
         Debug.Log($"Player interacted with {name}. Task completed!");
-        TaskManager.Instance.CompleteTask(task.TaskName);
+        TaskManager.Instance.CompleteTask(task);
         HasBeenCompleted = true;
     }
 }

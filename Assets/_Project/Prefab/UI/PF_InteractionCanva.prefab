@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 6425573273451070613}
   - component: {fileID: 8996547957330413190}
   m_Layer: 5
-  m_Name: InteractionCanva
+  m_Name: PF_InteractionCanva
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
