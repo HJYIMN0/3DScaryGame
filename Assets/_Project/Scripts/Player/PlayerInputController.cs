@@ -9,10 +9,14 @@ using UnityEngine.InputSystem;
 public class PlayerInputController : MonoBehaviour
 {
     public InputSystem_Actions InputActions { get; private set; }
+    public PlayerCameraController CameraController { get; private set; }
+    public PlayerMovementController MovementController { get; private set; }
 
     private void Awake()
     {
         InputActions = new InputSystem_Actions();
+        CameraController = GetComponent<PlayerCameraController>();
+        MovementController = GetComponent<PlayerMovementController>();
     }
 
     private void OnEnable()

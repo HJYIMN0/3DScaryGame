@@ -17,7 +17,7 @@ public class InkManagerUI : MonoBehaviour
     private Transform choiceContainerLayout;
     private TextMeshProUGUI canvaPrefabText;
     private GameObject canvaInstance;
-    private PlayerMovementController playerMovementController;
+    private PlayerInputController playerInputController;
 
     // MODIFICATO: le scelte sono ora stato interno della classe.
     // ShowChoices() non prende più List<Choice> come parametro esterno — la lista
@@ -36,7 +36,7 @@ public class InkManagerUI : MonoBehaviour
 
     private void Awake()
     {
-        playerMovementController = GetComponent<PlayerMovementController>();
+        playerInputController = GetComponent<PlayerInputController>();
     }
 
     public void SetText(string text)
@@ -66,7 +66,7 @@ public class InkManagerUI : MonoBehaviour
 
         _selectedIndex = choices.Count > 0 ? 0 : -1;
 
-        playerMovementController.StopLook();
+        playerInputController.CameraController.StopLook();
 
         for (int i = 0; i < choices.Count; i++)
         {
@@ -190,7 +190,7 @@ public class InkManagerUI : MonoBehaviour
         _choices.Clear();
         _selectedIndex = -1;
 
-        playerMovementController.StartLook();
+        playerInputController?.CameraController?.StartLook();
     }
 
     public void ToggleCanva()

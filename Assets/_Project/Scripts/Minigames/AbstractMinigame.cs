@@ -8,7 +8,6 @@ public abstract class AbstractMinigame : MonoBehaviour
     [SerializeField] protected CinemachineCamera minigameCamera;
 
     protected PlayerInputController playerInputController;
-    protected PlayerMovementController playerMovementController;
 
     protected bool isDialogueActive = false;
     public bool IsMiniGameActive { get; private set; } = false;
@@ -20,12 +19,6 @@ public abstract class AbstractMinigame : MonoBehaviour
         if (this.playerInputController != playerInputController)
         {
             this.playerInputController = playerInputController;
-            // AGGIUNTO: recupera PlayerMovementController insieme a PlayerInputController,
-            // dato che stanno sullo stesso GameObject del Player. Se playerInputController
-            // è null (es. ClearActiveMiniGameForPlayer), diventa null anche questo.
-            playerMovementController = playerInputController != null
-                ? playerInputController.GetComponent<PlayerMovementController>()
-                : null;
         }
     }
     public virtual void Start()
@@ -46,13 +39,13 @@ public abstract class AbstractMinigame : MonoBehaviour
 
         if (minigameCamera != null && !minigameCamera.gameObject.activeSelf)
             minigameCamera.gameObject.SetActive(true);
-
-        // AGGIUNTO: blocca la rotazione della camera del player durante il
-        // minigioco. TogglePlayerControl(false, true) lascia l'azione Look
-        // abilitata (serve al minigioco per muovere il cursore), quindi non
-        // basta: qui disattiviamo specificamente HandleLook() in
-        // PlayerMovementController tramite il suo flag CanLook.
-        playerMovementController?.StopLook();
+        if (playerInputController != null)
+        {
+            if (playerInputController.CameraController != null)
+            {
+                playerInputController.CameraController.enabled = false;
+            }
+        }
     }
     public virtual void QuitMiniGame()
     {
@@ -63,6 +56,15 @@ public abstract class AbstractMinigame : MonoBehaviour
 
         TogglePlayerControl(true, true);
         Cursor.visible = false;
+
+        //playerInputController?.CameraController.StartLook();
+        if (playerInputController != null)
+        {
+            if (playerInputController.CameraController != null)
+            {
+                playerInputController.CameraController.enabled = true;
+            }
+        }
     }
     public abstract void ResetMiniGame();
     public abstract void HandleMiniGameLogic();

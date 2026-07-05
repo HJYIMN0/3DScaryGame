@@ -311,6 +311,63 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1001 &1125634258
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 4705953156988233717, guid: edfca30e32aa78545960cacda30be4e8, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 11.54
+      objectReference: {fileID: 0}
+    - target: {fileID: 4705953156988233717, guid: edfca30e32aa78545960cacda30be4e8, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 4.47
+      objectReference: {fileID: 0}
+    - target: {fileID: 4705953156988233717, guid: edfca30e32aa78545960cacda30be4e8, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -7.0994296
+      objectReference: {fileID: 0}
+    - target: {fileID: 4705953156988233717, guid: edfca30e32aa78545960cacda30be4e8, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4705953156988233717, guid: edfca30e32aa78545960cacda30be4e8, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4705953156988233717, guid: edfca30e32aa78545960cacda30be4e8, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4705953156988233717, guid: edfca30e32aa78545960cacda30be4e8, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4705953156988233717, guid: edfca30e32aa78545960cacda30be4e8, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4705953156988233717, guid: edfca30e32aa78545960cacda30be4e8, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4705953156988233717, guid: edfca30e32aa78545960cacda30be4e8, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5333730743423679823, guid: edfca30e32aa78545960cacda30be4e8, type: 3}
+      propertyPath: m_Name
+      value: PF_CoffeeMachine01
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: edfca30e32aa78545960cacda30be4e8, type: 3}
 --- !u!1001 &1361340267
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -753,3 +810,4 @@ SceneRoots:
   - {fileID: 1656457252}
   - {fileID: 367099694}
   - {fileID: 7839771005395393762}
+  - {fileID: 1125634258}

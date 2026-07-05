@@ -37,8 +37,6 @@ public class PlateWashingMiniGame : AbstractMinigame
 
     private Vector2 _playerLookInput;
     private Vector2 _cursorPos;
-    // AGGIUNTO: quantità di pulizia accumulata, cresce mentre il cursore resta
-    // dentro il rect del piatto. Sostituisce _accumulatedAngle/_completedCircles.
     private float _currentCleanAmount;
     private int _completedPlates;
 

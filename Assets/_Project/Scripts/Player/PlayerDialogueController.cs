@@ -3,7 +3,6 @@
 public class PlayerDialogueController : MonoBehaviour
 {
     private PlayerInteractionController _playerInteractionController;
-    private PlayerMovementController _playerMovementController;
     private PlayerInputController _input;
     private InkManager _inkManager;
     private InkManagerUI _inkManagerUI;
@@ -14,7 +13,6 @@ public class PlayerDialogueController : MonoBehaviour
     private void Awake()
     {
         _playerInteractionController = GetComponent<PlayerInteractionController>();
-        _playerMovementController = GetComponent<PlayerMovementController>();
         _input = GetComponent<PlayerInputController>();
         _inkManager = GetComponent<InkManager>();
         _inkManagerUI = GetComponent<InkManagerUI>();
@@ -24,18 +22,18 @@ public class PlayerDialogueController : MonoBehaviour
 
     private void OnEnable()
     {
-        _playerMovementController.StopMovement();
+        _input?.MovementController?.StopMovement();
     }
 
     private void OnDisable()
     {
-        _playerMovementController.StartMovement();
+        _input?.MovementController?.StartMovement();
     }
 
     private void Update()
     {
         // Avanzamento dialogo / attacco
-        if (_input.InputActions.Player.Attack.WasPressedThisFrame())
+        if (_input?.InputActions.Player.Attack.WasPressedThisFrame() == true)
             HandleDialogue();
 
         // Navigazione scelte — solo quando ci sono scelte attive
