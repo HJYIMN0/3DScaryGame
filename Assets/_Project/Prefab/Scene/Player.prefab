@@ -335,6 +335,9 @@ MonoBehaviour:
   playerCamera: {fileID: 0}
   interactionDistance: 2.98
   interactionRadius: 2.04
+  interactableLayerMask:
+    serializedVersion: 2
+    m_Bits: 768
 --- !u!114 &3409986702014537947
 MonoBehaviour:
   m_ObjectHideFlags: 0

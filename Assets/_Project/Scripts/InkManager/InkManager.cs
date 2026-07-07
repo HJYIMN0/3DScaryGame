@@ -184,9 +184,9 @@ public class InkManager : MonoBehaviour
 
     public void EndDialogue()
     {
+        currentStory = null;
         ToggleSystem();
         onDialogueEnd?.Invoke(currentTextAsset);
-        currentStory = null;
     }
 
     private void ToggleSystem()

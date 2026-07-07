@@ -210,7 +210,7 @@ GameObject:
   - component: {fileID: 1583189150574412477}
   - component: {fileID: 8463643800999935980}
   - component: {fileID: 671339223716020362}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: PF_SlidingPuzzleInteractableCube
   m_TagString: Interactable
   m_Icon: {fileID: 0}

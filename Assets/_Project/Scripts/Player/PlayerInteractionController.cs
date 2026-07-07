@@ -2,16 +2,17 @@ using UnityEngine;
 
 public class PlayerInteractionController : MonoBehaviour
 {
-    [SerializeField] private bool isThisLevelPhoneLevel = false;
     [SerializeField] private Camera playerCamera;
     [SerializeField] private float interactionDistance = 3f;
     [SerializeField] private float interactionRadius = 5f;
+    [SerializeField] private LayerMask interactableLayerMask;
 
     public AbstractInteractable interactableTask { get; private set; }
     public AbstractMinigame activeMinigame { get; private set; }
 
     private PlayerInputController _input;
     private PlayerDialogueController _dialogueController;
+    private InkManagerUI _inkManagerUI;
 
     public bool HasAnsweredPhone { get; private set; }
 
@@ -28,11 +29,7 @@ public class PlayerInteractionController : MonoBehaviour
     {
         _input = GetComponent<PlayerInputController>();
         _dialogueController = GetComponent<PlayerDialogueController>();
-
-        if (isThisLevelPhoneLevel)
-            Debug.Log("This level is a phone level.");
-        else
-            Debug.Log("This level is not a phone level.");
+        _inkManagerUI = GetComponent<InkManagerUI>();
     }
 
     private void Update()
@@ -49,7 +46,7 @@ public class PlayerInteractionController : MonoBehaviour
         if (!isBusyWithDialogueOrMinigame)
         {
             bool didHit = Physics.SphereCast(playerCamera.transform.position,
-                interactionRadius, playerCamera.transform.forward, out RaycastHit hit, interactionDistance);
+                interactionRadius, playerCamera.transform.forward, out RaycastHit hit, interactionDistance, interactableLayerMask);
             bool isLookingAtInteractable = didHit && hit.collider.CompareTag("Interactable");
 
             if (isLookingAtInteractable)
@@ -75,6 +72,10 @@ public class PlayerInteractionController : MonoBehaviour
                 if (activeMinigame != null)
                 {
                     ClearActiveMiniGameForPlayer();
+                }
+                if (_inkManagerUI.IsDialogueOpen && interactableTask == null && activeMinigame == null)
+                {
+                    _inkManagerUI.CloseCanva();
                 }
             }
         }
