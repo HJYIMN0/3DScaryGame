@@ -72,7 +72,7 @@ MonoBehaviour:
   injectionPoint: 550
   fetchColorBuffer: 1
   requirements: 0
-  passMaterial: {fileID: 2100000, guid: fedf334cf2cc1b44d9ae7b524decb528, type: 2}
+  passMaterial: {fileID: 2100000, guid: 3406407478712f547840af41dbf1c22a, type: 2}
   passIndex: 0
   bindDepthStencilAttachment: 0
   m_Version: 1
@@ -90,4 +90,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::FullscreenCustomLightingFeature
   m_Active: 1
   renderPassEvent: 500
-  material: {fileID: 2100000, guid: fedf334cf2cc1b44d9ae7b524decb528, type: 2}
+  material: {fileID: 2100000, guid: 3406407478712f547840af41dbf1c22a, type: 2}

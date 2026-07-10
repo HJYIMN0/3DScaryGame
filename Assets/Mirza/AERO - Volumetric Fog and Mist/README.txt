@@ -7,9 +7,8 @@ A) Set your render pipeline asset to the one included in the package under Setti
 B) Alternatively, add a URP FullScreenPassRendererFeature and set the fog material.
 
 You can use the included volumetric fog material, or copy/modify/create your own.
-If you don't care for scattering/blur/mist, set *both* the remap min and max to 1.0.
 
-Quality and performance are determined by steps and lighting features.
+Quality and performance are determined by raymarch steps and features.
 
 That's it!
 
@@ -36,3 +35,48 @@ Please see the live documentation for more information.
 1.3.0 | June 02, 2026:
 
 - Added height masking (height fog) + texture.
+
+1.4.0 | June 07, 2026:
+
+- Added fog self-shadowing.
+
+1.5.0 | June 09, 2026:
+
+- Added height fog gradient(s).
+- Improved self-shadowing performance.
+
+1.6.0 | June 10, 2026:
+
+- Added custom shadow colour(s).
+- Performance optimizations, and bool-gating.
+
+1.6.1 | June 10, 2026:
+
+- Scene and settings tweak.
+
+1.6.2 | June 10, 2026:
+
+- Fixed issue with custom shadow colours' alpha being applied to fog self-shadowing even when the toggle has them disabled. Now they correctly match toggle state.
+
+1.6.3 | June 11, 2026:
+
+- Fixed APV sampling space issue.
+- Fixed issue with large scene texture sampling consistency.
+- Fixed issue with shadow artifacts at max distance.
+
+- Improved anisotropy.
+
+1.7.0 | June 12, 2026:
+
+- Added support for light cookies.
+- Added scrolling noise textures example.
+
+- Fixed flickering NaNs issue with APV lighting.
+
+1.7.1 | June 12, 2026:
+
+- Fixed jittering from precision degradation farther from origin via manual offset calculation.
+
+1.8.0 | June 13, 2026:
+
+- Added orthographic camera/rendering support.
