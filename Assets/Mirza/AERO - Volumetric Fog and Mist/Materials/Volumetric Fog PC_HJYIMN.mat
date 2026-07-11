@@ -127,20 +127,20 @@ Material:
     - _Adaptive_Probe_Volumes_Scale: 5
     - _Adaptive_Probe_Volumes_Strength: 1
     - _AddPrecomputedVelocity: 0
-    - _Additional_Light_Self_Shadow_Distance: 4
+    - _Additional_Light_Self_Shadow_Distance: 2
     - _Additional_Light_Self_Shadow_Growth: 1
-    - _Additional_Light_Self_Shadow_Steps: 4
+    - _Additional_Light_Self_Shadow_Steps: 2
     - _AlphaClip: 0
     - _AlphaToMask: 0
     - _Ambient_Light: 2
     - _Ambient_Light_Scale: 0.41
-    - _Anisotropy: 0.856
-    - _Anisotropy_Blend: 0.5
+    - _Anisotropy: 0.85
+    - _Anisotropy_Blend: 0.541
     - _Blend: 0
     - _BlendModePreserveSpecular: 1
-    - _Blur_Texture_Blend: 1
-    - _Blur_Texture_Remap_Max: 0.9
-    - _Blur_Texture_Remap_Min: 0.5
+    - _Blur_Texture_Blend: 0.943
+    - _Blur_Texture_Remap_Max: 0.792
+    - _Blur_Texture_Remap_Min: 0.366
     - _BumpScale: 1
     - _ClearCoatMask: 0
     - _ClearCoatSmoothness: 0
@@ -156,8 +156,8 @@ Material:
     - _ENABLE_AMBIENT_LIGHT: 1
     - _ENABLE_MAIN_LIGHT: 1
     - _ENABLE_MAIN_LIGHT_SHADOWS: 1
-    - _Enable_Adaptive_Probe_Volumes: 1
-    - _Enable_Additional_Light_Self_Shadow: 0
+    - _Enable_Adaptive_Probe_Volumes: 0
+    - _Enable_Additional_Light_Self_Shadow: 1
     - _Enable_Additional_Lights_Self_Shadow: 0
     - _Enable_Anisotropy: 1
     - _Enable_Blur_Texture: 1
@@ -171,7 +171,7 @@ Material:
     - _Enable_Scattering: 1
     - _Enable_Self_Shadow: 1
     - _Enable_Self_Shadow_Curves: 1
-    - _Enable_Shadow_Colour: 0
+    - _Enable_Shadow_Colour: 1
     - _EnvironmentReflections: 1
     - _GlossMapScale: 0
     - _Glossiness: 0
@@ -179,25 +179,25 @@ Material:
     - _Height: 2
     - _Height_Falloff: 1
     - _Height_Gradient_Blend: 1
-    - _Height_Gradient_Falloff: 1
+    - _Height_Gradient_Falloff: 3.09
     - _Height_Gradient_LUT_Blend: 1
     - _Height_Gradient_Length: 2
-    - _Height_Gradient_Offset: 0
+    - _Height_Gradient_Offset: 0.33
     - _Height_Gradient_Power: 1
     - _Height_Gradient_Remap_Max: 1
     - _Height_Gradient_Remap_Min: 0
     - _Height_Gradient_Texture_Amplitude: 0.5
     - _Height_Gradient_Texture_Frequency: 1
     - _Height_Gradient_Texture_Power: 1
-    - _Height_Mask_Blend: 0.98
+    - _Height_Mask_Blend: 1
     - _Height_Mask_Distance: 1
-    - _Height_Mask_Falloff: 4
-    - _Height_Mask_Length: 1
-    - _Height_Mask_Offset: 0.5
-    - _Height_Mask_Remap_Max: 1
-    - _Height_Mask_Remap_Min: 0
-    - _Height_Mask_Texture_Amplitude: 1.3
-    - _Height_Mask_Texture_Frequency: 0.05
+    - _Height_Mask_Falloff: 3.66
+    - _Height_Mask_Length: 1.27
+    - _Height_Mask_Offset: 0.18
+    - _Height_Mask_Remap_Max: 0.835
+    - _Height_Mask_Remap_Min: 0.286
+    - _Height_Mask_Texture_Amplitude: -1
+    - _Height_Mask_Texture_Frequency: 0.13
     - _Height_Mask_Texture_Power: 1
     - _Height_Mask_Texture_Scale: 0.05
     - _INTERNAL_ADDITIONAL_LIGHT_SHADOWS: 1
@@ -224,9 +224,9 @@ Material:
     - _Scattering_Remap_Min: 0.2
     - _Self_Shadow_Distance: 2
     - _Self_Shadow_Growth: 2
-    - _Self_Shadow_Power: 2
-    - _Self_Shadow_Remap_Max: 0.8
-    - _Self_Shadow_Remap_Min: 0.2
+    - _Self_Shadow_Power: 4.59
+    - _Self_Shadow_Remap_Max: 0.555
+    - _Self_Shadow_Remap_Min: 0.514
     - _Self_Shadow_Steps: 4
     - _Smoothness: 0.5
     - _SmoothnessTextureChannel: 0
@@ -242,18 +242,18 @@ Material:
     - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
     - _Bottom_Colour: {r: 1, g: 1, b: 1, a: 1}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
-    - _Colour: {r: 1, g: 1, b: 1, a: 1}
+    - _Colour: {r: 0.49909484, g: 0.5018867, b: 0.33995724, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _Height_Gradient_Bottom_Colour_Tint: {r: 1, g: 1, b: 1, a: 1}
-    - _Height_Gradient_Colour_Bottom: {r: 1, g: 1, b: 1, a: 1}
-    - _Height_Gradient_Colour_Top: {r: 0.009604802, g: 0.05667778, b: 0.2679245, a: 1}
+    - _Height_Gradient_Colour_Bottom: {r: 0.78887564, g: 0.8037735, b: 0.550509, a: 1}
+    - _Height_Gradient_Colour_Top: {r: 0.81886786, g: 0.817995, b: 0.7524314, a: 1}
     - _Height_Gradient_Texture_Animation: {r: 0, g: 0, b: 0, a: 0}
     - _Height_Gradient_Top_Colour_Tint: {r: 1, g: 1, b: 1, a: 1}
-    - _Height_Mask_Texture_Animation: {r: 0.01, g: 0.5, b: 0, a: 0}
+    - _Height_Mask_Texture_Animation: {r: -0.025, g: -0.105, b: 0, a: 0}
     - _Height_Mask_Texture_Offset: {r: 0, g: 0, b: 0, a: 0}
     - _Height_Mask_Texture_Tiling: {r: 1, g: 1, b: 0, a: 0}
-    - _Self_Shadow_Colour: {r: 0.25416154, g: 0.27811915, b: 0.82641506, a: 1}
-    - _Shadow_Colour: {r: 0.6301887, g: 0.21283726, b: 0.21283726, a: 1}
+    - _Self_Shadow_Colour: {r: 0.73313236, g: 0.7584905, b: 0.47369877, a: 1}
+    - _Shadow_Colour: {r: 0.3283019, g: 0.30785015, b: 0.15300106, a: 1}
     - _SpecColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}
     - _Top_Colour: {r: 1, g: 1, b: 1, a: 1}
   m_BuildTextureStacks: []
