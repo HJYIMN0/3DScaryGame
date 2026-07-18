@@ -1,0 +1,26 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fdb42010bcccddf44a08dbd0362b333c, type: 3}
+  m_Name: PhoneTask
+  m_EditorClassIdentifier: Assembly-CSharp::TaskSO
+  TaskName: Phone_Day01
+  TaskDescription: ANSWER THE PHONE
+  isMandatory: 1
+  canvaObj: {fileID: 5118407277419850778, guid: 7bc6925bac6833743ac4301f7508ebef, type: 3}
+  TaskSfx: {fileID: 0}
+  isTaskSecret: 0
+  isInkTask: 1
+  inkJson: {fileID: 4900000, guid: 03a3987afee44e0489d4a53b2ad5436d, type: 3}
+  usesVariablesInInk: 1
+  alreadyCompletedTaskJson: {fileID: 4900000, guid: ac19a8873fe558046980a0ea2ce81b84, type: 3}
+  isThisPhoneTask: 1
+  answerThePhoneText: 

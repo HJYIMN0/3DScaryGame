@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 96d429d11ff6a7d44a452afc88a23bad
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - interactable: {instanceID: 0}
+  - minigameCamera: {instanceID: 0}
+  - tilePrefab: {fileID: 6728040771164786157, guid: 82c6f864e0167c242bcd1c62dec06e61, type: 3}
+  - emptyTilePrefab: {fileID: 6728040771164786157, guid: aae404ab1886e144e8466d966822f32e, type: 3}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
