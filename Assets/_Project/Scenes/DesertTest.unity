@@ -220,6 +220,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Volumetric Fog Controller
       objectReference: {fileID: 0}
+    - target: {fileID: 7694996301517935287, guid: e00243cc933d5c246841bba6fdf6e3e2, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 7870696162298256655, guid: e00243cc933d5c246841bba6fdf6e3e2, type: 3}
       propertyPath: material
       value: 
@@ -280,6 +284,10 @@ PrefabInstance:
     - target: {fileID: 6669938469005677123, guid: 7890130fe28bb0d498888e9461479305, type: 3}
       propertyPath: m_Name
       value: Scene
+      objectReference: {fileID: 0}
+    - target: {fileID: 7261712109399271314, guid: 7890130fe28bb0d498888e9461479305, type: 3}
+      propertyPath: m_RendererIndex
+      value: 2
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -424,7 +432,7 @@ GameObject:
   - component: {fileID: 1169031563}
   - component: {fileID: 1169031562}
   - component: {fileID: 1169031561}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Desert
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -518,6 +526,10 @@ PrefabInstance:
     - target: {fileID: 1028601330947337663, guid: 053bffc15844cb5428386e0aa61ef331, type: 3}
       propertyPath: m_Name
       value: FogBox
+      objectReference: {fileID: 0}
+    - target: {fileID: 1028601330947337663, guid: 053bffc15844cb5428386e0aa61ef331, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2355022326492416741, guid: 053bffc15844cb5428386e0aa61ef331, type: 3}
       propertyPath: m_LocalScale.x

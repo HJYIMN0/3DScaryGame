@@ -214,7 +214,7 @@ Light:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 386051890}
   m_Enabled: 1
-  serializedVersion: 12
+  serializedVersion: 13
   m_Type: 1
   m_Color: {r: 1, g: 0.95686275, b: 0.8392157, a: 1}
   m_Intensity: 1
@@ -266,7 +266,7 @@ Light:
   m_UseBoundingSphereOverride: 0
   m_UseViewFrustumForShadowCasterCull: 1
   m_ForceVisible: 0
-  m_ShadowRadius: 0
+  m_ShapeRadius: 0
   m_ShadowAngle: 0
   m_LightUnit: 1
   m_LuxAtDistance: 1
@@ -438,35 +438,35 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 2251410283496987067, guid: 7890130fe28bb0d498888e9461479305, type: 3}
       propertyPath: field of view
-      value: 71.54043
+      value: 60.000004
       objectReference: {fileID: 0}
     - target: {fileID: 2875367584732049245, guid: 7890130fe28bb0d498888e9461479305, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 4.9105
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2875367584732049245, guid: 7890130fe28bb0d498888e9461479305, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 2.3374898
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2875367584732049245, guid: 7890130fe28bb0d498888e9461479305, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -0.21272
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2875367584732049245, guid: 7890130fe28bb0d498888e9461479305, type: 3}
       propertyPath: m_LocalRotation.w
-      value: -0.3726226
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2875367584732049245, guid: 7890130fe28bb0d498888e9461479305, type: 3}
       propertyPath: m_LocalRotation.x
-      value: -0.08717229
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2875367584732049245, guid: 7890130fe28bb0d498888e9461479305, type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0.89959055
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2875367584732049245, guid: 7890130fe28bb0d498888e9461479305, type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0.21045254
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4654327983979443348, guid: 7890130fe28bb0d498888e9461479305, type: 3}
       propertyPath: m_LocalPosition.x
@@ -474,11 +474,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4654327983979443348, guid: 7890130fe28bb0d498888e9461479305, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 2.609
+      value: 6.79
       objectReference: {fileID: 0}
     - target: {fileID: 4654327983979443348, guid: 7890130fe28bb0d498888e9461479305, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -0.35
+      value: 3.8
       objectReference: {fileID: 0}
     - target: {fileID: 4654327983979443348, guid: 7890130fe28bb0d498888e9461479305, type: 3}
       propertyPath: m_LocalRotation.w
@@ -579,6 +579,17 @@ Camera:
   m_CorrespondingSourceObject: {fileID: 2251410283496987067, guid: 7890130fe28bb0d498888e9461479305, type: 3}
   m_PrefabInstance: {fileID: 1028528749}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1905969962 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1165640851449058090, guid: 2615b63fc32547f468056d2a9d3f4d29, type: 3}
+  m_PrefabInstance: {fileID: 2592012362684309593}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f9dfa5b682dcd46bda6128250e975f58, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.Cinemachine::Unity.Cinemachine.CinemachineCamera
 --- !u!114 &1909054301 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 8864727621886039990, guid: 7890130fe28bb0d498888e9461479305, type: 3}
@@ -723,12 +734,28 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 467339126763607270, guid: 2615b63fc32547f468056d2a9d3f4d29, type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 467339126763607270, guid: 2615b63fc32547f468056d2a9d3f4d29, type: 3}
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1582882141331500770, guid: 2615b63fc32547f468056d2a9d3f4d29, type: 3}
       propertyPath: m_Name
       value: DrillableWall
+      objectReference: {fileID: 0}
+    - target: {fileID: 1582882141331500770, guid: 2615b63fc32547f468056d2a9d3f4d29, type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 1925985610544193103, guid: 2615b63fc32547f468056d2a9d3f4d29, type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 1925985610544193103, guid: 2615b63fc32547f468056d2a9d3f4d29, type: 3}
+      propertyPath: m_TagString
+      value: Interactable
       objectReference: {fileID: 0}
     - target: {fileID: 3233388396127396515, guid: 2615b63fc32547f468056d2a9d3f4d29, type: 3}
       propertyPath: brushSize
@@ -738,6 +765,10 @@ PrefabInstance:
       propertyPath: _raycastCamera
       value: 
       objectReference: {fileID: 1299530278}
+    - target: {fileID: 3233388396127396515, guid: 2615b63fc32547f468056d2a9d3f4d29, type: 3}
+      propertyPath: minigameCamera
+      value: 
+      objectReference: {fileID: 1905969962}
     - target: {fileID: 3233388396127396515, guid: 2615b63fc32547f468056d2a9d3f4d29, type: 3}
       propertyPath: _playerInputController
       value: 
@@ -796,6 +827,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3291461410144737714, guid: 2615b63fc32547f468056d2a9d3f4d29, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6753595905628110403, guid: 2615b63fc32547f468056d2a9d3f4d29, type: 3}
+      propertyPath: m_Enabled
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []

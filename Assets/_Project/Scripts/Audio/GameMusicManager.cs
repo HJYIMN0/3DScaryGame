@@ -14,10 +14,16 @@ public class GameMusicManager : GenericAudioPlayer
 
     [Tooltip("This is the audio source for the transition effect. You must assign two audiosource from the same GameObject that provides the music. So I can transition smoothly between the songs.")]
     [SerializeField] private AudioSource transitionAudioSource;
-
-    private new AudioClip clip;
     private int musicIndex = 0;
     public new bool IsPlaying => audioSource.isPlaying || transitionAudioSource.isPlaying;
+
+    private void Awake()
+    {
+        if (clip == null && levelMusicClips.Length > 0)
+        {
+            clip = levelMusicClips[musicIndex];
+        }
+    }
     public override void Play()
     {
         if (audioSource.isPlaying && transitionAudioSource.isPlaying)

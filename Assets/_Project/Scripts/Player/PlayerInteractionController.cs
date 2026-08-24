@@ -34,67 +34,75 @@ public class PlayerInteractionController : MonoBehaviour
 
     private void Update()
     {
-        // MODIFICATO: il return era stato commentato e sostituito con un semplice
-        // Debug.Log ("Ecco qui!"), quindi questo controllo non aveva più alcun effetto:
-        // il blocco raycast girava sempre, anche con dialogo/minigioco attivi.
-        // Ripristinato l'if che avvolge il blocco raycast, così mentre il player è
-        // impegnato in un dialogo o in un minigioco non viene ri-assegnato/ripulito
-        // l'interactable sotto al naso dell'interazione in corso.
-        bool isBusyWithDialogueOrMinigame = (_dialogueController != null && _dialogueController.IsDialogueActive)
-            || (activeMinigame != null && activeMinigame.IsMiniGameActive);
+        bool isBusyWithDialogueOrMinigame =
+            (_dialogueController != null && _dialogueController.IsDialogueActive) ||
+            (activeMinigame != null && activeMinigame.IsMiniGameActive);
 
-        if (!isBusyWithDialogueOrMinigame)
-        {
-            bool didHit = Physics.SphereCast(playerCamera.transform.position,
-                interactionRadius, playerCamera.transform.forward, out RaycastHit hit, interactionDistance, interactableLayerMask);
-            bool isLookingAtInteractable = didHit && hit.collider.CompareTag("Interactable");
+        // Durante dialogo o minigioco non cerchiamo altri oggetti.
+        if (isBusyWithDialogueOrMinigame)
+            return;
 
-            if (isLookingAtInteractable)
-            {
-                AbstractInteractable interactable = hit.collider.gameObject.GetComponent<AbstractInteractable>();
-                if (interactable != null)
-                {
-                    interactable.OnPlayerEnter(this);
+        bool didHit = Physics.SphereCast(
+            playerCamera.transform.position,
+            interactionRadius,
+            playerCamera.transform.forward,
+            out RaycastHit hit,
+            interactionDistance,
+            interactableLayerMask
+        );
 
-                    AbstractMinigame minigame = hit.collider.gameObject.GetComponent<AbstractMinigame>();
-                    if (minigame != null)
-                    {
-                        SetActiveMiniGameForPlayer(minigame);
-                    }
-                }
-            }
-            else
-            {
-                if (interactableTask != null)
-                {
-                    interactableTask.OnPlayerExit(this);
-                }
-                if (activeMinigame != null)
-                {
-                    ClearActiveMiniGameForPlayer();
-                }
-                if (_inkManagerUI.IsDialogueOpen && interactableTask == null && activeMinigame == null)
-                {
-                    _inkManagerUI.CloseCanva();
-                }
-            }
-        }
+        bool isLookingAtInteractable =
+            didHit && hit.collider.CompareTag("Interactable");
 
-        // AGGIUNTO: questo blocco mancava del tutto nel file incollato — era l'unico punto
-        // che chiamava HandleDialogueInteraction()/HandleMiniGameInteraction(). Senza di
-        // esso premere Interact non faceva letteralmente nulla: è la causa reale di entrambi
-        // i problemi segnalati (interazione che non parte, canva che non si disattiva mai
-        // perché il minigioco/dialogo non veniva mai avviato).
-        if (_input.InputActions.Player.Interact.WasPressedThisFrame())
+        if (!isLookingAtInteractable)
         {
             if (interactableTask != null)
+                interactableTask.OnPlayerExit(this);
+
+            if (activeMinigame != null)
+                ClearActiveMiniGameForPlayer();
+
+            if (_inkManagerUI != null &&
+                _inkManagerUI.IsDialogueOpen &&
+                interactableTask == null &&
+                activeMinigame == null)
             {
-                HandleDialogueInteraction();
+                _inkManagerUI.CloseCanva();
             }
-            else if (activeMinigame != null)
-            {
-                HandleMiniGameInteraction();
-            }
+
+            return;
+        }
+
+        AbstractInteractable interactable =
+            hit.collider.GetComponent<AbstractInteractable>();
+
+        if (interactable == null)
+            return;
+
+        // Fa comparire la UI e imposta interactableTask nel Player.
+        interactable.OnPlayerEnter(this);
+
+        // Salva il minigioco associato all'oggetto, se presente.
+        AbstractMinigame minigame =
+            hit.collider.GetComponent<AbstractMinigame>();
+
+        if (minigame != null)
+        {
+            SetActiveMiniGameForPlayer(minigame);
+        }
+        else if (activeMinigame != null)
+        {
+            // Stai guardando un normale interactable, non più il minigioco precedente.
+            ClearActiveMiniGameForPlayer();
+        }
+
+        // E avvia il minigioco dell'oggetto che stai guardando.
+        if (_input != null &&
+            _input.InputActions.Player.Interact.WasPressedThisFrame() &&
+            activeMinigame != null &&
+            !activeMinigame.IsMiniGameActive)
+        {
+            HandleMiniGameInteraction();
         }
     }
 
@@ -108,18 +116,6 @@ public class PlayerInteractionController : MonoBehaviour
     {
         Debug.Log("Clearing interactable task for player.");
         interactableTask = null;
-    }
-
-    private void HandleDialogueInteraction()
-    {
-        if (_dialogueController != null && _dialogueController.IsDialogueActive)
-            return;
-
-        if (interactableTask != null)
-        {
-            Debug.Log("Player interacted with task: " + interactableTask.name);
-            interactableTask.InteractWithTask();
-        }
     }
 
     public void SetActiveMiniGameForPlayer(AbstractMinigame minigame)
