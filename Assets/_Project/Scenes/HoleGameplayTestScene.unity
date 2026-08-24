@@ -131,6 +131,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: PF_Hole01
       objectReference: {fileID: 0}
+    - target: {fileID: 7167906877110368205, guid: fc664d82fa598c2419e152f85321327f, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
     - target: {fileID: 7508158083618467191, guid: fc664d82fa598c2419e152f85321327f, type: 3}
       propertyPath: m_LocalScale.x
       value: 0.86565

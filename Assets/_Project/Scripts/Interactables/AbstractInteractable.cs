@@ -69,7 +69,6 @@ public abstract class AbstractInteractable : MonoBehaviour
     // quel comportamento andrebbe perso.
     public void EvaluateCanvaStatus(PlayerInteractionController player)
     {
-        Debug.Log("Player is here!");
         if (isCanvaInstantiated) return;
         if (HasBeenCompleted) return;
 

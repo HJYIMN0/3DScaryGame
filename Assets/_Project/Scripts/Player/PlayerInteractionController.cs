@@ -38,7 +38,7 @@ public class PlayerInteractionController : MonoBehaviour
             (_dialogueController != null && _dialogueController.IsDialogueActive) ||
             (activeMinigame != null && activeMinigame.IsMiniGameActive);
 
-        // Durante dialogo o minigioco non cerchiamo altri oggetti.
+        // Durante dialoghi e minigiochi non cerchiamo nuovi interactable.
         if (isBusyWithDialogueOrMinigame)
             return;
 
@@ -54,7 +54,30 @@ public class PlayerInteractionController : MonoBehaviour
         bool isLookingAtInteractable =
             didHit && hit.collider.CompareTag("Interactable");
 
-        if (!isLookingAtInteractable)
+        AbstractInteractable interactable = null;
+        AbstractMinigame minigame = null;
+
+        if (isLookingAtInteractable)
+        {
+            interactable = hit.collider.GetComponent<AbstractInteractable>();
+
+            if (interactable != null)
+            {
+                // Mostra il popup e imposta interactableTask.
+                interactable.OnPlayerEnter(this);
+
+                // Per oggetti come la DrilableWall.
+                minigame = hit.collider.GetComponent<AbstractMinigame>();
+
+                if (minigame != null)
+                    SetActiveMiniGameForPlayer(minigame);
+                else if (activeMinigame != null)
+                    ClearActiveMiniGameForPlayer();
+            }
+        }
+
+        // Non stiamo guardando un vero interactable: pulizia UI e riferimenti.
+        if (interactable == null)
         {
             if (interactableTask != null)
                 interactableTask.OnPlayerExit(this);
@@ -73,39 +96,22 @@ public class PlayerInteractionController : MonoBehaviour
             return;
         }
 
-        AbstractInteractable interactable =
-            hit.collider.GetComponent<AbstractInteractable>();
-
-        if (interactable == null)
-            return;
-
-        // Fa comparire la UI e imposta interactableTask nel Player.
-        interactable.OnPlayerEnter(this);
-
-        // Salva il minigioco associato all'oggetto, se presente.
-        AbstractMinigame minigame =
-            hit.collider.GetComponent<AbstractMinigame>();
-
-        if (minigame != null)
-        {
-            SetActiveMiniGameForPlayer(minigame);
-        }
-        else if (activeMinigame != null)
-        {
-            // Stai guardando un normale interactable, non più il minigioco precedente.
-            ClearActiveMiniGameForPlayer();
-        }
-
-        // E avvia il minigioco dell'oggetto che stai guardando.
+        // Gestione della pressione di E.
         if (_input != null &&
-            _input.InputActions.Player.Interact.WasPressedThisFrame() &&
-            activeMinigame != null &&
-            !activeMinigame.IsMiniGameActive)
+            _input.InputActions.Player.Interact.WasPressedThisFrame())
         {
-            HandleMiniGameInteraction();
+            if (activeMinigame != null && !activeMinigame.IsMiniGameActive)
+            {
+                // DrilableWall e altri minigiochi.
+                HandleMiniGameInteraction();
+            }
+            else if (interactableTask != null)
+            {
+                // Telefono e interactable basati su dialogo.
+                interactableTask.InteractWithTask();
+            }
         }
     }
-
     public void SetInteractableTaskForPlayer(AbstractInteractable taskToInteractWith)
     {
         Debug.Log("Setting interactable task for player: " + taskToInteractWith.name);
