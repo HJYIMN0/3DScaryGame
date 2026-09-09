@@ -1,4 +1,2 @@
-I already drank my coffee.
-
-Was it deliberate?
+You already pretended to make a choice
 -> END

@@ -18,9 +18,8 @@ MonoBehaviour:
   canvaObj: {fileID: 5118407277419850778, guid: 7bc6925bac6833743ac4301f7508ebef, type: 3}
   TaskSfx: {fileID: 0}
   isTaskSecret: 0
-  isInkTask: 1
-  inkJson: {fileID: 4900000, guid: 555ed896bb7830b4b839587ba8739c6b, type: 3}
+  inkJson: {fileID: 4900000, guid: d1f076af864eaf94db9de9d84291b2a7, type: 3}
   usesVariablesInInk: 1
-  alreadyCompletedTaskJson: {fileID: 4900000, guid: 824c1a8300c10b2489ea7176d525f2a8, type: 3}
+  alreadyCompletedTaskJson: {fileID: 4900000, guid: b4d50a1eef6ce8a4da2dea49aa0a3358, type: 3}
   isThisPhoneTask: 0
   answerThePhoneText: Answer the phone!

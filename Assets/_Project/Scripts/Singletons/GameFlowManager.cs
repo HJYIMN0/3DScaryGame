@@ -13,9 +13,15 @@ public class GameFlowManager : GenericSingleton<GameFlowManager>
     public int CurrentDay => currentDay;
     public string CurrentScene => gameScenes[CurrentDay];
 
+    private bool isLoadingScene = false;
+
     private void Start()
     {
         Debug.Log($"GameFlowManager started. Current day: {currentDay}, Current scene: {CurrentScene}");
+    }
+    public void LoadScene(string sceneName)
+    {
+        SceneManager.LoadSceneAsync(sceneName);
     }
     public void LoadScene(int day, float fadeDuration)
     {
@@ -35,12 +41,19 @@ public class GameFlowManager : GenericSingleton<GameFlowManager>
             return;
         }
 
+        StopAllCoroutines();
         StartCoroutine(FadeToLoad(day, gameScenes[day], fadeCanvaPrefab, fadeDuration));
     }
 
 
     private IEnumerator FadeToLoad(int day, string sceneName, GameObject objToFade, float fadeDuration)
     {
+        if (isLoadingScene)
+        {
+            Debug.LogWarning("A scene is already loading. Please wait until the current load is complete.");
+            yield break;
+        }
+        isLoadingScene = true;
         GameObject fadeInstance = Instantiate(objToFade, Vector3.zero, Quaternion.identity);
         fadeInstance.transform.SetParent(transform);
         Fader fader = fadeInstance.GetComponent<Fader>();
@@ -55,6 +68,7 @@ public class GameFlowManager : GenericSingleton<GameFlowManager>
         currentDay = day;
 
         TaskManager.Instance.SetPhoneAnswered(false);
+        isLoadingScene = false;
     }
 
     public override bool IsDestroyedOnLoad() => false;

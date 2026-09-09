@@ -21,15 +21,15 @@ Nothing better than coffee to start off my day
 -> END
 
 === Day3 ===
-I used to hate coffee.
-In truth, I still don't like it.
+Ahh, the illusion of choice
 
 + [Drink the coffee]
-    Yet I drink it every day.
+You did not make any difference
     -> Reflection
 
 + [Don't drink the coffee]
-    Today, I leave it untouched.
+The text has changed.
+Does it make any difference?
     -> Reflection
 
 === Reflection ===

@@ -17,5 +17,8 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/_Project/Scenes/Build/Day01.unity
     guid: a6c476deb300e3949aa736fbcd9dd068
+  - enabled: 1
+    path: Assets/_Project/Scenes/Build/Day01_Dream.unity
+    guid: 10c0c02f753fc0043b44ca5067318360
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 052faaac586de48259a63d0c4782560b, type: 3}
