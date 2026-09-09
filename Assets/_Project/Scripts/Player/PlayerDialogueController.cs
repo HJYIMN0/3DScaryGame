@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using System;
 
 public class PlayerDialogueController : MonoBehaviour
 {
@@ -9,6 +10,7 @@ public class PlayerDialogueController : MonoBehaviour
 
     public bool IsDialogueActive => _inkManager != null && _inkManager.IsStoryActive;
     public bool HasActiveChoices => _inkManagerUI != null && _inkManagerUI.HasActiveChoices;
+    public Action onDialogueEnd; // Event triggered when a dialogue ends
 
     private void Awake()
     {
@@ -61,6 +63,7 @@ public class PlayerDialogueController : MonoBehaviour
 
         if (_inkManager.IsDialogueOpen)
         {
+            onDialogueEnd?.Invoke();
             _inkManager.EndDialogue();
             return;
         }

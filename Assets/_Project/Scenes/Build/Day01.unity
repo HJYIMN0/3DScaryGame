@@ -791,18 +791,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: Singletons
       objectReference: {fileID: 0}
-    - target: {fileID: 2452079375063236483, guid: 5bd6f56178a44694a980e9c775511dbc, type: 3}
-      propertyPath: currentDay
-      value: 3
-      objectReference: {fileID: 0}
-    - target: {fileID: 2452079375063236483, guid: 5bd6f56178a44694a980e9c775511dbc, type: 3}
-      propertyPath: gameScenes.Array.size
-      value: 5
-      objectReference: {fileID: 0}
-    - target: {fileID: 2452079375063236483, guid: 5bd6f56178a44694a980e9c775511dbc, type: 3}
-      propertyPath: 'gameScenes.Array.data[4]'
-      value: Day01_Dream
-      objectReference: {fileID: 0}
     - target: {fileID: 5634472928762528196, guid: 5bd6f56178a44694a980e9c775511dbc, type: 3}
       propertyPath: m_LocalPosition.x
       value: 803.6643

@@ -16,6 +16,7 @@ public class PlayerInteractionController : MonoBehaviour
 
     public bool HasAnsweredPhone { get; private set; }
 
+
     public void SetHasAnsweredPhone(TaskSO phoneTask, bool hasAnswered)
     {
         if (phoneTask != null && phoneTask.isThisPhoneTask)
@@ -116,6 +117,15 @@ public class PlayerInteractionController : MonoBehaviour
     {
         Debug.Log("Setting interactable task for player: " + taskToInteractWith.name);
         interactableTask = taskToInteractWith;
+
+        if (_dialogueController != null)
+            _dialogueController.onDialogueEnd -= OnCurrentTaskDialogueEnded;
+
+        interactableTask = taskToInteractWith;
+
+        // 🔽 Poi ci iscriviamo al nuovo task
+        if (interactableTask != null && _dialogueController != null)
+            _dialogueController.onDialogueEnd += OnCurrentTaskDialogueEnded;
     }
 
     public void ClearInteractableTaskForPlayer()
@@ -180,6 +190,24 @@ public class PlayerInteractionController : MonoBehaviour
         {
             Gizmos.color = Color.cyan;
             Gizmos.DrawWireSphere(hit.point, 0.1f);
+        }
+    }
+
+    private void OnCurrentTaskDialogueEnded()
+    {
+        // Il dialogo è finito: ora deve partire il "prossimo piatto"!
+        if (interactableTask != null)
+        {
+            // Opzione 1: Se AbstractInteractable ha un metodo dedicato (es. OnDialogueComplete)
+            // interactableTask.OnDialogueComplete(); 
+
+            // Opzione 2: Se vuoi che parta la prossima interazione automaticamente
+            // (es. se il task è una catena di dialoghi, lo richiami)
+            interactableTask.InteractWithTask();
+
+            // Opzione 3: Se il "prossimo piatto" è gestito da un TaskSO specifico,
+            // puoi fare un cast e chiamare un metodo personalizzato.
+            // Esempio: if (interactableTask is PhoneTask phone) phone.NextStep();
         }
     }
 }

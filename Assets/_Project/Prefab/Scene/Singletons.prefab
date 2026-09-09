@@ -172,6 +172,8 @@ MonoBehaviour:
   - Day00
   - Day01_Cutscene
   - Day01
+  - Day01_Dream
+  - Day01_Desert
   fadeDuration: 2
   fadeCanvaPrefab: {fileID: 1221388945609126733, guid: e7cb7936a9323b04287e1902f615ad30, type: 3}
-  currentDay: 1
+  currentDay: 4
