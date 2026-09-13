@@ -3,8 +3,8 @@ using UnityEngine;
 public abstract class GenericSingleton<T> : MonoBehaviour where T : MonoBehaviour
 {
     private static T instance;
-
     private static bool isApplicationQuitting = false;
+
     public abstract bool IsDestroyedOnLoad();
     public abstract bool ShouldDetatchFromParent();
 
@@ -12,17 +12,23 @@ public abstract class GenericSingleton<T> : MonoBehaviour where T : MonoBehaviou
     {
         get
         {
+            if (instance != null) return instance;
+            if (isApplicationQuitting) return null;
+
+            instance = FindAnyObjectByType(typeof(T)) as T;
+
             if (instance == null)
             {
-                // FIX: assegna il risultato a instance invece di ignorarlo
-                instance = FindAnyObjectByType(typeof(T)) as T;
-                if (instance == null && !isApplicationQuitting)
-                {
-                    GameObject gameObj = new GameObject(typeof(T).Name + "_Singleton");
-                    instance = gameObj.AddComponent<T>();
-                    Debug.Log($"Generating new Singleton: {gameObj.name}");
-                }
+                GameObject gameObj = new GameObject(typeof(T).Name + "_Singleton");
+                instance = gameObj.AddComponent<T>();
+
+                // Se questo log appare durante un cambio scena, qualcuno sta
+                // accedendo a Instance in OnDisable/OnDestroy e sta creando
+                // un GameObject che Unity non riuscirà a pulire.
+                // Cerca lo stack qui sotto per capire chi è il colpevole.
+                Debug.Log($"Generating new Singleton: {gameObj.name}\n{StackTraceUtility.ExtractStackTrace()}");
             }
+
             return instance;
         }
     }
@@ -31,22 +37,12 @@ public abstract class GenericSingleton<T> : MonoBehaviour where T : MonoBehaviou
     {
         if (instance == null)
         {
-
-            if (ShouldDetatchFromParent())
-            {
-                transform.parent = null;
-                //Debug.Log($"Removing {gameObject.name} from its Parents!");
-            }
+            if (ShouldDetatchFromParent()) transform.parent = null;
 
             instance = GetComponent<T>();
-            if (!IsDestroyedOnLoad())
-            {
-                DontDestroyOnLoad(gameObject);
-                //Debug.Log("Creating Singleton: " + gameObject.name);
-            }
-
+            if (!IsDestroyedOnLoad()) DontDestroyOnLoad(gameObject);
         }
-        else if (instance != null && instance != this)
+        else if (instance != this)
         {
             Destroy(gameObject);
         }
@@ -54,10 +50,7 @@ public abstract class GenericSingleton<T> : MonoBehaviour where T : MonoBehaviou
 
     private void OnDestroy()
     {
-        if (instance == this)
-        {
-            instance = null;
-        }
+        if (instance == this) instance = null;
     }
 
     private void OnApplicationQuit()

@@ -6,25 +6,27 @@ public class TaksListManager : MonoBehaviour
 {
     [SerializeField] private TextMeshProUGUI taskListText;
 
-    private void OnEnable()
-    {
-        TaskManager.Instance.OnTaskComplete += HandleTaskComplete;
-        TaskManager.Instance.OnTaskAdded += UpdateList;
-    }
-
     private void Start()
     {
         SetupTaskList();
     }
 
-    private void OnDisable()
+    private TaskManager _taskManager;
+
+    private void OnEnable()
     {
-        TaskManager.Instance.OnTaskComplete -= HandleTaskComplete;
+        _taskManager = TaskManager.Instance;
+        if (_taskManager == null) return;
+        _taskManager.OnTaskComplete += HandleTaskComplete;
+        _taskManager.OnTaskAdded += UpdateList;
     }
 
-    private void OnDestroy()
+    private void OnDisable()
     {
-        TaskManager.Instance.OnTaskComplete -= HandleTaskComplete;
+        if (_taskManager == null) return;
+        _taskManager.OnTaskComplete -= HandleTaskComplete;
+        _taskManager.OnTaskAdded -= UpdateList;   // mancava anche questo!
+        _taskManager = null;
     }
 
     private void UpdateList(TaskSO newTask)

@@ -63,14 +63,14 @@ public class GameFlowManager : GenericSingleton<GameFlowManager>
     }
     public void LoadScene(int day, float fadeDuration)
     {
+        if (isLoadingScene) return;   // silenzioso, o Debug.Log una volta sola
         if (day < 0 || day >= gameScenes.Length)
         {
             Debug.LogError($"Invalid day index: {day}. Cannot load scene.");
             return;
         }
 
-        // MODIFICATO: FadeToLoad non riceve più "day" come parametro, perché non serve
-        // più aggiornare manualmente currentDay al termine del caricamento (vedi sotto).
+        isLoadingScene = true;
         StartCoroutine(FadeToLoad(gameScenes[day], fadeCanvaPrefab, fadeDuration));
     }
     public void LoadScene(int day)

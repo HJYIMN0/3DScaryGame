@@ -191,11 +191,6 @@ public abstract class AbstractInteractable : MonoBehaviour
         Debug.Log($"Dialogue ended for task '{task.TaskName}'.");
     }
 
-    // MODIFICATO: OnTriggerEnter è stato rimosso da qui. Il rilevamento del trigger ora
-    // avviene solo in PlayerInteractionController (come richiesto), che chiama questo
-    // metodo pubblico passando se stesso. La logica interna è identica a prima: cambia solo
-    // chi la innesca (prima questa classe faceva GetComponent sul Player per procurarsi
-    // il riferimento, ora lo riceve già pronto).
     public void OnPlayerEnter(PlayerInteractionController player)
     {
         EvaluateCanvaStatus(player);
@@ -203,11 +198,12 @@ public abstract class AbstractInteractable : MonoBehaviour
         if (_playerInteractionController == null)
             _playerInteractionController = player;
 
-        // AGGIUNTO: recupera InkManager dal player (ora è un componente su di esso)
         if (_inkManager == null)
             _inkManager = player.GetComponent<InkManager>();
 
-        _inkManager.onDialogueEnd += OnDialogueEnd; // Sottoscrivi all'evento onDialogueEnd dell'InkManager
+        // Idempotente: rimuovi prima di aggiungere.
+        _inkManager.onDialogueEnd -= OnDialogueEnd;
+        _inkManager.onDialogueEnd += OnDialogueEnd;
     }
 
     // MODIFICATO: OnTriggerExit rimosso da qui per lo stesso motivo di OnPlayerEnter sopra.
