@@ -7,6 +7,7 @@ public class GameFlowManager : GenericSingleton<GameFlowManager>
 {
     [SerializeField] private string[] gameScenes;
     [SerializeField] private float fadeDuration = 2f;
+    public float FadeDuration => fadeDuration;
     [SerializeField] private GameObject fadeCanvaPrefab;
 
     // MODIFICATO: rimosso il campo serializzato "currentDay" (int).
@@ -70,7 +71,6 @@ public class GameFlowManager : GenericSingleton<GameFlowManager>
             return;
         }
 
-        isLoadingScene = true;
         StartCoroutine(FadeToLoad(gameScenes[day], fadeCanvaPrefab, fadeDuration));
     }
     public void LoadScene(int day)

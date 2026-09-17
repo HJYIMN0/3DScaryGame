@@ -8,6 +8,8 @@ using UnityEngine.UI;
 
 public class InkManagerUI : MonoBehaviour
 {
+    [SerializeField] private PlayerDialogueController _playerDialogueController;
+
     [Header("Canva Settings")]
     [SerializeField] private GameObject canvaPrefab;
 
@@ -41,8 +43,16 @@ public class InkManagerUI : MonoBehaviour
 
     public void SetText(string text)
     {
+        if (canvaPrefabText == null)
+        {
+            Debug.LogWarning("[InkManagerUI] SetText chiamato con canvaPrefabText null. Provo a inizializzare il canvas.");
+            InitializeCanva();
+        }
+
         if (canvaPrefabText != null)
             canvaPrefabText.text = text;
+        else
+            Debug.LogError("[InkManagerUI] Impossibile settare il testo: canvaPrefabText è null.");
     }
 
     public void ShowChoices(List<Choice> choices, Action<int> onChoiceSelected)
@@ -66,7 +76,12 @@ public class InkManagerUI : MonoBehaviour
 
         _selectedIndex = choices.Count > 0 ? 0 : -1;
 
-        playerInputController.CameraController.StopLook();
+        // MODIFICA:
+        // blocca movimento e camera finché le scelte sono attive.
+        // Passa dal PlayerDialogueController così la logica è centralizzata
+        // (ferma sempre, indipendentemente da canPlayerMove).
+
+        _playerDialogueController?.SetChoicesActive(true);
 
         for (int i = 0; i < choices.Count; i++)
         {
@@ -100,30 +115,23 @@ public class InkManagerUI : MonoBehaviour
 
         Debug.Log($"ShowChoices() : {choices.Count} choices");
     }
-
     // AGGIUNTO: helper privato — aggiorna l'aspetto visivo dei bottoni in base a _selectedIndex.
     // Cambia colore/alpha del bottone selezionato vs gli altri.
     // Se non hai un sistema di highlight, puoi personalizzare questa logica.
     private void UpdateSelectionHighlight()
     {
-        if (_selectedIndex < 0)
-            return;
+        if (_selectedIndex < 0) return;
+        if (_selectedIndex >= _activeChoiceButtons.Count) return;
 
-        if (_selectedIndex >= _activeChoiceButtons.Count)
-            return;
+        Button btn = _activeChoiceButtons[_selectedIndex].GetComponent<Button>();
+        if (btn == null) return;
 
-        Button btn =
-            _activeChoiceButtons[_selectedIndex]
-            .GetComponent<Button>();
+        if (EventSystem.current != null)
+            EventSystem.current.SetSelectedGameObject(btn.gameObject);
+        else
+            Debug.LogWarning("[InkManagerUI] EventSystem.current è null: la selezione UI non verrà impostata.");
 
-        if (btn == null)
-            return;
-
-        EventSystem.current
-            .SetSelectedGameObject(btn.gameObject);
-
-        Debug.Log(
-            $"Selected choice {_selectedIndex}");
+        Debug.Log($"Selected choice {_selectedIndex}");
     }
 
     // AGGIUNTO: helper privato che combina selezione e conferma per i click sui bottoni.
@@ -190,7 +198,11 @@ public class InkManagerUI : MonoBehaviour
         _choices.Clear();
         _selectedIndex = -1;
 
-        playerInputController?.CameraController?.StartLook();
+        // MODIFICA:
+        // le scelte non sono più attive → ripristina movimento e camera
+        // in base a _canMoveDuringDialogue del PlayerDialogueController.
+
+        _playerDialogueController?.SetChoicesActive(false);
     }
 
     public void ToggleCanva()
@@ -223,6 +235,7 @@ public class InkManagerUI : MonoBehaviour
     private void InitializeCanva()
     {
         Debug.Log("[InkManagerUI] Initializing Canva...");
+
         if (canvaInstance == null)
         {
             canvaInstance = Instantiate(canvaPrefab, Vector3.zero, Quaternion.identity);
@@ -245,6 +258,11 @@ public class InkManagerUI : MonoBehaviour
             if (canvaPrefabText == null)
                 Debug.LogError($"[InkManagerUI] TextMeshProUGUI non trovato in {canvaPrefab.name}");
         }
+
+        // AGGIUNTO: pulisce il testo placeholder del prefab ("new text")
+        // così non viene mai mostrato prima che SetText() scriva la riga reale.
+        if (canvaPrefabText != null)
+            canvaPrefabText.text = string.Empty;
 
         IsDialogueOpen = true;
     }

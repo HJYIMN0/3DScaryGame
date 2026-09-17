@@ -72,7 +72,7 @@ Light:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2909220623533289667}
   m_Enabled: 1
-  serializedVersion: 12
+  serializedVersion: 13
   m_Type: 2
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_Intensity: 4.74
@@ -124,7 +124,7 @@ Light:
   m_UseBoundingSphereOverride: 0
   m_UseViewFrustumForShadowCasterCull: 1
   m_ForceVisible: 0
-  m_ShadowRadius: 0
+  m_ShapeRadius: 0
   m_ShadowAngle: 0
   m_LightUnit: 1
   m_LuxAtDistance: 1
@@ -331,7 +331,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e87728963d29d3648aefcdfc247b2075, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerInteractionSystem
-  isThisLevelPhoneLevel: 0
   playerCamera: {fileID: 0}
   interactionDistance: 2.98
   interactionRadius: 2.04
@@ -387,6 +386,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9036fc50ee4b2d24cb7ddbd9b5d6ff30, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::InkManagerUI
+  _playerDialogueController: {fileID: 3649485324900732069}
   canvaPrefab: {fileID: 7238422366727227570, guid: a18d5ff0b34118d4d973a6db0e109845, type: 3}
   choiceButtonPrefab: {fileID: 8314524371143384396, guid: ac88d3bd494c8d048935131f2892f1c8, type: 3}
 --- !u!54 &7074928776020462967

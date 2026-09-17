@@ -1,7 +1,7 @@
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using Unity.Cinemachine;
+using System;
 
 public class DrillableWallMinigame : AbstractMinigame
 {
@@ -16,25 +16,28 @@ public class DrillableWallMinigame : AbstractMinigame
     [SerializeField] private float quitMiniGameAlphaThreshold = 0.5f;
 
     [Header("Camera")]
-    [Tooltip("CinemachineCamera dedicata al minigioco, posizionata in scena davanti al plane.")]
+    [Tooltip("CinemachineCamera dedicata al minigioco. Se non assegnata, il minigioco usa Camera.main senza effettuare blend.")]
     [SerializeField] private CinemachineCamera _miniGameCamera;
-    
+
+    [Tooltip("Camera usata per il raycast del minigioco. Se non assegnata, viene usata Camera.main come fallback.")]
+    [SerializeField] private Camera _raycastCamera;
 
     [Header("Controller")]
     [Tooltip("Velocità di spostamento del cursore virtuale con l'analogico destro.")]
     [SerializeField] private float _controllerCursorSpeed = 800f;
 
-    // MODIFICATO: rimossa _mainCamera assegnata via Camera.main — ora si usa _raycastCamera serializzata.
     private Texture2D _wallTexture;
     private Renderer _renderer;
 
     private int _erasedPixelCount = 0;
     private int _totalPixelCount;
 
+    public float CompletionPercentage => (float)_erasedPixelCount / _totalPixelCount;
+
     private Vector2 _virtualCursorPosition;
 
-    private Camera _raycastCamera;
-
+    public Action OnMiniGameCompleted;
+    public event Action<float> OnProgressChanged;
 
     public override void Start()
     {
@@ -42,7 +45,19 @@ public class DrillableWallMinigame : AbstractMinigame
 
         _renderer = GetComponent<Renderer>();
 
-        _raycastCamera = Camera.main;
+        // MODIFICATO: se la camera per il raycast non è assegnata nell'Inspector,
+        // si procede usando Camera.main come fallback.
+        if (_raycastCamera == null)
+        {
+            _raycastCamera = Camera.main;
+            if (_raycastCamera == null)
+            {
+                Debug.LogError("[DrillableWallMinigame] Nessuna _raycastCamera assegnata e Camera.main non trovata. " +
+                               "Impossibile procedere con il raycast.");
+                return;
+            }
+            Debug.Log("[DrillableWallMinigame] _raycastCamera non assegnata: uso Camera.main come fallback.");
+        }
 
         Texture2D originalTexture = _renderer.material.mainTexture as Texture2D;
         if (originalTexture == null)
@@ -64,20 +79,19 @@ public class DrillableWallMinigame : AbstractMinigame
 
         _totalPixelCount = _wallTexture.width * _wallTexture.height;
 
-        // AGGIUNTO: textureCoord funziona SOLO con MeshCollider.
-        // Il plane ha un BoxCollider (usato come trigger da AbstractInteractable),
-        // quindi aggiungiamo un MeshCollider dedicato al raycast UV, senza rimuovere il BoxCollider.
+        // textureCoord funziona SOLO con MeshCollider.
         if (GetComponent<MeshCollider>() == null)
         {
             MeshCollider mc = gameObject.AddComponent<MeshCollider>();
             mc.sharedMesh = GetComponent<MeshFilter>().sharedMesh;
         }
 
-        // AGGIUNTO: la camera del minigioco deve essere disattiva all'avvio
+        // MODIFICATO: se _miniGameCamera non è assegnata, avvisiamo soltanto.
+        // Il minigioco procederà comunque usando Camera.main (raycast e rendering).
         if (_miniGameCamera != null)
             _miniGameCamera.gameObject.SetActive(false);
         else
-            Debug.LogWarning("[DrillableWallMinigame] _miniGameCamera non assegnata.");
+            Debug.LogWarning("[DrillableWallMinigame] _miniGameCamera non assegnata: verrà usata Camera.main.");
     }
 
     private void Update()
@@ -86,10 +100,9 @@ public class DrillableWallMinigame : AbstractMinigame
 
         UpdateVirtualCursorFromGamepad();
 
-        // AGGIUNTO: aspettiamo che il CinemachineBrain abbia completato la transizione
-        // verso la camera del minigioco prima di permettere qualsiasi interazione.
-        // Se l'utente clicca durante il blend, la direzione del raycast è ancora quella
-        // della camera precedente e colpisce punti sbagliati.
+        // Aspettiamo che il CinemachineBrain abbia completato la transizione
+        // verso la camera del minigioco. Se non c'è blending (es. nessuna _miniGameCamera),
+        // IsBlending sarà false e si procede normalmente.
         CinemachineBrain brain = CinemachineBrain.GetActiveBrain(0);
         if (brain != null && brain.IsBlending) return;
 
@@ -127,13 +140,14 @@ public class DrillableWallMinigame : AbstractMinigame
 
         base.StartMiniGame();
 
-        TogglePlayerControl(false, true); ;
+        TogglePlayerControl(false, true);
 
-        // MODIFICATO: attiviamo la CinemachineCamera dedicata.
-        // Cinemachine, vedendo una camera attiva con priorità più alta,
-        // esegue automaticamente il blend verso di essa.
+        // MODIFICATO: attiviamo la CinemachineCamera dedicata solo se assegnata.
+        // Se non lo è, il minigioco rimane su Camera.main.
         if (_miniGameCamera != null)
             _miniGameCamera.gameObject.SetActive(true);
+        else
+            Debug.Log("[DrillableWallMinigame] Nessuna _miniGameCamera: uso Camera.main per il minigioco.");
 
         _virtualCursorPosition = new Vector2(Screen.width * 0.5f, Screen.height * 0.5f);
 
@@ -147,8 +161,7 @@ public class DrillableWallMinigame : AbstractMinigame
 
         TogglePlayerControl(true, true);
 
-        // MODIFICATO: disattiviamo la CinemachineCamera del minigioco.
-        // Cinemachine torna automaticamente alla camera del player.
+        // Disattiviamo la CinemachineCamera del minigioco (se assegnata).
         if (_miniGameCamera != null)
             _miniGameCamera.gameObject.SetActive(false);
 
@@ -157,8 +170,10 @@ public class DrillableWallMinigame : AbstractMinigame
 
         if (HasCompletitionBeenReached())
         {
+            Debug.Log("MiniGame completato! Segnalo al TaskManager che il task è stato completato.");
             taskManager.CompleteTask(interactable.TaskSO);
             interactable.SetHasBeenCompleted(true);
+            OnMiniGameCompleted?.Invoke();
         }
     }
 
@@ -174,18 +189,22 @@ public class DrillableWallMinigame : AbstractMinigame
 
     private void TryEraseAtPosition()
     {
+        // Sicurezza: se per qualche motivo la camera è nulla, proviamo a recuperarla.
+        if (_raycastCamera == null)
+        {
+            _raycastCamera = Camera.main;
+            if (_raycastCamera == null) return;
+        }
+
         Vector2 screenPos = GetScreenPosition();
 
         Ray ray = _raycastCamera.ScreenPointToRay(screenPos);
 
-        // MODIFICATO: QueryTriggerInteraction.Ignore esclude i BoxCollider trigger dal raycast
-        // (usati da AbstractInteractable per OnTriggerEnter/Exit), così il raycast colpisce
-        // solo il MeshCollider, necessario per ottenere textureCoord corrette.
+        // QueryTriggerInteraction.Ignore esclude i BoxCollider trigger dal raycast,
+        // così il raycast colpisce solo il MeshCollider (necessario per textureCoord corrette).
         if (!Physics.Raycast(ray, out RaycastHit hit, Mathf.Infinity, Physics.DefaultRaycastLayers, QueryTriggerInteraction.Ignore))
             return;
 
-        // AGGIUNTO: log diagnostico — se il raycast colpisce un altro oggetto (es. una parete
-        // adiacente), il check lo scarta senza output. Questo rivela cosa blocca il lato sinistro.
         if (hit.collider.gameObject != gameObject)
         {
             Debug.LogWarning($"[DrillableWallMinigame] Raycast ha colpito '{hit.collider.gameObject.name}' " +
@@ -194,7 +213,6 @@ public class DrillableWallMinigame : AbstractMinigame
         }
 
         Vector2 uv = hit.textureCoord;
-        Debug.Log("Hit UV: " + uv);
 
         int pixelX = Mathf.FloorToInt(uv.x * _wallTexture.width);
         int pixelY = Mathf.FloorToInt(uv.y * _wallTexture.height);
@@ -203,10 +221,6 @@ public class DrillableWallMinigame : AbstractMinigame
         interactable.PLayTaskSfx();
     }
 
-    // MODIFICATO: rinominato da EraseCircle a EraseWithBrush.
-    // Se _brushTexture è assegnata, usa la sua alpha per definire la forma del pennello.
-    // Ogni pixel del bounding box viene cancellato solo se il corrispondente pixel
-    // della brush texture ha alpha > 0.5. Se _brushTexture è null, fallback circolare.
     private void EraseWithBrush(int centerX, int centerY)
     {
         int xMin = Mathf.Max(0, centerX - brushSize);
@@ -226,16 +240,12 @@ public class DrillableWallMinigame : AbstractMinigame
                 bool shouldErase;
                 if (_brushTexture != null)
                 {
-                    // Mappiamo l'offset del pixel alle UV della brush texture:
-                    // il centro del brush corrisponde a UV (0.5, 0.5).
-                    // GetPixelBilinear campiona con interpolazione e wrapping automatico.
                     float u = (dx / (brushSize * 2f)) + 0.5f;
                     float v = (dy / (brushSize * 2f)) + 0.5f;
                     shouldErase = _brushTexture.GetPixelBilinear(u, v).a > 0.5f;
                 }
                 else
                 {
-                    // Fallback: brush circolare originale
                     shouldErase = (dx * dx + dy * dy) <= radiusSq;
                 }
 
@@ -252,23 +262,22 @@ public class DrillableWallMinigame : AbstractMinigame
         }
 
         _wallTexture.Apply();
-        Debug.Log("Applied changes to texture after erasing at (" + centerX + ", " + centerY + ")");
+
+        _wallTexture.Apply();
+
+        OnProgressChanged?.Invoke(CompletionPercentage);   // <-- qui
+
         if (HasCompletitionBeenReached())
         {
-            Debug.Log("MiniGame completed after erasing at (" + centerX + ", " + centerY + ")");
+            OnMiniGameCompleted?.Invoke();
+            QuitMiniGame();
+        }
+        if (HasCompletitionBeenReached())
+        {
+            OnMiniGameCompleted?.Invoke();
             QuitMiniGame();
         }
     }
-
-    //private void CheckCompletionThreshold()
-    //{
-    //    float exposedPercentage = (float)_erasedPixelCount / _totalPixelCount;
-    //    if (exposedPercentage >= quitMiniGameAlphaThreshold)
-    //    {
-    //        Debug.Log($"[DrillableWallMinigame] Soglia raggiunta ({exposedPercentage:P0}). Chiusura minigioco.");
-    //        QuitMiniGame();
-    //    }
-    //}
 
     public bool HasCompletitionBeenReached()
     {

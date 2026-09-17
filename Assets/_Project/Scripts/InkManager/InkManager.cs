@@ -191,10 +191,19 @@ public class InkManager : MonoBehaviour
 
     private void ToggleSystem()
     {
-        // MODIFICATO: il PlayerDialogueController viene disabilitato solo se canPlayerMove è false.
-        // Così il player può continuare a muoversi durante dialoghi puramente visivi.
-        if (!_canPlayerMove && _playerDialogueController != null)
-            _playerDialogueController.enabled = !_playerDialogueController.enabled;
+        if (_playerDialogueController != null)
+        {
+            bool activate = !_playerDialogueController.enabled;
+
+            if (activate)
+            {
+                // IMPORTANTE: PRIMA di abilitare il componente, altrimenti
+                // OnEnable() ferma il movimento con il valore di default (false).
+                _playerDialogueController.SetCanMoveDuringDialogue(_canPlayerMove);
+            }
+
+            _playerDialogueController.enabled = activate;
+        }
 
         _inkManagerUI?.ToggleCanva();
     }

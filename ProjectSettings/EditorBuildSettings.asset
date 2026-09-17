@@ -8,7 +8,10 @@ EditorBuildSettings:
   - enabled: 0
     path: Assets/_Project/Scenes/SampleScene.unity
     guid: 99c9720ab356a0642a771bea13969a05
-  - enabled: 0
+  - enabled: 1
+    path: Assets/_Project/Scenes/Build/MainMenu_01.unity
+    guid: bae5e7b0e551225469368d4486b64911
+  - enabled: 1
     path: Assets/_Project/Scenes/Build/Day00.unity
     guid: 4add11178bb0288438a4f00142999fd1
   - enabled: 1
@@ -21,7 +24,7 @@ EditorBuildSettings:
     path: Assets/_Project/Scenes/Build/Day01_Dream.unity
     guid: 10c0c02f753fc0043b44ca5067318360
   - enabled: 1
-    path: Assets/_Project/Scenes/Build/Day01_Desert_Broken.unity
-    guid: 59286dbb6ef89ac46b724717501eed68
+    path: Assets/_Project/Scenes/Build/Day01_Desert.unity
+    guid: 948ae740156325e4aac4d8ec518e1949
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 052faaac586de48259a63d0c4782560b, type: 3}

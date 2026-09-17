@@ -8,9 +8,13 @@ public class PlayerDialogueController : MonoBehaviour
     private InkManager _inkManager;
     private InkManagerUI _inkManagerUI;
 
+    private bool _canMoveDuringDialogue = false;
+    private bool _choicesActive = false;
+    private bool _movementStopped = false;
+
     public bool IsDialogueActive => _inkManager != null && _inkManager.IsStoryActive;
     public bool HasActiveChoices => _inkManagerUI != null && _inkManagerUI.HasActiveChoices;
-    public Action onDialogueEnd; // Event triggered when a dialogue ends
+    public Action onDialogueEnd;
 
     private void Awake()
     {
@@ -22,14 +26,71 @@ public class PlayerDialogueController : MonoBehaviour
         this.enabled = false;
     }
 
+    /// <summary>
+    /// Imposta se il player può muoversi durante il dialogo.
+    /// Va chiamato prima di abilitare il componente, oppure anche dopo:
+    /// in quel caso la modifica viene applicata subito.
+    /// </summary>
+    public void SetCanMoveDuringDialogue(bool value)
+    {
+        _canMoveDuringDialogue = value;
+        if (isActiveAndEnabled) ApplyMovementState();
+    }
+
+    /// <summary>
+    /// Chiamato dalla UI quando compaiono/scompaiono le scelte.
+    /// Quando le scelte sono attive blocca SEMPRE movimento e camera,
+    /// indipendentemente da canPlayerMove. Quando scompaiono, ripristina
+    /// lo stato coerente con _canMoveDuringDialogue.
+    /// </summary>
+    public void SetChoicesActive(bool active)
+    {
+        _choicesActive = active;
+
+        if (isActiveAndEnabled)
+            ApplyMovementState();
+
+        if (active)
+            _input?.CameraController?.StopLook();
+        else
+            _input?.CameraController?.StartLook();
+    }
+
+    private void ApplyMovementState()
+    {
+        bool shouldStop = !_canMoveDuringDialogue || _choicesActive;
+
+        if (shouldStop)
+        {
+            if (!_movementStopped)
+            {
+                _input?.MovementController?.StopMovement();
+                _movementStopped = true;
+            }
+        }
+        else
+        {
+            if (_movementStopped)
+            {
+                _input?.MovementController?.StartMovement();
+                _movementStopped = false;
+            }
+        }
+    }
+
     private void OnEnable()
     {
-        _input?.MovementController?.StopMovement();
+        _movementStopped = false;
+        ApplyMovementState();
     }
 
     private void OnDisable()
     {
-        _input?.MovementController?.StartMovement();
+        if (_movementStopped)
+        {
+            _input?.MovementController?.StartMovement();
+            _movementStopped = false;
+        }
     }
 
     private void Update()
@@ -67,6 +128,7 @@ public class PlayerDialogueController : MonoBehaviour
             _inkManager.EndDialogue();
             return;
         }
+
         if (_playerInteractionController != null && _playerInteractionController.interactableTask != null)
         {
             _playerInteractionController.interactableTask.InteractWithTask();

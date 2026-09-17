@@ -168,7 +168,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GameFlowManager
   gameScenes:
-  - MainMenu
+  - MainMenu_01
   - Day00
   - Day01_Cutscene
   - Day01
@@ -176,4 +176,3 @@ MonoBehaviour:
   - Day01_Desert
   fadeDuration: 2
   fadeCanvaPrefab: {fileID: 1221388945609126733, guid: e7cb7936a9323b04287e1902f615ad30, type: 3}
-  currentDay: 4
