@@ -641,7 +641,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Day00Manager
   DayDurationInSeconds: 60
-  isDebugMode: 1
+  isDebugMode: 0
   dayDurationOnDebugModeOn: 3.15
 --- !u!1001 &1829884892
 PrefabInstance:
@@ -707,6 +707,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7100977216791229809, guid: 053bffc15844cb5428386e0aa61ef331, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 87c283d00a59eb943ade311f0f4073a4, type: 2}
     m_RemovedComponents:
     - {fileID: 6301529377475421376, guid: 053bffc15844cb5428386e0aa61ef331, type: 3}
     m_RemovedGameObjects: []
