@@ -1106,6 +1106,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 36183205635817457, guid: e88610d84eb21dd4c9cb9ebb2e83438b, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 160376776851182731, guid: e88610d84eb21dd4c9cb9ebb2e83438b, type: 3}
       propertyPath: m_Layer
       value: 8
@@ -1118,6 +1122,14 @@ PrefabInstance:
       propertyPath: holeGameObject
       value: 
       objectReference: {fileID: 1903000646}
+    - target: {fileID: 1162146763659059158, guid: e88610d84eb21dd4c9cb9ebb2e83438b, type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1162146763659059158, guid: e88610d84eb21dd4c9cb9ebb2e83438b, type: 3}
+      propertyPath: m_TagString
+      value: Untagged
+      objectReference: {fileID: 0}
     - target: {fileID: 1405765900908639107, guid: e88610d84eb21dd4c9cb9ebb2e83438b, type: 3}
       propertyPath: m_Size.x
       value: 4.1471443
@@ -1290,6 +1302,10 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 8
       objectReference: {fileID: 0}
+    - target: {fileID: 7468250926792482808, guid: e88610d84eb21dd4c9cb9ebb2e83438b, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8058688114131805096, guid: e88610d84eb21dd4c9cb9ebb2e83438b, type: 3}
       propertyPath: m_Layer
       value: 8
@@ -1310,6 +1326,7 @@ PrefabInstance:
     - {fileID: 5952152012400246607, guid: e88610d84eb21dd4c9cb9ebb2e83438b, type: 3}
     - {fileID: 6591970277296727679, guid: e88610d84eb21dd4c9cb9ebb2e83438b, type: 3}
     - {fileID: 433093867043969799, guid: e88610d84eb21dd4c9cb9ebb2e83438b, type: 3}
+    - {fileID: 1684649293771091381, guid: e88610d84eb21dd4c9cb9ebb2e83438b, type: 3}
     m_AddedGameObjects:
     - targetCorrespondingSourceObject: {fileID: 5705119700851823445, guid: e88610d84eb21dd4c9cb9ebb2e83438b, type: 3}
       insertIndex: -1

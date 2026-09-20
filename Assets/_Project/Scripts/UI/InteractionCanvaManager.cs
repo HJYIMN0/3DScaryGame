@@ -1,5 +1,6 @@
 using TMPro;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class InteractionCanvaManager : MonoBehaviour
 {
@@ -12,6 +13,13 @@ public class InteractionCanvaManager : MonoBehaviour
     public void Initialize(AbstractInteractable owner)
     {
         interactable = owner;
-        text.text = $"Interact with {interactable.TaskSO.TaskName}";
+
+        PlayerInputController playerInputController = interactable.GetPlayerInteractionController().gameObject.GetComponent<PlayerInputController>();
+        if (playerInputController == null)
+        {
+            Debug.LogError("PlayerInputController not found on the player GameObject.");
+            return;
+        }
+        text.text = $"{playerInputController.InputActions.Player.Interact.GetBindingDisplayString(0)} to Interact with {interactable.TaskSO.TaskName}";
     }
 }

@@ -1,6 +1,7 @@
 using System.Collections;
 using TMPro;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class MainMenuManager : MonoBehaviour
 {
@@ -12,6 +13,8 @@ public class MainMenuManager : MonoBehaviour
     [SerializeField] private InteractableDrillableWall interactableDrillableWall;
     [SerializeField] private DrillableWallMinigame drillableWallMinigame;
 
+    [SerializeField] private GameMusicManager gameMusicManager;
+    [SerializeField] private AudioClip distrurbingAudioClip;
     [SerializeField] private Light wallLight;
     [SerializeField] private float wallLightIntensity = 1.1f;
     [SerializeField] private float wallLightMinIntensity = 1f;
@@ -28,9 +31,9 @@ public class MainMenuManager : MonoBehaviour
         playerInputController.InputActions.Player.Interact.performed += ctx => Debug.Log("Starting the game...");
         playerInputController.InputActions.Player.Interact.performed += ctx => StartGame();
 
-        playerActionInput = playerInputController.InputActions.Player.Interact.name;
+        playerActionInput = playerInputController.InputActions.Player.Interact.GetBindingDisplayString(0);
 
-        pressAnyKeyAction.text = $"Press [{playerActionInput}] to Start";
+        pressAnyKeyAction.text = $"{playerActionInput} to Start";
     }
 
     private void StartGame()
@@ -63,6 +66,7 @@ public class MainMenuManager : MonoBehaviour
     private void HandleMiniGameCompleted()
     {
         StopAllCoroutines();
+        gameMusicManager.Play(distrurbingAudioClip, true);
         StartCoroutine(LoadGame());
     }
 
@@ -74,7 +78,6 @@ public class MainMenuManager : MonoBehaviour
             Camera.main.transform.position = Vector3.Lerp(Camera.main.transform.position, newCameraPos, Time.deltaTime * cameraMoveSpeed);
             yield return null;
         }
-
         Debug.Log("Loading the game...");
         GameFlowManager.Instance.LoadNextDay(GameFlowManager.Instance.FadeDuration);
     }

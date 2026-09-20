@@ -15,6 +15,7 @@ public abstract class AbstractInteractable : MonoBehaviour
     public void SetHasBeenCompleted(bool value) => HasBeenCompleted = value;
 
     protected PlayerInteractionController _playerInteractionController;
+    public PlayerInteractionController GetPlayerInteractionController() => _playerInteractionController;
     protected InkManager _inkManager;
     public InkManager GetInkManager() 
     {
@@ -193,13 +194,14 @@ public abstract class AbstractInteractable : MonoBehaviour
 
     public void OnPlayerEnter(PlayerInteractionController player)
     {
-        EvaluateCanvaStatus(player);
 
         if (_playerInteractionController == null)
             _playerInteractionController = player;
 
         if (_inkManager == null)
             _inkManager = player.GetComponent<InkManager>();
+
+        EvaluateCanvaStatus(player);
 
         // Idempotente: rimuovi prima di aggiungere.
         _inkManager.onDialogueEnd -= OnDialogueEnd;

@@ -9,11 +9,13 @@ using UnityEngine;
 /// </summary>
 public class GameMusicManager : GenericAudioPlayer
 {
+    [SerializeField] private AudioSource transitionAudioSource;
+    
     [Tooltip("This is the array of music clips for the current level.")]
     [SerializeField] private AudioClip[] levelMusicClips;
 
     [Tooltip("This is the audio source for the transition effect. You must assign two audiosource from the same GameObject that provides the music. So I can transition smoothly between the songs.")]
-    [SerializeField] private AudioSource transitionAudioSource;
+
     private int musicIndex = 0;
     public new bool IsPlaying => audioSource.isPlaying || transitionAudioSource.isPlaying;
 
@@ -34,6 +36,18 @@ public class GameMusicManager : GenericAudioPlayer
 
         AudioSource newPlayingAudioSource = GetNotPlayingAudioSource();
         clip = levelMusicClips[musicIndex];
+        audioManager.PlayAudioFromAudioSource(newPlayingAudioSource, clip, isLooping);
+    }
+
+    public void Play(AudioClip newClip, bool isLooping)
+    {
+        if (audioSource.isPlaying && transitionAudioSource.isPlaying)
+        {
+            Debug.LogError("Both audio sources are playing. This should not happen.");
+            return;
+        }
+        AudioSource newPlayingAudioSource = GetNotPlayingAudioSource();
+        clip = newClip;
         audioManager.PlayAudioFromAudioSource(newPlayingAudioSource, clip, isLooping);
     }
     public IEnumerator ChangeSongWithEase(AudioClip newClip, float transitionTime)

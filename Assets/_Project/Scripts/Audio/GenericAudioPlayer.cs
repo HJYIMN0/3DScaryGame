@@ -16,11 +16,6 @@ public abstract class GenericAudioPlayer: MonoBehaviour
             Debug.LogError("AudioSource component is missing on " + gameObject.name);
             return;
         }
-        if (clip == null)
-        {
-            Debug.LogError("AudioClip is not assigned on " + gameObject.name);
-            return;
-        }
 
         audioManager = AudioManager.Instance;
 

@@ -16,9 +16,8 @@ MonoBehaviour:
   TaskDescription: Drill me daddy
   isMandatory: 0
   canvaObj: {fileID: 0}
-  TaskSfx: {fileID: 0}
+  TaskSfx: {fileID: 8300000, guid: 4d89f56a0d0a85e4a9c7236f5e6648c3, type: 3}
   isTaskSecret: 0
-  isInkTask: 0
   inkJson: {fileID: 0}
   usesVariablesInInk: 0
   alreadyCompletedTaskJson: {fileID: 0}
