@@ -152,17 +152,11 @@ public abstract class AbstractInteractable : MonoBehaviour
 
     public void PLayTaskSfx()
     {
-        AudioSource audioSource = this.GetComponent<AudioSource>();
-        if (task.TaskSfx != null && audioSource != null)
-        {
-            AudioManager.Instance.PlaySfxFromPointAndDestroy(audioSource, task.TaskSfx);
-            Debug.Log($"Playing SFX for task '{task.TaskName}'.");
-        }
-        else
-        {
-            Debug.LogWarning($"No SFX assigned for task '{task.TaskName}'. or No AudioSource Component");
+        if (task == null) { Debug.LogWarning("PLayTaskSfx: task null."); return; }
+        if (task.TaskSfx == null) { Debug.LogWarning($"No SFX per task '{task.TaskName}'."); return; }
 
-        }
+        AudioManager.Instance.PlaySfxAtPosition(task.TaskSfx, transform.position);
+        Debug.Log($"Playing SFX for task '{task.TaskName}'.");
     }
 
     public virtual void MarkTaskAsComplete()

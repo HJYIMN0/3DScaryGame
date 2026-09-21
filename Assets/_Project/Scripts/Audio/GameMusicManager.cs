@@ -1,83 +1,170 @@
 ﻿// GameMusicManager.cs
-using System.Collections;
 using UnityEngine;
-/// <summary>
-/// This is not a singleton.
-/// Every level has its own instance of this class, which is responsible for playing the music of that level.
-/// Every level has its different array of songs. 
-/// And the array must be set in the inspector for each level.
-/// </summary>
-public class GameMusicManager : GenericAudioPlayer
-{
-    [SerializeField] private AudioSource transitionAudioSource;
-    
-    [Tooltip("This is the array of music clips for the current level.")]
-    [SerializeField] private AudioClip[] levelMusicClips;
 
-    [Tooltip("This is the audio source for the transition effect. You must assign two audiosource from the same GameObject that provides the music. So I can transition smoothly between the songs.")]
+/// <summary>
+/// Ogni livello ha la sua istanza.
+/// Con persistAcrossScenes = true NON tocca nessuna AudioSource della musica:
+/// delega tutto all'AudioManager, che possiede lo stato e la sorgente persistente.
+/// </summary>
+public class GameMusicManager : MonoBehaviour
+{
+    [Header("Sorgenti LOCALI (usate SOLO se persistAcrossScenes = false, " +
+            "oppure esplicitamente da PlayLocal)")]
+    [SerializeField] private AudioSource audioSource;
+    [SerializeField] private AudioSource transitionAudioSource;
+
+    [Header("Brani del livello")]
+    [SerializeField] private AudioClip[] levelMusicClips;
+    [SerializeField] private bool shouldStartPlayingOnAwake = true;
+    [SerializeField] private bool isLooping = true;
+
+    [Header("Persistenza")]
+    [Tooltip("Se true, la musica vive sulla sorgente persistente dell'AudioManager e sopravvive al cambio scena.")]
+    [SerializeField] private bool persistAcrossScenes = false;
+
+    [Tooltip("Durata del fade applicato quando questa scena avvia la propria musica " +
+             "mentre e' ancora in riproduzione la musica persistente ereditata dalla scena " +
+             "precedente (persistAcrossScenes = false). A fine fade la sorgente persistente " +
+             "viene lasciata vuota: clip = null e volume = 0.")]
+    [SerializeField] private float fadeMusicDuration = 1f;
 
     private int musicIndex = 0;
-    public new bool IsPlaying => audioSource.isPlaying || transitionAudioSource.isPlaying;
+    private AudioClip currentClip;
 
-    private void Awake()
+    private void Start()
     {
-        if (clip == null && levelMusicClips.Length > 0)
-        {
-            clip = levelMusicClips[musicIndex];
-        }
+        if (levelMusicClips != null && levelMusicClips.Length > 0)
+            currentClip = levelMusicClips[musicIndex];
+
+        if (shouldStartPlayingOnAwake)
+            Play();
     }
-    public override void Play()
+
+    // ==================== API MUSICA PERSISTENTE / LOCALE DI SCENA ====================
+
+    public void Play()
     {
-        if (audioSource.isPlaying && transitionAudioSource.isPlaying)
+        if (levelMusicClips == null || levelMusicClips.Length == 0)
         {
-            Debug.LogError("Both audio sources are playing. This should not happen.");
+            Debug.LogError($"GameMusicManager: levelMusicClips vuoto su {gameObject.name}");
+            return;
+        }
+        currentClip = levelMusicClips[musicIndex];
+        PlayInternal(currentClip, isLooping);
+    }
+
+    public void Play(AudioClip newClip, bool loop)
+    {
+        if (newClip == null) { Debug.LogError("GameMusicManager: clip null."); return; }
+        currentClip = newClip;
+        PlayInternal(newClip, loop);
+    }
+
+    /// <summary>
+    /// Logica:
+    ///  1. persistAcrossScenes = true  -> delega al singleton: PlayPersistentMusic
+    ///     sostituisce la traccia persistente con crossfade (durata = fadeMusicDuration).
+    ///  2. persistAcrossScenes = false && persistente in riproduzione (musica ereditata):
+    ///     crossfade persistente -> sorgente LOCALE con durata = fadeMusicDuration.
+    ///     A fine fade AudioManager lascia la persistente con clip = null e volume = 0.
+    ///  3. persistAcrossScenes = false && nessuna persistente in riproduzione:
+    ///     suona la clip su una sorgente locale.
+    /// </summary>
+    private void PlayInternal(AudioClip newClip, bool loop)
+    {
+        var am = AudioManager.Instance;
+
+        // 1) Persistente.
+        if (persistAcrossScenes)
+        {
+            am.PlayPersistentMusic(newClip, loop, fadeMusicDuration);
             return;
         }
 
-        AudioSource newPlayingAudioSource = GetNotPlayingAudioSource();
-        clip = levelMusicClips[musicIndex];
-        audioManager.PlayAudioFromAudioSource(newPlayingAudioSource, clip, isLooping);
-    }
-
-    public void Play(AudioClip newClip, bool isLooping)
-    {
-        if (audioSource.isPlaying && transitionAudioSource.isPlaying)
+        // 2) Eredito la musica dalla scena precedente e passo a sorgente locale.
+        if (am.IsPersistentPlaying())
         {
-            Debug.LogError("Both audio sources are playing. This should not happen.");
+            var target = GetFreeLocalSource();
+            if (target == null) return;
+            am.CrossfadeFromPersistentTo(target, newClip, fadeMusicDuration, loop);
             return;
         }
-        AudioSource newPlayingAudioSource = GetNotPlayingAudioSource();
-        clip = newClip;
-        audioManager.PlayAudioFromAudioSource(newPlayingAudioSource, clip, isLooping);
+
+        // 3) Locale pura.
+        var local = GetFreeLocalSource();
+        if (local == null) return;
+        local.volume = 1f;
+        local.clip = newClip;
+        local.loop = loop;
+        local.Play();
     }
-    public IEnumerator ChangeSongWithEase(AudioClip newClip, float transitionTime)
+
+    // ==================== API "SUONA SOLO IN LOCALE" ====================
+
+    /// <summary>
+    /// Riproduce una clip su una sorgente LOCALE di questa scena, indipendentemente
+    /// dalla modalita' persistAcrossScenes. NON tocca MAI la musica persistente del
+    /// singleton: la traccia persistente continua a suonare e questa clip si sovrappone.
+    /// </summary>
+    public void PlayLocal(AudioClip clip, bool loop)
     {
-        if (audioSource == null && transitionAudioSource == null)
+        if (clip == null) { Debug.LogError("GameMusicManager.PlayLocal: clip null."); return; }
+
+        AudioSource local = GetFreeLocalSource();
+
+        if (local == null)
         {
-            Debug.LogError("AudioSource or TransitionAudioSource is not assigned in the inspector.");
-            yield break;
+            Debug.LogWarning("GameMusicManager.PlayLocal: sorgenti locali non disponibili, " +
+                             "uso AudioManager.PlaySfx come fallback.");
+            AudioManager.Instance.PlaySfx(clip);
+            return;
         }
 
-        AudioSource newAudioSource = GetNotPlayingAudioSource();
-        AudioSource currentlyPlayingSource = (newAudioSource == audioSource) ? transitionAudioSource : audioSource;
-
-        audioManager.FadeBetweenAudioSources(currentlyPlayingSource, newAudioSource, newClip, transitionTime, isLooping);
-
-        clip = newClip;
+        local.volume = 1f;
+        local.clip = clip;
+        local.loop = loop;
+        local.Play();
     }
 
-    private AudioSource GetNotPlayingAudioSource()
+    /// <summary>Ferma SOLO l'audio locale di questa scena. Non tocca la musica persistente.</summary>
+    public void StopLocal()
     {
-        if (audioSource.isPlaying && transitionAudioSource.isPlaying)
+        if (audioSource != null) audioSource.Stop();
+        if (transitionAudioSource != null) transitionAudioSource.Stop();
+    }
+
+    // ==================== STOP "GENERALE" ====================
+
+    /// <summary>
+    /// Ferma la musica gestita da questo GameMusicManager.
+    ///  - In modalita' persistente: ferma la musica persistente del singleton.
+    ///  - In modalita' locale: ferma le sorgenti locali di scena.
+    /// Per fermare SOLO la parte locale usa StopLocal().
+    /// </summary>
+    public void Stop()
+    {
+        if (persistAcrossScenes)
         {
-            Debug.LogError("Both audio sources are playing. This should not happen.");
+            AudioManager.Instance.StopPersistentMusic(0f);
+            return;
+        }
+        StopLocal();
+    }
+
+    // ==================== HELPER ====================
+
+    private AudioSource GetFreeLocalSource()
+    {
+        if (audioSource == null || transitionAudioSource == null)
+        {
             return null;
         }
-
-        // MODIFICATO: la logica a 4 branch è stata ridotta a una singola espressione ternaria,
-        // preservando la convenzione originale (new = transitionAudioSource quando nessuna
-        // delle due sta suonando).
+        if (audioSource.isPlaying && transitionAudioSource.isPlaying)
+        {
+            Debug.LogWarning("GameMusicManager: entrambe le sorgenti locali occupate; " +
+                             "la nuova clip sostituira' quella piu' vecchia su 'audioSource'.");
+            return audioSource;
+        }
         return transitionAudioSource.isPlaying ? audioSource : transitionAudioSource;
     }
-
 }

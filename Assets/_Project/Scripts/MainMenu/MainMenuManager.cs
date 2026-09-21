@@ -5,25 +5,29 @@ using UnityEngine.InputSystem;
 
 public class MainMenuManager : MonoBehaviour
 {
+    [Header("Player references")]
     [SerializeField] private PlayerInputController playerInputController;
     [SerializeField] private PlayerInteractionController playerInteractionController;
+    [Header("Ui attributes")]
     [SerializeField] private TextMeshProUGUI pressAnyKeyAction;
     [SerializeField] private CanvasGroup mainMenuCanvasGroup;
     [SerializeField] private float fadeSpeed = 2f;
+    [Header("Drillable wall references")]
     [SerializeField] private InteractableDrillableWall interactableDrillableWall;
     [SerializeField] private DrillableWallMinigame drillableWallMinigame;
-
+    [Header("Audio settings")]
     [SerializeField] private GameMusicManager gameMusicManager;
     [SerializeField] private AudioClip distrurbingAudioClip;
+    [Header("Light settings")]
     [SerializeField] private Light wallLight;
     [SerializeField] private float wallLightIntensity = 1.1f;
     [SerializeField] private float wallLightMinIntensity = 1f;
     [SerializeField] private float wallLightMaxIntensity = 100f;
+    [Header("Camera settings")]
     [SerializeField] private float cameraDistance = 5f;
     [SerializeField] private float cameraMoveSpeed = 2f;
 
     private bool _isGameStarted = false;
-
     private string playerActionInput;
 
     private void Start()
@@ -66,7 +70,12 @@ public class MainMenuManager : MonoBehaviour
     private void HandleMiniGameCompleted()
     {
         StopAllCoroutines();
-        gameMusicManager.Play(distrurbingAudioClip, true);
+
+        // PRIMA:  gameMusicManager.Play(distrurbingAudioClip, true);
+        // Sostituiva la musica persistente (con persistAcrossScenes = true).
+        // ORA:
+        gameMusicManager.PlayLocal(distrurbingAudioClip, true);
+
         StartCoroutine(LoadGame());
     }
 

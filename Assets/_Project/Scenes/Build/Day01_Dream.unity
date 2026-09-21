@@ -439,7 +439,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: e5ecd703bb2140b44ba2bb3e12e918b3, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -34.7
+      value: -37.4
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: e5ecd703bb2140b44ba2bb3e12e918b3, type: 3}
       propertyPath: m_LocalPosition.y
@@ -491,7 +491,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: e5ecd703bb2140b44ba2bb3e12e918b3, type: 3}
       propertyPath: m_Layer
-      value: 7
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: e5ecd703bb2140b44ba2bb3e12e918b3, type: 3}
       propertyPath: m_IsActive
@@ -2399,7 +2399,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: e5ecd703bb2140b44ba2bb3e12e918b3, type: 3}
       propertyPath: m_Layer
-      value: 7
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: e5ecd703bb2140b44ba2bb3e12e918b3, type: 3}
       propertyPath: m_IsActive
@@ -2683,13 +2683,13 @@ MonoBehaviour:
   clip: {fileID: 0}
   isLooping: 0
   playOnStart: 1
+  transitionAudioSource: {fileID: 1904832003}
   levelMusicClips:
   - {fileID: 8300000, guid: 41a3669ffe3ee0a468fe4b18cda808e2, type: 3}
   - {fileID: 8300000, guid: dbd74b233ab34804b9fba704eda64778, type: 3}
   - {fileID: 8300000, guid: 8dc3c02490c1a964abfd895be482ae83, type: 3}
   - {fileID: 8300000, guid: bf8cd00ee9890a44ea200fbcf7cba89e, type: 3}
   - {fileID: 8300000, guid: 72089fdf3cc91dd459d42ad6cf5a7f37, type: 3}
-  transitionAudioSource: {fileID: 1904832003}
 --- !u!1001 &1982750053
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2848,7 +2848,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: e5ecd703bb2140b44ba2bb3e12e918b3, type: 3}
       propertyPath: m_Layer
-      value: 7
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: e5ecd703bb2140b44ba2bb3e12e918b3, type: 3}
       propertyPath: m_IsActive
