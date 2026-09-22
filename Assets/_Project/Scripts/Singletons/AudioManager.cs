@@ -197,6 +197,7 @@ public class AudioManager : GenericSingleton<AudioManager>
         _persistentRoutine = null;
     }
 
+
     private IEnumerator CrossfadePersistentToLocalRoutine(AudioSource target, AudioClip newClip, float fadeTime, bool loop)
     {
         target.volume = 0f;

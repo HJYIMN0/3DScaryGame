@@ -13,22 +13,25 @@ public class InteractableHole : AbstractInteractable
     {
         if (!HasBeenCompleted) 
         {
-            GameObject uiInstance = Instantiate(UiVideoCanva);
-            uiInstance.GetComponent<VideoPlayerManager>().OnVideoEnd += () =>
-            {
-                DeactivateCanvas();
-                Debug.Log("Video ended, showing dialogue...");
-                ShowDialogue(task.inkJson, true);
-                taskManager.MarkAllTasksAsComplete();
-            };
-            TaskManager.Instance.CompleteTask(task);
-            HasBeenCompleted = true;
+            StartMiniGame();
         }
         else
         {
             Debug.Log("Already interacted with the hole.");
             ShowDialogue(task.inkJson, true);
         }
+    }
+
+    public void ShowVideoSequence()
+    {
+        GameObject uiInstance = Instantiate(UiVideoCanva);
+        uiInstance.GetComponent<VideoPlayerManager>().OnVideoEnd += () =>
+        {
+            DeactivateCanvas();
+            Debug.Log("Video ended, showing dialogue...");
+            ShowDialogue(task.inkJson, true);
+            taskManager.MarkAllTasksAsComplete();
+        };
     }
 
 }

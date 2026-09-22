@@ -1,202 +1,5 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &1260910473878635579
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1049360222139852786}
-  - component: {fileID: 2214348639451551594}
-  m_Layer: 5
-  m_Name: SlidingPuzzleManager
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!224 &1049360222139852786
-RectTransform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1260910473878635579}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 6329293312388257243}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 100, y: 100}
-  m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &2214348639451551594
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1260910473878635579}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 96d429d11ff6a7d44a452afc88a23bad, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::SlidingPuzzleManager
-  interactable: {fileID: 671339223716020362}
-  minigameCamera: {fileID: 0}
-  rows: 6
-  columns: 6
-  spacing: 128
-  offset: 15
-  emptyTileRow: 3
-  emptyTileColumn: 3
-  tilePrefab: {fileID: 6728040771164786157, guid: 82c6f864e0167c242bcd1c62dec06e61, type: 3}
-  emptyTilePrefab: {fileID: 6728040771164786157, guid: aae404ab1886e144e8466d966822f32e, type: 3}
-  tileSprites:
-  - {fileID: 1592876720, guid: 35375594664517a4192169f81dbd9c63, type: 3}
-  - {fileID: -549497024, guid: 35375594664517a4192169f81dbd9c63, type: 3}
-  - {fileID: 1448544050, guid: 35375594664517a4192169f81dbd9c63, type: 3}
-  - {fileID: 1477759503, guid: 35375594664517a4192169f81dbd9c63, type: 3}
-  - {fileID: 1577509763, guid: 35375594664517a4192169f81dbd9c63, type: 3}
-  - {fileID: -1961946341, guid: 35375594664517a4192169f81dbd9c63, type: 3}
-  - {fileID: 1866876074, guid: 35375594664517a4192169f81dbd9c63, type: 3}
-  - {fileID: -903489697, guid: 35375594664517a4192169f81dbd9c63, type: 3}
-  - {fileID: -167542120, guid: 35375594664517a4192169f81dbd9c63, type: 3}
-  - {fileID: -1128484693, guid: 35375594664517a4192169f81dbd9c63, type: 3}
-  - {fileID: -1158088703, guid: 35375594664517a4192169f81dbd9c63, type: 3}
-  - {fileID: -1057648887, guid: 35375594664517a4192169f81dbd9c63, type: 3}
-  - {fileID: 1357690400, guid: 35375594664517a4192169f81dbd9c63, type: 3}
-  - {fileID: -190388426, guid: 35375594664517a4192169f81dbd9c63, type: 3}
-  - {fileID: -933007926, guid: 35375594664517a4192169f81dbd9c63, type: 3}
-  - {fileID: 1762606867, guid: 35375594664517a4192169f81dbd9c63, type: 3}
-  - {fileID: -1594500844, guid: 35375594664517a4192169f81dbd9c63, type: 3}
-  - {fileID: 1462576323, guid: 35375594664517a4192169f81dbd9c63, type: 3}
-  - {fileID: 933186081, guid: 35375594664517a4192169f81dbd9c63, type: 3}
-  - {fileID: 153277436, guid: 35375594664517a4192169f81dbd9c63, type: 3}
-  - {fileID: -1361200185, guid: 35375594664517a4192169f81dbd9c63, type: 3}
-  - {fileID: -772488781, guid: 35375594664517a4192169f81dbd9c63, type: 3}
-  - {fileID: -189853103, guid: 35375594664517a4192169f81dbd9c63, type: 3}
-  - {fileID: 52411224, guid: 35375594664517a4192169f81dbd9c63, type: 3}
-  - {fileID: 1963240126, guid: 35375594664517a4192169f81dbd9c63, type: 3}
-  - {fileID: -1408274010, guid: 35375594664517a4192169f81dbd9c63, type: 3}
-  - {fileID: -719680647, guid: 35375594664517a4192169f81dbd9c63, type: 3}
-  - {fileID: -1021138861, guid: 35375594664517a4192169f81dbd9c63, type: 3}
-  - {fileID: 878096688, guid: 35375594664517a4192169f81dbd9c63, type: 3}
-  - {fileID: 2044313652, guid: 35375594664517a4192169f81dbd9c63, type: 3}
-  - {fileID: 569406442, guid: 35375594664517a4192169f81dbd9c63, type: 3}
-  - {fileID: -1568411410, guid: 35375594664517a4192169f81dbd9c63, type: 3}
-  - {fileID: -2095521200, guid: 35375594664517a4192169f81dbd9c63, type: 3}
-  - {fileID: 1663158492, guid: 35375594664517a4192169f81dbd9c63, type: 3}
-  - {fileID: 1632086366, guid: 35375594664517a4192169f81dbd9c63, type: 3}
-  - {fileID: 1934273684, guid: 35375594664517a4192169f81dbd9c63, type: 3}
---- !u!1 &4863448859505672612
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 6329293312388257243}
-  - component: {fileID: 8998479123589196623}
-  - component: {fileID: 2749467428816686492}
-  - component: {fileID: 6637589226712034276}
-  m_Layer: 5
-  m_Name: SlidingPuzzleCanva
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!224 &6329293312388257243
-RectTransform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4863448859505672612}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0, y: 0, z: 0}
-  m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 1049360222139852786}
-  m_Father: {fileID: 5863146347417356940}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
-  m_Pivot: {x: 0, y: 0}
---- !u!223 &8998479123589196623
-Canvas:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4863448859505672612}
-  m_Enabled: 1
-  serializedVersion: 3
-  m_RenderMode: 0
-  m_Camera: {fileID: 0}
-  m_PlaneDistance: 100
-  m_PixelPerfect: 0
-  m_ReceivesEvents: 1
-  m_OverrideSorting: 0
-  m_OverridePixelPerfect: 0
-  m_SortingBucketNormalizedSize: 0
-  m_VertexColorAlwaysGammaSpace: 0
-  m_AdditionalShaderChannelsFlag: 0
-  m_UpdateRectTransformForStandalone: 0
-  m_SortingLayerID: 0
-  m_SortingOrder: 0
-  m_TargetDisplay: 0
---- !u!114 &2749467428816686492
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4863448859505672612}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0cd44c1031e13a943bb63640046fad76, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.CanvasScaler
-  m_UiScaleMode: 1
-  m_ReferencePixelsPerUnit: 100
-  m_ScaleFactor: 1
-  m_ReferenceResolution: {x: 1920, y: 1080}
-  m_ScreenMatchMode: 0
-  m_MatchWidthOrHeight: 0.5
-  m_PhysicalUnit: 3
-  m_FallbackScreenDPI: 96
-  m_DefaultSpriteDPI: 96
-  m_DynamicPixelsPerUnit: 1
-  m_PresetInfoIsWorld: 0
---- !u!114 &6637589226712034276
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4863448859505672612}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dc42784cf147c0c48a680349fa168899, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.GraphicRaycaster
-  m_IgnoreReversedGraphics: 1
-  m_BlockingObjects: 0
-  m_BlockingMask:
-    serializedVersion: 2
-    m_Bits: 4294967295
 --- !u!1 &7197127309242698899
 GameObject:
   m_ObjectHideFlags: 0
@@ -326,3 +129,120 @@ MonoBehaviour:
   task: {fileID: 11400000, guid: c11160320df8f0240ab609a30cc76ba6, type: 2}
   canvaPrefab: {fileID: 5118407277419850778, guid: 7bc6925bac6833743ac4301f7508ebef, type: 3}
   MiniGame: {fileID: 2214348639451551594}
+--- !u!1001 &7445638772283132158
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 5863146347417356940}
+    m_Modifications:
+    - target: {fileID: 2605976679286475098, guid: e1d7175b773fd114b9a8333211003990, type: 3}
+      propertyPath: m_Name
+      value: SlidingPuzzleCanva
+      objectReference: {fileID: 0}
+    - target: {fileID: 3495377942054673701, guid: e1d7175b773fd114b9a8333211003990, type: 3}
+      propertyPath: m_Pivot.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3495377942054673701, guid: e1d7175b773fd114b9a8333211003990, type: 3}
+      propertyPath: m_Pivot.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3495377942054673701, guid: e1d7175b773fd114b9a8333211003990, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3495377942054673701, guid: e1d7175b773fd114b9a8333211003990, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3495377942054673701, guid: e1d7175b773fd114b9a8333211003990, type: 3}
+      propertyPath: m_AnchorMin.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3495377942054673701, guid: e1d7175b773fd114b9a8333211003990, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3495377942054673701, guid: e1d7175b773fd114b9a8333211003990, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3495377942054673701, guid: e1d7175b773fd114b9a8333211003990, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3495377942054673701, guid: e1d7175b773fd114b9a8333211003990, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3495377942054673701, guid: e1d7175b773fd114b9a8333211003990, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3495377942054673701, guid: e1d7175b773fd114b9a8333211003990, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3495377942054673701, guid: e1d7175b773fd114b9a8333211003990, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3495377942054673701, guid: e1d7175b773fd114b9a8333211003990, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3495377942054673701, guid: e1d7175b773fd114b9a8333211003990, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3495377942054673701, guid: e1d7175b773fd114b9a8333211003990, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3495377942054673701, guid: e1d7175b773fd114b9a8333211003990, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3495377942054673701, guid: e1d7175b773fd114b9a8333211003990, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3495377942054673701, guid: e1d7175b773fd114b9a8333211003990, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3495377942054673701, guid: e1d7175b773fd114b9a8333211003990, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3495377942054673701, guid: e1d7175b773fd114b9a8333211003990, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8786183507177037716, guid: e1d7175b773fd114b9a8333211003990, type: 3}
+      propertyPath: interactable
+      value: 
+      objectReference: {fileID: 671339223716020362}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: e1d7175b773fd114b9a8333211003990, type: 3}
+--- !u!114 &2214348639451551594 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8786183507177037716, guid: e1d7175b773fd114b9a8333211003990, type: 3}
+  m_PrefabInstance: {fileID: 7445638772283132158}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 96d429d11ff6a7d44a452afc88a23bad, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SlidingPuzzleManager
+--- !u!224 &6329293312388257243 stripped
+RectTransform:
+  m_CorrespondingSourceObject: {fileID: 3495377942054673701, guid: e1d7175b773fd114b9a8333211003990, type: 3}
+  m_PrefabInstance: {fileID: 7445638772283132158}
+  m_PrefabAsset: {fileID: 0}

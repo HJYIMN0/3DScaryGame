@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
-using System.Collections.Generic; // Richiesto per l'utilizzo di List<T> nella randomizzazione
+using System.Collections.Generic;
+using UnityEngine.Events; // Richiesto per l'utilizzo di List<T> nella randomizzazione
 
 // Il nome della classe è rimasto invariato per preservare l'integrità del sistema di minigiochi
 public class SlidingPuzzleManager : AbstractMinigame
@@ -26,8 +27,15 @@ public class SlidingPuzzleManager : AbstractMinigame
     private Tile[,] board;
     private Tile emptyTile;
 
+    // MODIFICA: tassello selezionato al primo click, in attesa del secondo click su una tessera
+    // adiacente con cui scambiarla. Serve per permettere lo scambio tra due tessere qualsiasi
+    // (non solo con quella vuota), come richiesto per garantire la risolvibilità del rimescolamento casuale.
+    private Tile selectedTile;
+
     private float fullWidth;
     private float fullHeight;
+
+    public UnityEvent OnMiniGameComplete;
 
     public override void StartMiniGame()
     {
@@ -41,6 +49,9 @@ public class SlidingPuzzleManager : AbstractMinigame
         // MODIFICA: Validazione degli indici configurati per evitare eccezioni IndexOutOfRangeException
         emptyTileRow = Mathf.Clamp(emptyTileRow, 0, rows - 1);
         emptyTileColumn = Mathf.Clamp(emptyTileColumn, 0, columns - 1);
+
+        // MODIFICA: azzeramento di un'eventuale selezione residua da una precedente sessione del minigioco
+        selectedTile = null;
 
         // Genera la scacchiera salvando lo stato iniziale corretto (homeRow e homeColumn)
         if (board == null)
@@ -156,10 +167,11 @@ public class SlidingPuzzleManager : AbstractMinigame
         // Sostituzione della vecchia matrice di gioco con quella rimescolata
         board = randomizedBoard;
 
-        // NOTA TECNICA: Un rimescolamento puramente casuale (array shuffle) ignora il calcolo
-        // delle inversioni e può generare nel 50% dei casi una configurazione matematicamente irrisolvibile.
-        // Se si desidera garantire l'assoluta risolvibilità, sostituire questa logica con una serie 
-        // di chiamate simulate a TryMove() eseguite in sequenza a partire dallo stato risolto.
+        // MODIFICA: la nota tecnica precedente segnalava che un rimescolamento puramente casuale poteva
+        // generare configurazioni irrisolvibili, perché nel puzzle scorrevole classico si può muovere solo
+        // il tassello adiacente al vuoto (mosse limitate alle sole permutazioni pari). Ora che TryMove/Swap
+        // permettono lo scambio tra due tessere adiacenti qualsiasi (vedi sotto), le trasposizioni adiacenti
+        // generano l'intero gruppo delle permutazioni: qualunque configurazione rimescolata è quindi risolvibile.
     }
 
     public void OnTileClicked(Tile tile)
@@ -169,38 +181,60 @@ public class SlidingPuzzleManager : AbstractMinigame
 
     void TryMove(Tile tile)
     {
-        if (!IsAdjacent(tile))
+        // MODIFICA: sostituita la logica "un click sposta la tessera verso il vuoto" con una selezione
+        // a due click, per permettere lo scambio tra due tessere adiacenti qualsiasi, non necessariamente
+        // con quella vuota (altrimenti, come richiesto, il puzzle non è sempre risolvibile).
+        if (selectedTile == null)
+        {
+            // Primo click: memorizza la tessera scelta, in attesa della seconda
+            selectedTile = tile;
             return;
-        Swap(tile);
+        }
+
+        if (selectedTile != tile && IsAdjacent(selectedTile, tile))
+        {
+            Swap(selectedTile, tile);
+        }
+
+        // Sia in caso di scambio avvenuto, sia in caso di adiacenza non valida (o doppio click sulla
+        // stessa tessera), la selezione si resetta per essere pronti alla prossima coppia di click
+        selectedTile = null;
     }
 
-    bool IsAdjacent(Tile tile)
+    // MODIFICA: firma cambiata da IsAdjacent(Tile) a IsAdjacent(Tile, Tile) per confrontare due
+    // tessere qualsiasi tra loro, invece di confrontare sempre una tessera con il solo emptyTile
+    bool IsAdjacent(Tile a, Tile b)
     {
         int distance =
-            Mathf.Abs(tile.row - emptyTile.row)
+            Mathf.Abs(a.row - b.row)
             +
-            Mathf.Abs(tile.column - emptyTile.column);
+            Mathf.Abs(a.column - b.column);
         return distance == 1;
     }
 
-    void Swap(Tile tile)
+    // MODIFICA: firma cambiata da Swap(Tile) a Swap(Tile, Tile) per scambiare le posizioni logiche
+    // e visive di due tessere qualsiasi, non solo di una tessera con emptyTile
+    void Swap(Tile a, Tile b)
     {
-        int oldRow = tile.row;
-        int oldColumn = tile.column;
-        tile.row = emptyTile.row;
-        tile.column = emptyTile.column;
-        emptyTile.row = oldRow;
-        emptyTile.column = oldColumn;
-        board[tile.row, tile.column] = tile;
-        board[emptyTile.row, emptyTile.column] = emptyTile;
-        UpdateVisual(tile);
-        UpdateVisual(emptyTile);
+        int aRow = a.row;
+        int aColumn = a.column;
+        a.row = b.row;
+        a.column = b.column;
+        b.row = aRow;
+        b.column = aColumn;
+        board[a.row, a.column] = a;
+        board[b.row, b.column] = b;
+        UpdateVisual(a);
+        UpdateVisual(b);
 
         // MODIFICA: Richiamo al nuovo metodo rinominato IsGridCompleted
         if (IsGridCompleted())
         {
             interactable.MarkTaskAsComplete();
             QuitMiniGame();
+            interactable.SetHasBeenCompleted(true);
+            OnMiniGameComplete?.Invoke();
+            this.gameObject.SetActive(false);
         }
     }
 
@@ -228,6 +262,17 @@ public class SlidingPuzzleManager : AbstractMinigame
     {
         GenerateBoard();
         RandomizeGrid(); // Assicura che la griglia venga nuovamente randomizzata al reset
+
+        // MODIFICA: azzeramento della selezione in corso, per evitare che un click residuo da prima
+        // del reset generi uno scambio indesiderato sulla nuova board
+        selectedTile = null;
+    }
+
+    public override void QuitMiniGame()
+    {
+        base.QuitMiniGame();
+
+        //this.gameObject.SetActive(false);
     }
 
     public override void HandleMiniGameLogic()
