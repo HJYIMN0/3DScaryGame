@@ -1,33 +1,7 @@
-VAR Day = 0
+Some dirty clothes lie still on the floor.
+There is no choice.
+You just picked them up.
 
-{Day:
-- 0: -> Day0
-- 1: -> Day1
-- 2: -> Day2
-- 3: -> Day3
-- 100: -> Day100
-}
-
-=== Day0 ===
-Bathroom text
--> END
-
-=== Day1 ===
-Bathroom text
--> END
-
-=== Day2 ===
-Bathroom text
--> END
-
-=== Day3 ===
-The things I put on. 
-We used to use clothes to survive. 
-Now clothes are meant to represent who we are. 
-I don't feel like being a cloth today. 
-
--> END
-
-=== Day100 ===
-I already drank my coffee...
++ [I already picked them up]
+No price for no choice.
 -> END

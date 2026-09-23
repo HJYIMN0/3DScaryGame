@@ -50,8 +50,6 @@ public class PlateWashingMiniGame : AbstractMinigame
 
     // Riferimento al PlayerDialogueController (lo riempiamo all'avvio)
     private PlayerDialogueController _dialogueController;
-
-    private int currentDialoguePlateIndex = 0; // Indice del piatto corrente per il dialogo
     private bool _waitingForPlateDialogueToEnd; // AGGIUNTO: true quando il piatto è stato pulito e stiamo aspettando la chiusura del dialogo prima di passare al piatto successivo
 
     private void Awake()
@@ -161,7 +159,8 @@ public class PlateWashingMiniGame : AbstractMinigame
             // AdvanceToNextPlate(), richiamata da Update() solo quando il dialogo si chiude.
             isDialogueActive = true;
             _waitingForPlateDialogueToEnd = true; // AGGIUNTO
-            _inkManager.StartDialogue(inkJsonFiles[_completedPlates], false, false);
+            int dialoguePoint = Mathf.Min(_completedPlates + 1, inkJsonFiles.Length - 1);
+            _inkManager.StartDialogue(inkJsonFiles[dialoguePoint], false, false);
         }
     }
 

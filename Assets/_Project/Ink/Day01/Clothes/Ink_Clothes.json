@@ -1,0 +1,1 @@
+{"inkVersion":21,"root":[["^Some dirty clothes lie still on the floor.","\n","^There is no choice.","\n","^You just picked them up.","\n","ev","str","^I already picked them up","/str","/ev",{"*":"0.c-0","flg":4},{"c-0":["\n","^No price for no choice.","\n","end",{"->":"0.g-0"},{"#f":5}],"g-0":["done",{"#f":5}]}],"done",{"#f":1}],"listDefs":{}}

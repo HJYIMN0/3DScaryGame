@@ -21,19 +21,22 @@ Nothing better than coffee to start off my day
 -> END
 
 === Day3 ===
-Ahh, the illusion of choice
+Now you're in this story.
+You're called to make a choice.
+The outcome is irrelevant
 
 + [Drink the coffee]
-You did not make any difference
+You chose to drink the coffee.
+A small prize for a small choice.
     -> Reflection
 
 + [Don't drink the coffee]
-The text has changed.
-Does it make any difference?
+A chance you don't like coffee.
+Is it really something you choose?
     -> Reflection
 
 === Reflection ===
-Am I more than what I choose to drink?
+You made your choice.
 -> END
 
 === Day100 ===

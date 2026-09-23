@@ -1,11 +1,11 @@
-This game was supposed to be about an entirely differt subject
+This game was supposed to be something else entirely
 
 But as I was building it,
-Expectation on me kept on growing.
+Expectations on me kept on growing.
 
 How hard must it be?
-To never meet your own expectation
+To never meet your own expectations
 
 Maybe that's a better subject.
-I will not forgive it either
+The sands will not forgive it either
 -> END

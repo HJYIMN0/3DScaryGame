@@ -27,6 +27,9 @@ EditorBuildSettings:
     path: Assets/_Project/Scenes/Build/Day01_Desert.unity
     guid: 948ae740156325e4aac4d8ec518e1949
   - enabled: 1
+    path: Assets/_Project/Scenes/Build/Day02.unity
+    guid: 74cabfe5bf6876e4fb8ccb8a774dfea4
+  - enabled: 1
     path: Assets/_Project/Scenes/Build/EndScene.unity
     guid: d61e615983ef07f4d8fc8f8be9b0b1d1
   m_configObjects:

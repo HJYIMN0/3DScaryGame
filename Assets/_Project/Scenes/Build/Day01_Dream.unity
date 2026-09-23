@@ -2158,7 +2158,11 @@ PrefabInstance:
       objectReference: {fileID: 600265917}
     - target: {fileID: 7583263401368593735, guid: fb745d070b559e74cadb3acb0d550f5f, type: 3}
       propertyPath: inkJsonFiles.Array.size
-      value: 3
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 7583263401368593735, guid: fb745d070b559e74cadb3acb0d550f5f, type: 3}
+      propertyPath: plateSprites.Array.size
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 7583263401368593735, guid: fb745d070b559e74cadb3acb0d550f5f, type: 3}
       propertyPath: 'inkJsonFiles.Array.data[0]'
@@ -2172,6 +2176,34 @@ PrefabInstance:
       propertyPath: 'inkJsonFiles.Array.data[2]'
       value: 
       objectReference: {fileID: 4900000, guid: df7c137806a1dd246b38cf06b6e9443f, type: 3}
+    - target: {fileID: 7583263401368593735, guid: fb745d070b559e74cadb3acb0d550f5f, type: 3}
+      propertyPath: 'inkJsonFiles.Array.data[3]'
+      value: 
+      objectReference: {fileID: 4900000, guid: 0aa8c2dcae933f24881efa7840ea00bf, type: 3}
+    - target: {fileID: 7583263401368593735, guid: fb745d070b559e74cadb3acb0d550f5f, type: 3}
+      propertyPath: 'inkJsonFiles.Array.data[4]'
+      value: 
+      objectReference: {fileID: 4900000, guid: 4171086c1bee5fa488316844c440cdec, type: 3}
+    - target: {fileID: 7583263401368593735, guid: fb745d070b559e74cadb3acb0d550f5f, type: 3}
+      propertyPath: 'inkJsonFiles.Array.data[5]'
+      value: 
+      objectReference: {fileID: 4900000, guid: f360d08c0a13d204482552fc95955d2d, type: 3}
+    - target: {fileID: 7583263401368593735, guid: fb745d070b559e74cadb3acb0d550f5f, type: 3}
+      propertyPath: 'plateSprites.Array.data[6]'
+      value: 
+      objectReference: {fileID: 21300000, guid: 278b817b7ab962c40ad33674c9b80547, type: 3}
+    - target: {fileID: 7583263401368593735, guid: fb745d070b559e74cadb3acb0d550f5f, type: 3}
+      propertyPath: 'plateSprites.Array.data[7]'
+      value: 
+      objectReference: {fileID: 21300000, guid: 1065272c8c9fa6c47af71d4c95d936ba, type: 3}
+    - target: {fileID: 7583263401368593735, guid: fb745d070b559e74cadb3acb0d550f5f, type: 3}
+      propertyPath: 'plateSprites.Array.data[8]'
+      value: 
+      objectReference: {fileID: 21300000, guid: acbaf814482423a47a3b7a50e5f94dbc, type: 3}
+    - target: {fileID: 7583263401368593735, guid: fb745d070b559e74cadb3acb0d550f5f, type: 3}
+      propertyPath: 'plateSprites.Array.data[9]'
+      value: 
+      objectReference: {fileID: 21300000, guid: 25bf87a58e27ef944b82ca3a42ddefb7, type: 3}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects:
@@ -2680,9 +2712,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GameMusicManager
   audioSource: {fileID: 1904832004}
-  clip: {fileID: 0}
-  isLooping: 0
-  playOnStart: 1
   transitionAudioSource: {fileID: 1904832003}
   levelMusicClips:
   - {fileID: 8300000, guid: 41a3669ffe3ee0a468fe4b18cda808e2, type: 3}
@@ -2690,6 +2719,10 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 8dc3c02490c1a964abfd895be482ae83, type: 3}
   - {fileID: 8300000, guid: bf8cd00ee9890a44ea200fbcf7cba89e, type: 3}
   - {fileID: 8300000, guid: 72089fdf3cc91dd459d42ad6cf5a7f37, type: 3}
+  shouldStartPlayingOnAwake: 1
+  isLooping: 0
+  persistAcrossScenes: 0
+  fadeMusicDuration: 1
 --- !u!1001 &1982750053
 PrefabInstance:
   m_ObjectHideFlags: 0

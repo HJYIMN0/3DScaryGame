@@ -1,8 +1,8 @@
 Everything eventyally ends.
 So will you.
 This sand reminds me
-And i keep being remembered
-To forgive is a blessing
+And it keeps on remembering me.
+To forget is a blessing
 I have not been conceded.
 
 Now let me rest.

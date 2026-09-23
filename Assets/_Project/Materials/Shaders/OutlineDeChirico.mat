@@ -110,7 +110,7 @@ Material:
     - _Cull: 2
     - _Cutoff: 0.5
     - _DepthNormalStrength: 0
-    - _DepthThreshold: 1.28
+    - _DepthThreshold: 1.12
     - _DetailAlbedoMapScale: 1
     - _DetailNormalMapScale: 1
     - _DstBlend: 0
@@ -120,15 +120,15 @@ Material:
     - _Glossiness: 0
     - _GlossyReflections: 0
     - _MaxOutlineDistance: 4
-    - _MaxOutlineThickness: 22.74
+    - _MaxOutlineThickness: 115.4
     - _Metallic: 0
-    - _MinOutlineThickness: 3.28
-    - _NoiseMax: 162.47
-    - _NoiseMin: 265.27
-    - _NoiseScale: 1043.1
-    - _NormalThreshold: 2031.1
+    - _MinOutlineThickness: 3.11
+    - _NoiseMax: 61.9
+    - _NoiseMin: 200.9
+    - _NoiseScale: 832.9
+    - _NormalThreshold: 4.88
     - _OcclusionStrength: 1
-    - _OutlineThickness: 3.46
+    - _OutlineThickness: -1.73
     - _OutlineThreshold: 0.01
     - _OutlineWidth: 0.95
     - _Parallax: 0.005
@@ -155,7 +155,7 @@ Material:
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _MainColor: {r: 0.7660377, g: 0.7660377, b: 0.7660377, a: 1}
-    - _OutlineColor: {r: 1, g: 0.82592976, b: 0.1490565, a: 1}
+    - _OutlineColor: {r: 1, g: 0.82592976, b: 0.14905646, a: 1}
     - _RimColor: {r: 0, g: 0, b: 0, a: 1}
     - _ShadowColor: {r: 0, g: 0, b: 0, a: 1}
     - _SpecColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}

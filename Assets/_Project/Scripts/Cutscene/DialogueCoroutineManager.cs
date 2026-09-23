@@ -1,7 +1,8 @@
 using System.Collections;
 using UnityEngine;
 
-public class DesertCoroutineDialogue : MonoBehaviour
+public class DialogueCoroutineManager
+    : MonoBehaviour
 {
     [SerializeField] private TextAsset[] nextDialogueAssets;
     [SerializeField] private float waitTimeBeforeFirstDialogue = 2f;
@@ -12,13 +13,14 @@ public class DesertCoroutineDialogue : MonoBehaviour
 
     private void Start()
     {
-        if (startingDialogueManager != null && inkManager != null)
+        if (startingDialogueManager != null && inkManager != null && startingDialogueManager.InkDialogue != null)
         {
             inkManager.onDialogueEnd += OnStartingDialogueEnd;
         }
-        else
+        else if (startingDialogueManager.InkDialogue == null)
         {
-            Debug.LogError("StartingDialogueManager or InkManager is not assigned in the inspector.");
+            Debug.Log("Starting dialogue!");
+            StartCoroutine(PlayAllDialogues());
         }
     }
 

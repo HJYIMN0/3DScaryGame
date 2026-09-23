@@ -272,6 +272,7 @@ MonoBehaviour:
   - Day01
   - Day01_Dream
   - Day01_Desert
+  - Day02
   - EndScene
-  fadeDuration: 2
+  fadeDuration: 5
   fadeCanvaPrefab: {fileID: 1221388945609126733, guid: e7cb7936a9323b04287e1902f615ad30, type: 3}
