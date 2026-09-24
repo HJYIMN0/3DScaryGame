@@ -2480,8 +2480,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EndGameManager
   playerInputController: {fileID: 692544240}
-  creditsCanvasGroup: {fileID: 773784808}
-  GameIsOverCanvasGroup: {fileID: 1395266073}
   fadeTime: 2
 --- !u!114 &692544240
 MonoBehaviour:
@@ -4313,10 +4311,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::CreditsScroller
   content: {fileID: 74380956}
   scrollSpeed: 50
-  stopPoint: {fileID: 1382235279}
-  isDebugMode: 1
+  stopDistance: -9900
+  isDebugMode: 0
   canvasGroup: {fileID: 1248030563}
-  FadeSpeed: 1
+  FadeSpeed: 5
 --- !u!1 &1272209366
 GameObject:
   m_ObjectHideFlags: 0

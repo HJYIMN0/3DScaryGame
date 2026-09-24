@@ -14,12 +14,20 @@ public class CreditsScroller : MonoBehaviour
     [Tooltip("Velocità di scroll, in unità al secondo.")]
     [SerializeField] private float scrollSpeed = 50f;
 
-    [Tooltip("Punto (in anchoredPosition) in cui lo scroll deve fermarsi. Posiziona qui un RectTransform vuoto nella UI.")]
-    [SerializeField] private RectTransform stopPoint;
+    // MODIFICA: sostituito il RectTransform stopPoint con una distanza (float).
+    // Con il Content Size Fitter tutto è ancorato in un unico punto, quindi
+    // confrontare anchoredPosition con quella di un RectTransform separato
+    // dava errori; una distanza relativa alla posizione di partenza del
+    // content evita il problema.
+    [Tooltip("Distanza (in unità) di cui il content deve scorrere prima di fermarsi.")]
+    [SerializeField] private float stopDistance = 500f;
 
-    // MODIFICA: flag di debug per saltare fade+scroll e verificare subito lo stopPoint.
+    // Posizione di partenza e target, calcolate a runtime in Start().
+    private Vector2 startPosition;
+    private Vector2 targetPosition;
+
     [Header("Debug")]
-    [Tooltip("Se true, in Start() salta fade-in e scroll e porta subito il content sullo stopPoint.")]
+    [Tooltip("Se true, in Start() salta fade-in e scroll e porta subito il content sul target.")]
     [SerializeField] private bool isDebugMode = false;
 
     [Header("Fade")]
@@ -31,12 +39,17 @@ public class CreditsScroller : MonoBehaviour
 
     private void Start()
     {
-        // MODIFICA: se isDebugMode è true, salta fade-in e scroll e porta
-        // subito il content sullo stopPoint, per verificarlo rapidamente.
+        // MODIFICA: target calcolato come startPosition + distanza verso il basso,
+        // invece di leggere anchoredPosition da un RectTransform esterno.
+        startPosition = content.anchoredPosition;
+        targetPosition = startPosition + Vector2.down * stopDistance;
+
+        // Se isDebugMode è true, salta fade-in e scroll e porta subito il
+        // content sul target, per verificarlo rapidamente.
         if (isDebugMode)
         {
             canvasGroup.alpha = 1f;
-            content.anchoredPosition = stopPoint.anchoredPosition;
+            content.anchoredPosition = targetPosition;
             return;
         }
 
@@ -65,15 +78,13 @@ public class CreditsScroller : MonoBehaviour
 
     private IEnumerator ScrollCredits()
     {
-        // MODIFICA: lo scroll ora si ferma esattamente su stopPoint invece di
-        // essere infinito. Uso Vector2.MoveTowards così la direzione è dedotta
-        // automaticamente dalla posizione di stopPoint (non serve più Vector2.down/up
-        // a mano) e non si verifica overshoot oltre il target.
-        while (content.anchoredPosition != stopPoint.anchoredPosition)
+        // MODIFICA: il target ora è targetPosition (startPosition + stopDistance),
+        // calcolato in Start(), non più la anchoredPosition di un RectTransform esterno.
+        while (content.anchoredPosition != targetPosition)
         {
             content.anchoredPosition = Vector2.MoveTowards(
                 content.anchoredPosition,
-                stopPoint.anchoredPosition,
+                targetPosition,
                 scrollSpeed * Time.deltaTime);
             yield return null;
         }
