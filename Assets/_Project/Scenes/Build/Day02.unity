@@ -1092,7 +1092,7 @@ MonoBehaviour:
   - {fileID: 4900000, guid: 840e17c159e928744be01c78d27d45b1, type: 3}
   - {fileID: 4900000, guid: b7424b7fd90bc5e44a4c0561a55a040c, type: 3}
   waitTimeBeforeFirstDialogue: 2
-  waitTimeAfterDialogueEnd: 1
+  waitTimeAfterDialogueEnd: 3
   startingDialogueManager: {fileID: 1644194390}
   inkManager: {fileID: 159364275}
 --- !u!4 &1644194392
