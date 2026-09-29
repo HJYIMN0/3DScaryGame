@@ -15,25 +15,25 @@ MonoBehaviour:
   active: 1
   shadows:
     m_OverrideState: 1
-    m_Value: {x: 0, y: 1, z: 0.52964085, w: -0.8296593}
+    m_Value: {x: 0, y: 1, z: 0.52964085, w: -1}
   midtones:
     m_OverrideState: 1
-    m_Value: {x: 0.95078945, y: 1, z: 0.9966879, w: 0.16412966}
+    m_Value: {x: 0.95078945, y: 1, z: 0.9966879, w: 0.3382529}
   highlights:
-    m_OverrideState: 0
-    m_Value: {x: 0.9803601, y: 1, z: 0.81147206, w: -0.010020657}
+    m_OverrideState: 1
+    m_Value: {x: 0.9760437, y: 1, z: 0.9911408, w: -0.06806161}
   shadowsStart:
     m_OverrideState: 0
     m_Value: 0
   shadowsEnd:
     m_OverrideState: 1
-    m_Value: 0.24
+    m_Value: 0.83
   highlightsStart:
-    m_OverrideState: 0
-    m_Value: 0.04
-  highlightsEnd:
-    m_OverrideState: 0
+    m_OverrideState: 1
     m_Value: 0.26
+  highlightsEnd:
+    m_OverrideState: 1
+    m_Value: 0.7
 --- !u!114 &-7428193062725381424
 MonoBehaviour:
   m_ObjectHideFlags: 3
@@ -96,10 +96,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fb60a22f311433c4c962b888d1393f88, type: 3}
   m_Name: PaniniProjection
   m_EditorClassIdentifier: Unity.RenderPipelines.Universal.Runtime::UnityEngine.Rendering.Universal.PaniniProjection
-  active: 0
+  active: 1
   distance:
     m_OverrideState: 1
-    m_Value: 1
+    m_Value: 0.088
   cropToFit:
     m_OverrideState: 1
     m_Value: 1
@@ -115,7 +115,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c5e1dc532bcb41949b58bc4f2abfbb7e, type: 3}
   m_Name: LensDistortion
   m_EditorClassIdentifier: Unity.RenderPipelines.Universal.Runtime::UnityEngine.Rendering.Universal.LensDistortion
-  active: 1
+  active: 0
   intensity:
     m_OverrideState: 1
     m_Value: 0.36
@@ -250,13 +250,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 66f335fb1ffd8684294ad653bf1c7564, type: 3}
   m_Name: ColorAdjustments
   m_EditorClassIdentifier: Unity.RenderPipelines.Universal.Runtime::UnityEngine.Rendering.Universal.ColorAdjustments
-  active: 1
+  active: 0
   postExposure:
-    m_OverrideState: 0
-    m_Value: 0.6
+    m_OverrideState: 1
+    m_Value: 1
   contrast:
     m_OverrideState: 1
-    m_Value: -56
+    m_Value: -6
   colorFilter:
     m_OverrideState: 0
     m_Value: {r: 0, g: 0, b: 0, a: 1}
@@ -265,7 +265,7 @@ MonoBehaviour:
     m_Value: 44
   saturation:
     m_OverrideState: 1
-    m_Value: -100
+    m_Value: 100
 --- !u!114 &-628601061792920244
 MonoBehaviour:
   m_ObjectHideFlags: 3
@@ -278,13 +278,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 221518ef91623a7438a71fef23660601, type: 3}
   m_Name: WhiteBalance
   m_EditorClassIdentifier: Unity.RenderPipelines.Universal.Runtime::UnityEngine.Rendering.Universal.WhiteBalance
-  active: 0
+  active: 1
   temperature:
     m_OverrideState: 1
-    m_Value: 100
+    m_Value: 24
   tint:
     m_OverrideState: 1
-    m_Value: 100
+    m_Value: 0
 --- !u!114 &-38661928546277023
 MonoBehaviour:
   m_ObjectHideFlags: 3
@@ -297,16 +297,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 70afe9e12c7a7ed47911bb608a23a8ff, type: 3}
   m_Name: SplitToning
   m_EditorClassIdentifier: Unity.RenderPipelines.Universal.Runtime::UnityEngine.Rendering.Universal.SplitToning
-  active: 0
+  active: 1
   shadows:
     m_OverrideState: 1
-    m_Value: {r: 0.3433962, g: 0.3433962, b: 0.3433962, a: 1}
+    m_Value: {r: 0, g: 0, b: 0, a: 1}
   highlights:
     m_OverrideState: 1
     m_Value: {r: 1, g: 1, b: 1, a: 1}
   balance:
     m_OverrideState: 1
-    m_Value: 100
+    m_Value: 42
 --- !u!114 &-13867484179180708
 MonoBehaviour:
   m_ObjectHideFlags: 3
@@ -321,9 +321,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: Unity.RenderPipelines.Universal.Runtime::UnityEngine.Rendering.Universal.ColorCurves
   active: 0
   master:
-    m_OverrideState: 0
+    m_OverrideState: 1
     m_Value:
-      <length>k__BackingField: 2
+      <length>k__BackingField: 3
       m_Loop: 0
       m_ZeroValue: 0
       m_Range: 1
@@ -333,8 +333,17 @@ MonoBehaviour:
         - serializedVersion: 3
           time: 0
           value: 0
-          inSlope: 1
-          outSlope: 1
+          inSlope: 0
+          outSlope: 0
+          tangentMode: 0
+          weightedMode: 0
+          inWeight: 0
+          outWeight: 0
+        - serializedVersion: 3
+          time: 0.48243245
+          value: 0.45839405
+          inSlope: -0.11223766
+          outSlope: -0.11223766
           tangentMode: 0
           weightedMode: 0
           inWeight: 0
@@ -342,8 +351,8 @@ MonoBehaviour:
         - serializedVersion: 3
           time: 1
           value: 1
-          inSlope: 1
-          outSlope: 1
+          inSlope: -0
+          outSlope: -0
           tangentMode: 0
           weightedMode: 0
           inWeight: 0
@@ -596,7 +605,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: d7fd9488000d3734a9e00ee676215985, type: 3}
-  m_Name: Day01_Volume00_BW
+  m_Name: Day00_Volume00
   m_EditorClassIdentifier: Unity.RenderPipelines.Core.Runtime::UnityEngine.Rendering.VolumeProfile
   components:
   - {fileID: 8245929450364317609}
@@ -631,7 +640,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Unity.RenderPipelines.Universal.Runtime::UnityEngine.Rendering.Universal.Tonemapping
   active: 0
   mode:
-    m_OverrideState: 1
+    m_OverrideState: 0
     m_Value: 2
   neutralHDRRangeReductionMode:
     m_OverrideState: 0
@@ -694,7 +703,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 81180773991d8724ab7f2d216912b564, type: 3}
   m_Name: ChromaticAberration
   m_EditorClassIdentifier: Unity.RenderPipelines.Universal.Runtime::UnityEngine.Rendering.Universal.ChromaticAberration
-  active: 1
+  active: 0
   intensity:
     m_OverrideState: 1
     m_Value: 0.609
@@ -716,7 +725,7 @@ MonoBehaviour:
     m_Value: 8
   intensity:
     m_OverrideState: 1
-    m_Value: 0.631
+    m_Value: 0.312
   response:
     m_OverrideState: 1
     m_Value: 0
@@ -735,7 +744,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c01700fd266d6914ababb731e09af2eb, type: 3}
   m_Name: DepthOfField
   m_EditorClassIdentifier: Unity.RenderPipelines.Universal.Runtime::UnityEngine.Rendering.Universal.DepthOfField
-  active: 0
+  active: 1
   mode:
     m_OverrideState: 1
     m_Value: 1
@@ -829,14 +838,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: Unity.RenderPipelines.Universal.Runtime::UnityEngine.Rendering.Universal.LiftGammaGain
   active: 0
   lift:
-    m_OverrideState: 0
-    m_Value: {x: 1, y: 0.9287429, z: 0.49940073, w: 0}
+    m_OverrideState: 1
+    m_Value: {x: 0.968636, y: 1, z: 0.9271092, w: -1}
   gamma:
     m_OverrideState: 1
-    m_Value: {x: 1, y: 0.92820436, z: 0.7396851, w: -0.12272281}
+    m_Value: {x: 0.985296, y: 0.9850307, z: 1, w: 0.26481247}
   gain:
-    m_OverrideState: 0
-    m_Value: {x: 0.89706314, y: 1, z: 0.9743829, w: 0}
+    m_OverrideState: 1
+    m_Value: {x: 0.91565967, y: 0.98622435, z: 1, w: 0.3506661}
 --- !u!114 &9005848258794279490
 MonoBehaviour:
   m_ObjectHideFlags: 3

@@ -108,7 +108,7 @@ public class PlayerDialogueController : MonoBehaviour
             if (_input.InputActions.Player.Next.WasPressedThisFrame())
                 _inkManagerUI.SelectNextChoice();
 
-            if (_input.InputActions.Player.Jump.WasPressedThisFrame())
+            if (_input.InputActions.Player.Interact.WasPressedThisFrame())   // <-- cambiato
                 _inkManagerUI.ConfirmSelectedChoice();
         }
     }

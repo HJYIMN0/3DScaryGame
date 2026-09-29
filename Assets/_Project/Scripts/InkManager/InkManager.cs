@@ -121,26 +121,45 @@ public class InkManager : MonoBehaviour
     {
         Debug.Log("Continue Dialogue has been called.");
 
-        // AGGIUNTO: se ci sono scelte attive, il player deve scegliere prima di proseguire
-        if (currentStory.currentChoices.Count > 0)
+        if (currentStory == null)
         {
-            Debug.Log(
-                $"Story has {currentStory.currentChoices.Count} choices");
-
-            _inkManagerUI.ShowChoices(
-                currentStory.currentChoices,
-                SelectChoice);
-
+            EndDialogue();
             return;
         }
 
-        if (currentStory != null && currentStory.canContinue)
+        // Se ci sono scelte attive, il player deve scegliere prima di proseguire.
+        if (currentStory.currentChoices.Count > 0)
+        {
+            Debug.Log($"Story has {currentStory.currentChoices.Count} choices");
+            _inkManagerUI.ShowChoices(currentStory.currentChoices, SelectChoice);
+            return;
+        }
+
+        if (currentStory.canContinue)
         {
             string nextLine = currentStory.Continue();
+
+            // Salta righe vuote consecutive (fine knot senza testo, marker, ecc.).
+            // Fermati appena trovi una riga valida o una scelta.
+            while (string.IsNullOrWhiteSpace(nextLine)
+                   && currentStory.currentChoices.Count == 0
+                   && currentStory.canContinue)
+            {
+                nextLine = currentStory.Continue();
+            }
+
+            // Se dopo i salti la riga è ancora vuota e non ci sono scelte,
+            // la storia è terminata: chiudi subito senza mostrare il box vuoto.
+            if (string.IsNullOrWhiteSpace(nextLine) && currentStory.currentChoices.Count == 0)
+            {
+                Debug.Log("[InkManager] Story ended with empty line. Closing dialogue.");
+                EndDialogue();
+                return;
+            }
+
             _inkManagerUI?.SetText(nextLine);
 
-            // AGGIUNTO: dopo aver letto la riga, controlla se ci sono scelte da mostrare.
-            // Se sì, le passa alla UI con il callback SelectChoice; non procede da solo.
+            // Dopo aver settato il testo, se ci sono scelte mostrale.
             if (currentStory.currentChoices.Count > 0)
             {
                 _inkManagerUI?.ShowChoices(currentStory.currentChoices, SelectChoice);
@@ -148,7 +167,7 @@ public class InkManager : MonoBehaviour
         }
         else
         {
-            Debug.Log("No more lines to continue or story is null.");
+            Debug.Log("No more lines to continue.");
             EndDialogue();
         }
     }

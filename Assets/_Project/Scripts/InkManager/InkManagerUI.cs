@@ -1,5 +1,6 @@
 using Ink.Runtime;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
@@ -123,15 +124,42 @@ public class InkManagerUI : MonoBehaviour
         if (_selectedIndex < 0) return;
         if (_selectedIndex >= _activeChoiceButtons.Count) return;
 
-        Button btn = _activeChoiceButtons[_selectedIndex].GetComponent<Button>();
-        if (btn == null) return;
+        // Forza subito il layout: senza questo i bottoni appena istanziati
+        // hanno ancora posizione/dimensioni placeholder quando l'EventSystem
+        // prova a selezionarli.
+        if (choiceContainerLayout is RectTransform rt)
+            UnityEngine.UI.LayoutRebuilder.ForceRebuildLayoutImmediate(rt);
 
-        if (EventSystem.current != null)
-            EventSystem.current.SetSelectedGameObject(btn.gameObject);
-        else
+        StartCoroutine(ApplySelectionDelayed(_selectedIndex));
+
+        Debug.Log($"Requested highlight for choice {_selectedIndex}");
+    }
+
+    private IEnumerator ApplySelectionDelayed(int index)
+    {
+        // Due frame + EndOfFrame: il primo per il layout, il secondo perché
+        // l'InputSystemUIInputModule elabora la selezione a fine frame.
+        yield return null;
+        yield return new WaitForEndOfFrame();
+
+        // Ricontrolla gli indici: nel frattempo potrebbero essere cambiati
+        // (es. nuove scelte mostrate o dialogo chiuso).
+        if (index < 0 || index >= _activeChoiceButtons.Count) yield break;
+
+        var go = _activeChoiceButtons[index];
+        if (go == null) yield break;
+
+        if (EventSystem.current == null)
+        {
             Debug.LogWarning("[InkManagerUI] EventSystem.current è null: la selezione UI non verrà impostata.");
+            yield break;
+        }
 
-        Debug.Log($"Selected choice {_selectedIndex}");
+        // NON azzerare prima: con il nuovo Input System il reset + set nello
+        // stesso frame fa perdere lo stato Selected.
+        EventSystem.current.SetSelectedGameObject(go);
+
+        Debug.Log($"[InkManagerUI] EventSystem selected: {go.name}");
     }
 
     // AGGIUNTO: helper privato che combina selezione e conferma per i click sui bottoni.

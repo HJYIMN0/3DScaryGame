@@ -9,7 +9,7 @@ public class EndGameManager : MonoBehaviour
 
     private void Update()
     {
-        if (Keyboard.current != null && Keyboard.current.escapeKey.wasPressedThisFrame)
+        if (playerInputController.InputActions.Player.Quit.WasPressedThisFrame())
         {
 #if UNITY_EDITOR
             UnityEditor.EditorApplication.isPlaying = false;
