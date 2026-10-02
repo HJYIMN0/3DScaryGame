@@ -12,7 +12,7 @@ public class PlayerDialogueController : MonoBehaviour
     private bool _choicesActive = false;
     private bool _movementStopped = false;
 
-    public bool IsDialogueActive => _inkManager != null && _inkManager.IsStoryActive;
+    public bool IsDialogueActive => _inkManager != null && (_inkManager.IsStoryActive || _inkManager.IsDialogueOpen);
     public bool HasActiveChoices => _inkManagerUI != null && _inkManagerUI.HasActiveChoices;
     public Action onDialogueEnd;
 

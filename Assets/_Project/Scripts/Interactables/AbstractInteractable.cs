@@ -8,6 +8,11 @@ public abstract class AbstractInteractable : MonoBehaviour
 
     private bool isCanvaInstantiated = false;
     private GameObject canvaInstance;
+
+    // [NUOVO] Unico interactable che in questo momento ha il canva di interazione visibile.
+    // Garantisce a livello di classe che non ci sia mai più di un canva di interazione acceso alla volta,
+    // indipendentemente da chi chiama OnPlayerEnter/OnPlayerExit (rete di sicurezza oltre al fix nel controller).
+    private static AbstractInteractable s_activeCanvaOwner;
     public TaskSO TaskSO => task;
     protected TaskManager taskManager;
 
@@ -17,7 +22,7 @@ public abstract class AbstractInteractable : MonoBehaviour
     protected PlayerInteractionController _playerInteractionController;
     public PlayerInteractionController GetPlayerInteractionController() => _playerInteractionController;
     protected InkManager _inkManager;
-    public InkManager GetInkManager() 
+    public InkManager GetInkManager()
     {
         if (_inkManager == null)
         {
@@ -55,6 +60,10 @@ public abstract class AbstractInteractable : MonoBehaviour
 
     public void DeactivateCanvas()
     {
+        // [NUOVO] Se eravamo noi i proprietari del canva attivo, liberiamo lo slot.
+        if (s_activeCanvaOwner == this)
+            s_activeCanvaOwner = null;
+
         if (isCanvaInstantiated && canvaInstance != null)
         {
             canvaInstance.SetActive(false);
@@ -72,6 +81,12 @@ public abstract class AbstractInteractable : MonoBehaviour
     {
         if (isCanvaInstantiated) return;
         if (HasBeenCompleted) return;
+
+        // [NUOVO] Prima di mostrare il nostro canva, spegniamo quello di un eventuale altro interactable.
+        // Il controllo sull'uguaglianza con "this" evita di spegnere il canva appena riacceso dello stesso oggetto.
+        if (s_activeCanvaOwner != null && s_activeCanvaOwner != this)
+            s_activeCanvaOwner.DeactivateCanvas();
+        s_activeCanvaOwner = this;
 
         player.SetInteractableTaskForPlayer(this);
 

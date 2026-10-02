@@ -102,6 +102,7 @@ public class InkManager : MonoBehaviour
     // MODIFICATO: accetta canPlayerMove e lo salva prima di chiamare ToggleSystem
     private void PrepareStory(string text, bool canPlayerMove)
     {
+        // Ramo "testo vuoto": INVARIATO
         if (string.IsNullOrEmpty(text))
         {
             Debug.Log("PrepareStory called with empty text. Closing dialogue.");
@@ -111,12 +112,19 @@ public class InkManager : MonoBehaviour
             return;
         }
 
-        _canPlayerMove = canPlayerMove; // AGGIUNTO: salva prima del toggle
+        _canPlayerMove = canPlayerMove; // AGGIUNTO: salva prima del toggle (INVARIATO)
 
-        ToggleSystem();
-        _inkManagerUI?.SetText(text);
+        // [MODIFICA] Prima: ToggleSystem(); veniva chiamato sempre.
+        // ToggleSystem() INVERTE lo stato (ON <-> OFF). Se il dialogo è già aperto e arriva un'altra
+        // StartDialogue(string), per esempio il rilancio fatto da
+        // PlayerInteractionController.OnCurrentTaskDialogueEnded(), il toggle spegneva il sistema
+        // invece di lasciarlo acceso.
+        // Ora lo chiamiamo solo se il dialogo NON è già aperto; altrimenti aggiorniamo solo il testo.
+        if (!IsDialogueOpen)
+            ToggleSystem();
+
+        _inkManagerUI?.SetText(text); // INVARIATO
     }
-
     public void ContinueDialogue()
     {
         Debug.Log("Continue Dialogue has been called.");
