@@ -19,6 +19,7 @@ public class VideoPlayerManager : MonoBehaviour
         videoPlayer.Play();
         Debug.Log($"[VideoPlayerManager] Video avviato. Loop attivo: {videoPlayer.isLooping}");
         SetPlayerMovement(false, isPlayerInScene);
+        TaskManager.Instance.MarkAllTasksAsComplete();
     }
 
     private void OnDisable()

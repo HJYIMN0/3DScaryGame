@@ -688,11 +688,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8786183507177037716, guid: e1d7175b773fd114b9a8333211003990, type: 3}
       propertyPath: rows
-      value: 4
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 8786183507177037716, guid: e1d7175b773fd114b9a8333211003990, type: 3}
       propertyPath: columns
-      value: 4
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 8786183507177037716, guid: e1d7175b773fd114b9a8333211003990, type: 3}
       propertyPath: spacing
@@ -700,7 +700,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8786183507177037716, guid: e1d7175b773fd114b9a8333211003990, type: 3}
       propertyPath: emptyTileRow
-      value: 4
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 8786183507177037716, guid: e1d7175b773fd114b9a8333211003990, type: 3}
       propertyPath: interactable
@@ -708,11 +708,11 @@ PrefabInstance:
       objectReference: {fileID: 1903000647}
     - target: {fileID: 8786183507177037716, guid: e1d7175b773fd114b9a8333211003990, type: 3}
       propertyPath: emptyTileColumn
-      value: 4
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 8786183507177037716, guid: e1d7175b773fd114b9a8333211003990, type: 3}
       propertyPath: tileSprites.Array.size
-      value: 16
+      value: 9
       objectReference: {fileID: 0}
     - target: {fileID: 8786183507177037716, guid: e1d7175b773fd114b9a8333211003990, type: 3}
       propertyPath: 'tileSprites.Array.data[0]'
@@ -1821,7 +1821,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: d1944d68cf221964395426bc3fdc7431, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 1416
+      value: 1500
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: d1944d68cf221964395426bc3fdc7431, type: 3}
       propertyPath: m_LocalRotation.w

@@ -18,7 +18,7 @@ MonoBehaviour:
   canvaObj: {fileID: 5118407277419850778, guid: 7bc6925bac6833743ac4301f7508ebef, type: 3}
   TaskSfx: {fileID: 0}
   isTaskSecret: 0
-  inkJson: {fileID: 4900000, guid: be9d0b7c4c4052644840b702ca75533a, type: 3}
+  inkJson: {fileID: 4900000, guid: 4f7c7a9db6a9ff848b62e73e920d9c02, type: 3}
   usesVariablesInInk: 0
   alreadyCompletedTaskJson: {fileID: 0}
   isThisPhoneTask: 1

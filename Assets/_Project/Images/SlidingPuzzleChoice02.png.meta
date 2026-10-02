@@ -127,9 +127,9 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 0
-        y: 652
-        width: 289
-        height: 217
+        y: 580
+        width: 386
+        height: 289
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -148,10 +148,10 @@ TextureImporter:
       name: SlidingPuzzleChoice02_1
       rect:
         serializedVersion: 2
-        x: 289
-        y: 652
-        width: 289
-        height: 217
+        x: 386
+        y: 580
+        width: 386
+        height: 289
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -170,10 +170,10 @@ TextureImporter:
       name: SlidingPuzzleChoice02_2
       rect:
         serializedVersion: 2
-        x: 578
-        y: 652
-        width: 289
-        height: 217
+        x: 772
+        y: 580
+        width: 386
+        height: 289
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -192,10 +192,10 @@ TextureImporter:
       name: SlidingPuzzleChoice02_3
       rect:
         serializedVersion: 2
-        x: 867
-        y: 652
-        width: 289
-        height: 217
+        x: 0
+        y: 291
+        width: 386
+        height: 289
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -214,10 +214,10 @@ TextureImporter:
       name: SlidingPuzzleChoice02_4
       rect:
         serializedVersion: 2
-        x: 0
-        y: 435
-        width: 289
-        height: 217
+        x: 386
+        y: 291
+        width: 386
+        height: 289
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -236,10 +236,10 @@ TextureImporter:
       name: SlidingPuzzleChoice02_5
       rect:
         serializedVersion: 2
-        x: 289
-        y: 435
-        width: 289
-        height: 217
+        x: 772
+        y: 291
+        width: 386
+        height: 289
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -258,10 +258,10 @@ TextureImporter:
       name: SlidingPuzzleChoice02_6
       rect:
         serializedVersion: 2
-        x: 578
-        y: 435
-        width: 289
-        height: 217
+        x: 0
+        y: 2
+        width: 386
+        height: 289
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -280,10 +280,10 @@ TextureImporter:
       name: SlidingPuzzleChoice02_7
       rect:
         serializedVersion: 2
-        x: 867
-        y: 435
-        width: 289
-        height: 217
+        x: 386
+        y: 2
+        width: 386
+        height: 289
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -302,10 +302,10 @@ TextureImporter:
       name: SlidingPuzzleChoice02_8
       rect:
         serializedVersion: 2
-        x: 0
-        y: 218
-        width: 289
-        height: 217
+        x: 772
+        y: 2
+        width: 386
+        height: 289
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -316,160 +316,6 @@ TextureImporter:
       bones: []
       spriteID: 23e27e59f7bce64498b1fdf2379e79dd
       internalID: -712287381
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: SlidingPuzzleChoice02_9
-      rect:
-        serializedVersion: 2
-        x: 289
-        y: 218
-        width: 289
-        height: 217
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: c4715bd8a1b4d3d4ba9f5771efa9d166
-      internalID: 1186661407
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: SlidingPuzzleChoice02_10
-      rect:
-        serializedVersion: 2
-        x: 578
-        y: 218
-        width: 289
-        height: 217
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: cacdbb522d0c1b541ac140985f771c78
-      internalID: 11505342
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: SlidingPuzzleChoice02_11
-      rect:
-        serializedVersion: 2
-        x: 867
-        y: 218
-        width: 289
-        height: 217
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 8e9cabb6c0e7d7e4d983082293777d87
-      internalID: -1745712916
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: SlidingPuzzleChoice02_12
-      rect:
-        serializedVersion: 2
-        x: 0
-        y: 1
-        width: 289
-        height: 217
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 28d87839f6ff7cb48a01ba2c0fe9f9aa
-      internalID: 1564782837
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: SlidingPuzzleChoice02_13
-      rect:
-        serializedVersion: 2
-        x: 289
-        y: 1
-        width: 289
-        height: 217
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: ceb672c2e306c8f468cddc907d68c025
-      internalID: 1451992187
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: SlidingPuzzleChoice02_14
-      rect:
-        serializedVersion: 2
-        x: 578
-        y: 1
-        width: 289
-        height: 217
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 000d7830a881e8b4fa40bd37622b9758
-      internalID: 92785775
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: SlidingPuzzleChoice02_15
-      rect:
-        serializedVersion: 2
-        x: 867
-        y: 1
-        width: 289
-        height: 217
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: ef72a82e395290b4c81d73f244a4a7e0
-      internalID: -1998990051
       vertices: []
       indices: 
       edges: []
@@ -488,16 +334,10 @@ TextureImporter:
     spriteCustomMetadata:
       entries:
       - key: SpriteEditor.SliceSettings
-        value: '{"sliceOnImport":false,"gridCellCount":{"x":4.0,"y":4.0},"gridSpriteSize":{"x":289.0,"y":217.0},"gridSpriteOffset":{"x":0.0,"y":0.0},"gridSpritePadding":{"x":0.0,"y":0.0},"pivot":{"x":0.5,"y":0.5},"pivotPixels":{"x":0.0,"y":0.0},"autoSlicingMethod":0,"spriteAlignment":0,"pivotUnitMode":0,"slicingType":2,"keepEmptyRects":false,"isAlternate":false}'
+        value: '{"sliceOnImport":false,"gridCellCount":{"x":3.0,"y":3.0},"gridSpriteSize":{"x":386.0,"y":289.0},"gridSpriteOffset":{"x":0.0,"y":0.0},"gridSpritePadding":{"x":0.0,"y":0.0},"pivot":{"x":0.5,"y":0.5},"pivotPixels":{"x":0.0,"y":0.0},"autoSlicingMethod":0,"spriteAlignment":0,"pivotUnitMode":0,"slicingType":2,"keepEmptyRects":false,"isAlternate":false}'
     nameFileIdTable:
       SlidingPuzzleChoice02_0: -2008301888
       SlidingPuzzleChoice02_1: 829067170
-      SlidingPuzzleChoice02_10: 11505342
-      SlidingPuzzleChoice02_11: -1745712916
-      SlidingPuzzleChoice02_12: 1564782837
-      SlidingPuzzleChoice02_13: 1451992187
-      SlidingPuzzleChoice02_14: 92785775
-      SlidingPuzzleChoice02_15: -1998990051
       SlidingPuzzleChoice02_2: -134471281
       SlidingPuzzleChoice02_3: -545505110
       SlidingPuzzleChoice02_4: 1542778658
@@ -505,7 +345,6 @@ TextureImporter:
       SlidingPuzzleChoice02_6: -612004368
       SlidingPuzzleChoice02_7: -2121139380
       SlidingPuzzleChoice02_8: -712287381
-      SlidingPuzzleChoice02_9: 1186661407
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
