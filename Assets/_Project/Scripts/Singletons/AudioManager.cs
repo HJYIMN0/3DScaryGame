@@ -306,4 +306,52 @@ public class AudioManager : GenericSingleton<AudioManager>
         source.spatialBlend = 1f;
         source.Play();
     }
+
+    public void PauseMusic()
+    {
+        // [MODIFICA] Prima era un if/else: se la persistente suonava, la locale non veniva toccata.
+        // Ora si mettono in pausa TUTTE le sorgenti musicali attive (persistente, fade, locali).
+        if (_persistentMusicSource != null && _persistentMusicSource.isPlaying)
+        {
+            _persistentMusicSource.Pause();
+            Debug.Log($"[AudioManager] PauseMusic: persistente in pausa a {_persistentMusicSource.time:F2}s"); // [MODIFICA] log temporaneo, da rimuovere
+        }
+
+        // [MODIFICA] Sorgente del crossfade: senza questo, durante un crossfade la vecchia traccia continuava a suonare in pausa
+        if (_persistentFadeSource != null && _persistentFadeSource.isPlaying)
+        {
+            _persistentFadeSource.Pause();
+        }
+
+        // [MODIFICA] Rimosso l'else; StopLocal() (azzerava il playhead) sostituito da PauseLocal(); aggiunto null check
+        GameMusicManager gameMusicManager = FindAnyObjectByType<GameMusicManager>();
+        if (gameMusicManager != null)
+        {
+            gameMusicManager.PauseLocal();
+        }
+    }
+
+    public void ResumeMusic()
+    {
+        // [MODIFICA] UnPause() riprende dal punto esatto in cui era stata messa in pausa.
+        // Su una sorgente non in pausa (o ferma) non fa nulla, quindi non serve controllare cosa suonava prima.
+        if (_persistentMusicSource != null)
+        {
+            _persistentMusicSource.UnPause();
+            Debug.Log($"[AudioManager] ResumeMusic: persistente isPlaying={_persistentMusicSource.isPlaying} time={_persistentMusicSource.time:F2}s"); // [MODIFICA] log temporaneo, da rimuovere
+        }
+
+        // [MODIFICA] Sorgente del crossfade
+        if (_persistentFadeSource != null)
+        {
+            _persistentFadeSource.UnPause();
+        }
+
+        // [MODIFICA] PlayLocal(clip) (ripartiva da 0) sostituito da ResumeLocal(); aggiunto null check
+        GameMusicManager gameMusicManager = FindAnyObjectByType<GameMusicManager>();
+        if (gameMusicManager != null)
+        {
+            gameMusicManager.ResumeLocal();
+        }
+    }
 }

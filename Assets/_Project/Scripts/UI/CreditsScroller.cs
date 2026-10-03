@@ -1,30 +1,37 @@
 using System.Collections;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
-/// <summary>
-/// Gestisce la sequenza dei crediti: prima esegue il fade-in del CanvasGroup,
-/// poi avvia lo scroll del content (RectTransform con Content Size Fitter).
-/// </summary>
 public class CreditsScroller : MonoBehaviour
 {
+    [SerializeField] private PlayerInputController playerInputController;
+
     [Header("Scroll")]
     [Tooltip("RectTransform del content (quello con il Content Size Fitter) da scrollare.")]
     [SerializeField] private RectTransform content;
 
     [Tooltip("Velocità di scroll, in unità al secondo.")]
     [SerializeField] private float scrollSpeed = 50f;
+    [SerializeField] private float fastScrollMultiplier = 3f;
 
-    // MODIFICA: sostituito il RectTransform stopPoint con una distanza (float).
-    // Con il Content Size Fitter tutto è ancorato in un unico punto, quindi
-    // confrontare anchoredPosition con quella di un RectTransform separato
-    // dava errori; una distanza relativa alla posizione di partenza del
-    // content evita il problema.
     [Tooltip("Distanza (in unità) di cui il content deve scorrere prima di fermarsi.")]
     [SerializeField] private float stopDistance = 500f;
 
     // Posizione di partenza e target, calcolate a runtime in Start().
     private Vector2 startPosition;
     private Vector2 targetPosition;
+
+    private float _currentScrollSpeed;
+
+    [Header("Scroll Manuale (verso l'alto)")]
+    [Tooltip("Azione di input che, tenuta premuta, scorre i crediti verso l'alto.")]
+    [SerializeField] private InputActionReference scrollUpAction;
+
+    [Tooltip("Velocità dello scroll manuale verso l'alto, in unità al secondo.")]
+    [SerializeField] private float scrollUpSpeed = 100f;
+
+    // Flag: il giocatore sta attualmente scrollando verso l'alto.
+    private bool _isScrollingUp;
 
     [Header("Debug")]
     [Tooltip("Se true, in Start() salta fade-in e scroll e porta subito il content sul target.")]
@@ -37,15 +44,16 @@ public class CreditsScroller : MonoBehaviour
     [Tooltip("Velocità di fade, in unità di alpha al secondo.")]
     [SerializeField] private float FadeSpeed = 1f;
 
+    private void Awake()
+    {
+        _currentScrollSpeed = scrollSpeed;
+    }
+
     private void Start()
     {
-        // MODIFICA: target calcolato come startPosition + distanza verso il basso,
-        // invece di leggere anchoredPosition da un RectTransform esterno.
         startPosition = content.anchoredPosition;
         targetPosition = startPosition + Vector2.down * stopDistance;
 
-        // Se isDebugMode è true, salta fade-in e scroll e porta subito il
-        // content sul target, per verificarlo rapidamente.
         if (isDebugMode)
         {
             canvasGroup.alpha = 1f;
@@ -56,7 +64,23 @@ public class CreditsScroller : MonoBehaviour
         StartCoroutine(PlayCreditsSequence());
     }
 
-    // Coroutine "master" chiamata in Start: orchestra fade-in -> scroll.
+    private void Update()
+    {
+        if (playerInputController.InputActions.Player.Jump.IsPressed() ||
+            playerInputController.InputActions.Player.Attack.IsPressed())
+        {
+            _currentScrollSpeed = scrollSpeed * fastScrollMultiplier;
+        }
+        else if (playerInputController.InputActions.Player.Jump.WasReleasedThisFrame() ||
+                 playerInputController.InputActions.Player.Attack.WasReleasedThisFrame())
+        {
+            _currentScrollSpeed = scrollSpeed;
+        }
+
+        // Legge l'input di scroll manuale verso l'alto.
+        _isScrollingUp = scrollUpAction != null && scrollUpAction.action.IsPressed();
+    }
+
     private IEnumerator PlayCreditsSequence()
     {
         yield return StartCoroutine(FadeIn());
@@ -73,19 +97,31 @@ public class CreditsScroller : MonoBehaviour
             yield return null;
         }
 
-        canvasGroup.alpha = 1f; // clamp, evita overshoot oltre 1
+        canvasGroup.alpha = 1f;
     }
 
     private IEnumerator ScrollCredits()
     {
-        // MODIFICA: il target ora è targetPosition (startPosition + stopDistance),
-        // calcolato in Start(), non più la anchoredPosition di un RectTransform esterno.
-        while (content.anchoredPosition != targetPosition)
+        // MODIFICA: la coroutine non termina più quando il content raggiunge la fine.
+        // Resta in ascolto: se il content viene spostato verso l'alto (scroll manuale),
+        // riprende automaticamente a scorrere verso il target.
+        while (true)
         {
-            content.anchoredPosition = Vector2.MoveTowards(
-                content.anchoredPosition,
-                targetPosition,
-                scrollSpeed * Time.deltaTime);
+            if (_isScrollingUp)
+            {
+                // Scroll manuale verso l'alto: allontana il content dal target.
+                content.anchoredPosition += Vector2.up * scrollUpSpeed * Time.deltaTime;
+            }
+            else if (content.anchoredPosition != targetPosition)
+            {
+                // Scroll automatico verso la fine. Vale anche se il content è stato
+                // riportato in alto dopo aver già raggiunto la fine.
+                content.anchoredPosition = Vector2.MoveTowards(
+                    content.anchoredPosition,
+                    targetPosition,
+                    _currentScrollSpeed * Time.deltaTime);
+            }
+
             yield return null;
         }
     }

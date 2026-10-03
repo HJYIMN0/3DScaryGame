@@ -31,6 +31,8 @@ public class GameMusicManager : MonoBehaviour
     private int musicIndex = 0;
     private AudioClip currentClip;
 
+    public AudioClip CurrentClip => currentClip;
+
     private void Start()
     {
         if (levelMusicClips != null && levelMusicClips.Length > 0)
@@ -131,6 +133,29 @@ public class GameMusicManager : MonoBehaviour
     {
         if (audioSource != null) audioSource.Stop();
         if (transitionAudioSource != null) transitionAudioSource.Stop();
+    }
+    /// <summary>Mette in pausa le sorgenti locali di questa scena mantenendo il playhead. Non tocca la musica persistente.</summary>
+    public void PauseLocal()
+    {
+        // [MODIFICA] Nuovo metodo: Pause() invece di Stop(), così si può riprendere dallo stesso punto
+        if (audioSource != null && audioSource.isPlaying)
+        {
+            audioSource.Pause();
+            Debug.Log($"[GameMusicManager] PauseLocal: audioSource in pausa a {audioSource.time:F2}s"); // [MODIFICA] log temporaneo
+        }
+        if (transitionAudioSource != null && transitionAudioSource.isPlaying)
+        {
+            transitionAudioSource.Pause();
+            Debug.Log($"[GameMusicManager] PauseLocal: transitionAudioSource in pausa a {transitionAudioSource.time:F2}s"); // [MODIFICA] log temporaneo
+        }
+    }
+
+    /// <summary>Riprende le sorgenti locali messe in pausa da PauseLocal().</summary>
+    public void ResumeLocal()
+    {
+        // [MODIFICA] Nuovo metodo: UnPause() su una sorgente non in pausa è un no-op
+        if (audioSource != null) audioSource.UnPause();
+        if (transitionAudioSource != null) transitionAudioSource.UnPause();
     }
 
     // ==================== STOP "GENERALE" ====================
