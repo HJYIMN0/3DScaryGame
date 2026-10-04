@@ -141,12 +141,10 @@ public class GameMusicManager : MonoBehaviour
         if (audioSource != null && audioSource.isPlaying)
         {
             audioSource.Pause();
-            Debug.Log($"[GameMusicManager] PauseLocal: audioSource in pausa a {audioSource.time:F2}s"); // [MODIFICA] log temporaneo
         }
         if (transitionAudioSource != null && transitionAudioSource.isPlaying)
         {
             transitionAudioSource.Pause();
-            Debug.Log($"[GameMusicManager] PauseLocal: transitionAudioSource in pausa a {transitionAudioSource.time:F2}s"); // [MODIFICA] log temporaneo
         }
     }
 

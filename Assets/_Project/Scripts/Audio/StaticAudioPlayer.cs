@@ -1,5 +1,3 @@
-using UnityEngine;
-
 public class StaticAudioPlayer : GenericAudioPlayer
 {
     public override void Play()

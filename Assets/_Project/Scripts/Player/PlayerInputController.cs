@@ -1,5 +1,4 @@
 using UnityEngine;
-using UnityEngine.InputSystem;
 
 /// <summary>
 /// Gestisce esclusivamente il lifecycle di InputSystem_Actions.

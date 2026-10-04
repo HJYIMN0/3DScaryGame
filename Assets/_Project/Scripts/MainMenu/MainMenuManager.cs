@@ -34,9 +34,14 @@ public class MainMenuManager : MonoBehaviour
     [Header("Material settings")]
     [SerializeField] private GameObject wallObject;
     [SerializeField] private Color destinationColor = Color.white;
+    [SerializeField] private float colorChangeSpeed = 5f;
+
+    private Renderer _wallRenderer;
+    private MaterialPropertyBlock _wallMaterialProperties;
+    private Color _wallStartColor;
+    private int _colorPropertyId;
 
     private Material _wallMaterialInstance;
-    private int _colorPropertyId;
 
     private bool _isGameStarted = false;
     private string playerActionInput;
@@ -49,21 +54,39 @@ public class MainMenuManager : MonoBehaviour
             return;
         }
 
-        Renderer rend = wallObject.GetComponent<Renderer>();
-        if (rend == null)
+        _wallRenderer = wallObject.GetComponent<Renderer>();
+
+        if (_wallRenderer == null)
         {
-            Debug.LogError("[MainMenuManager] wallObject non ha un Renderer.");
+            Debug.LogError("[MainMenuManager] wallObject non ha un Renderer. Se il Renderer è su un figlio, assegna direttamente quel GameObject.");
             return;
         }
 
-        // .material crea/restituisce l'istanza del materiale solo per questo renderer.
-        // NON usare .sharedMaterial, altrimenti modifichi l'asset condiviso.
-        _wallMaterialInstance = rend.material;
+        Material wallMaterial = _wallRenderer.sharedMaterial;
 
-        // URP / HDRP usano "_BaseColor", Built-in Standard usa "_Color".
-        _colorPropertyId = _wallMaterialInstance.HasProperty("_BaseColor")
-            ? Shader.PropertyToID("_BaseColor")
-            : Shader.PropertyToID("_Color");
+        if (wallMaterial == null)
+        {
+            Debug.LogError("[MainMenuManager] Il Renderer non ha un Material assegnato.");
+            return;
+        }
+
+        // [MODIFICA] Usa MaterialPropertyBlock: aggiorna il colore visibile in scena senza creare una copia del Material.
+        if (wallMaterial.HasProperty("_BaseColor"))
+        {
+            _colorPropertyId = Shader.PropertyToID("_BaseColor");
+        }
+        else if (wallMaterial.HasProperty("_Color"))
+        {
+            _colorPropertyId = Shader.PropertyToID("_Color");
+        }
+        else
+        {
+            Debug.LogError($"[MainMenuManager] Il Material '{wallMaterial.name}' non espone né _BaseColor né _Color. Verifica la Reference della proprietà nel Shader Graph.");
+            return;
+        }
+
+        _wallStartColor = wallMaterial.GetColor(_colorPropertyId);
+        _wallMaterialProperties = new MaterialPropertyBlock();
     }
 
     private void Start()
@@ -102,30 +125,46 @@ public class MainMenuManager : MonoBehaviour
     private IEnumerator HandleMiniGameStarted()
     {
         mainMenuCanvasGroup.alpha = 1f;
+        gameMusicManager.Play();
 
-        if (_wallMaterialInstance == null)
-            yield break;
-
-        Color startColor = _wallMaterialInstance.GetColor(_colorPropertyId);
-        float t = 0f;
-
-        while (t < 1f)
+        if (_wallRenderer == null || _wallMaterialProperties == null)
         {
-            t += Time.deltaTime * fadeSpeed;
-            float clamped = Mathf.Clamp01(t);
+            Debug.LogError("[MainMenuManager] Renderer o MaterialPropertyBlock non inizializzati: cambio colore annullato.");
+            yield break;
+        }
 
-            mainMenuCanvasGroup.alpha = Mathf.Lerp(1f, 0f, clamped);
-            _wallMaterialInstance.SetColor(
+        // [MODIFICA] colorChangeSpeed è usato come durata in secondi del solo cambio colore.
+        float colorChangeDuration = Mathf.Max(0.01f, colorChangeSpeed);
+        float elapsedTime = 0f;
+
+        float colorProgress = 0f;
+        float fadeProgress = 0f;
+
+        // [MODIFICA] Attende che finiscano sia il colore sia il fade, ognuno con il proprio valore serializzato.
+        while (colorProgress < 1f || fadeProgress < 1f)
+        {
+            elapsedTime += Time.deltaTime;
+
+            colorProgress = Mathf.Clamp01(elapsedTime / colorChangeDuration);
+            fadeProgress = Mathf.Clamp01(elapsedTime * fadeSpeed);
+
+            mainMenuCanvasGroup.alpha = Mathf.Lerp(1f, 0f, fadeProgress);
+
+            _wallRenderer.GetPropertyBlock(_wallMaterialProperties);
+            _wallMaterialProperties.SetColor(
                 _colorPropertyId,
-                Color.Lerp(startColor, destinationColor, clamped)
+                Color.Lerp(_wallStartColor, destinationColor, colorProgress)
             );
+            _wallRenderer.SetPropertyBlock(_wallMaterialProperties);
 
             yield return null;
         }
 
-        // Forza i valori finali per evitare residui floating-point.
         mainMenuCanvasGroup.alpha = 0f;
-        _wallMaterialInstance.SetColor(_colorPropertyId, destinationColor);
+
+        _wallRenderer.GetPropertyBlock(_wallMaterialProperties);
+        _wallMaterialProperties.SetColor(_colorPropertyId, destinationColor);
+        _wallRenderer.SetPropertyBlock(_wallMaterialProperties);
     }
 
     private void HandleMiniGameCompleted()

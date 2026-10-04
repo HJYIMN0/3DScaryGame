@@ -1,5 +1,4 @@
-﻿using System;
-using UnityEngine;
+﻿using UnityEngine;
 public abstract class AbstractInteractable : MonoBehaviour
 {
     [SerializeField] protected TaskSO task;
@@ -39,7 +38,6 @@ public abstract class AbstractInteractable : MonoBehaviour
         if (task != null && !task.isTaskSecret)
         {
             taskManager.AddTask(task);
-            Debug.Log($"Added task '{task.TaskName}' to DayManager.");
         }
         else
         {
@@ -68,7 +66,6 @@ public abstract class AbstractInteractable : MonoBehaviour
         {
             canvaInstance.SetActive(false);
             isCanvaInstantiated = false;
-            Debug.Log("Player left, deactivating canva.");
         }
     }
 
@@ -95,7 +92,6 @@ public abstract class AbstractInteractable : MonoBehaviour
         {
             canvaInstance.SetActive(true);
             isCanvaInstantiated = true;
-            Debug.Log("Canva wasn't null, but not instantiated. Instantiating now...");
         }
         else if (!isCanvaInstantiated && canvaInstance == null)
         {
@@ -104,7 +100,6 @@ public abstract class AbstractInteractable : MonoBehaviour
             canvaInstance.GetComponent<InteractionCanvaManager>().Initialize(this);
             canvaInstance.SetActive(true);
             isCanvaInstantiated = true;
-            Debug.Log("Canva was null, instantiating now...");
         }
     }
 
@@ -112,7 +107,6 @@ public abstract class AbstractInteractable : MonoBehaviour
     {
         if (taskManager.IsPhoneInScene && !taskManager.HasAnsweredThePhone && !task.isThisPhoneTask)
         {
-            Debug.Log("Player hasn't completed the phone task yet.");
             ShowDialogue(task.answerThePhoneText);
             return;
         }
@@ -134,7 +128,6 @@ public abstract class AbstractInteractable : MonoBehaviour
         {
             // MODIFICATO: da InkManager.Instance a _inkManager
             _inkManager?.StartDialogue(dialogue, usesVariables);
-            Debug.Log($"Showing dialogue for task '{task.TaskName}'.");
         }
         else
         {
@@ -149,7 +142,6 @@ public abstract class AbstractInteractable : MonoBehaviour
         {
             // MODIFICATO: da InkManager.Instance a _inkManager
             _inkManager?.StartDialogue(dialogue, usesVariables, differentDay);
-            Debug.Log($"Showing dialogue for task '{task.TaskName}'.");
         }
         else
         {
@@ -162,7 +154,6 @@ public abstract class AbstractInteractable : MonoBehaviour
         if (string.IsNullOrEmpty(text)) return;
         // MODIFICATO: da InkManager.Instance a _inkManager
         _inkManager?.StartDialogue(text);
-        Debug.Log($"Showing dialogue: '{text}'.");
     }
 
     public void PLayTaskSfx()
@@ -171,7 +162,6 @@ public abstract class AbstractInteractable : MonoBehaviour
         if (task.TaskSfx == null) { Debug.LogWarning($"No SFX per task '{task.TaskName}'."); return; }
 
         AudioManager.Instance.PlaySfxAtPosition(task.TaskSfx, transform.position);
-        Debug.Log($"Playing SFX for task '{task.TaskName}'.");
     }
 
     public virtual void MarkTaskAsComplete()
@@ -187,7 +177,6 @@ public abstract class AbstractInteractable : MonoBehaviour
                 MiniGame.SetPlayerInputController(_playerInteractionController.GetComponent<PlayerInputController>());
 
             MiniGame.StartMiniGame();
-            Debug.Log($"Starting mini-game for task '{task.TaskName}'.");
         }
         else
         {
@@ -198,7 +187,6 @@ public abstract class AbstractInteractable : MonoBehaviour
     public virtual void OnDialogueEnd(TextAsset dialogue)
     {
         // Questo metodo può essere sovrascritto dalle classi figlie per gestire la fine del dialogo specifico del task
-        Debug.Log($"Dialogue ended for task '{task.TaskName}'.");
     }
 
     public void OnPlayerEnter(PlayerInteractionController player)
@@ -226,12 +214,10 @@ public abstract class AbstractInteractable : MonoBehaviour
             _playerInteractionController.ClearInteractableTaskForPlayer();
             // MODIFICATO: da InkManager.Instance a _inkManager
             _inkManager?.ClearStoryAndTextAsset();
-            Debug.Log("Player left, clearing interactable task for player.");
         }
         if (_inkManager != null)
         {
             _inkManager.onDialogueEnd -= OnDialogueEnd; // Annulla la sottoscrizione all'evento onDialogueEnd
-            Debug.Log("Player left, unsubscribing from onDialogueEnd event.");
         }
     }
 }

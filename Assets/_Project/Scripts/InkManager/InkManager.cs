@@ -105,7 +105,6 @@ public class InkManager : MonoBehaviour
         // Ramo "testo vuoto": INVARIATO
         if (string.IsNullOrEmpty(text))
         {
-            Debug.Log("PrepareStory called with empty text. Closing dialogue.");
             _inkManagerUI?.CloseCanva();
             EndDialogue();
             ClearStoryAndTextAsset();
@@ -127,7 +126,6 @@ public class InkManager : MonoBehaviour
     }
     public void ContinueDialogue()
     {
-        Debug.Log("Continue Dialogue has been called.");
 
         if (currentStory == null)
         {
@@ -138,7 +136,6 @@ public class InkManager : MonoBehaviour
         // Se ci sono scelte attive, il player deve scegliere prima di proseguire.
         if (currentStory.currentChoices.Count > 0)
         {
-            Debug.Log($"Story has {currentStory.currentChoices.Count} choices");
             _inkManagerUI.ShowChoices(currentStory.currentChoices, SelectChoice);
             return;
         }
@@ -160,7 +157,6 @@ public class InkManager : MonoBehaviour
             // la storia è terminata: chiudi subito senza mostrare il box vuoto.
             if (string.IsNullOrWhiteSpace(nextLine) && currentStory.currentChoices.Count == 0)
             {
-                Debug.Log("[InkManager] Story ended with empty line. Closing dialogue.");
                 EndDialogue();
                 return;
             }
@@ -175,16 +171,12 @@ public class InkManager : MonoBehaviour
         }
         else
         {
-            Debug.Log("No more lines to continue.");
             EndDialogue();
         }
     }
 
     public void SelectChoice(int index)
     {
-        Debug.Log(
-            $"Ink choice selected : {index}");
-
         currentStory.ChooseChoiceIndex(index);
 
         _inkManagerUI.HideChoices();

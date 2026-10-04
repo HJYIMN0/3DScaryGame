@@ -1931,6 +1931,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: PF_KitchenSink
       objectReference: {fileID: 0}
+    - target: {fileID: 2519645986356049531, guid: fb745d070b559e74cadb3acb0d550f5f, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: f4dd5fb1091886c4b8f55cfcd94e49c3, type: 3}
     - target: {fileID: 3566184072265003732, guid: fb745d070b559e74cadb3acb0d550f5f, type: 3}
       propertyPath: m_LocalPosition.x
       value: 9.14

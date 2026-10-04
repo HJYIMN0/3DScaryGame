@@ -3,7 +3,6 @@ using UnityEngine;
 
 public class InteractableClothes : AbstractInteractable
 {
-
     [SerializeField] private float fadeDuration = 1f;
     [SerializeField] private GameObject holeGameObject;
     [SerializeField] private GameObject fadeCanvaPrefab;

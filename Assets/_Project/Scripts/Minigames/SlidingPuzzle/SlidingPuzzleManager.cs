@@ -1,5 +1,4 @@
 using UnityEngine;
-using UnityEngine.UI;
 using System.Collections.Generic;
 using UnityEngine.Events; // Richiesto per l'utilizzo di List<T> nella randomizzazione
 

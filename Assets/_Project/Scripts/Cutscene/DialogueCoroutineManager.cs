@@ -19,7 +19,6 @@ public class DialogueCoroutineManager
         }
         else if (startingDialogueManager.InkDialogue == null)
         {
-            Debug.Log("Starting dialogue!");
             StartCoroutine(PlayAllDialogues());
         }
     }
@@ -57,6 +56,5 @@ public class DialogueCoroutineManager
         }
 
         GameFlowManager.Instance.LoadNextDay(GameFlowManager.Instance.FadeDuration);
-        Debug.Log("All dialogues completed.");
     }
 }

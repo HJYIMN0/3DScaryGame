@@ -1,6 +1,5 @@
 using System;
 using System.Collections;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class Day00Manager : MonoBehaviour
@@ -29,9 +28,7 @@ public class Day00Manager : MonoBehaviour
     private IEnumerator WaitAndLoadNextDay()
     {
         float duration = isDebugMode ? dayDurationOnDebugModeOn : DayDurationInSeconds;
-        Debug.Log($"Day 00 will last for {duration} seconds.");
         yield return new WaitForSeconds(duration);
-        Debug.Log("Day 00 has ended. Loading next day...");
         LoadNextDay();
     }
 

@@ -17,7 +17,6 @@ public class VideoPlayerManager : MonoBehaviour
     {        
         videoPlayer.loopPointReached += OnVideoFinished;
         videoPlayer.Play();
-        Debug.Log($"[VideoPlayerManager] Video avviato. Loop attivo: {videoPlayer.isLooping}");
         SetPlayerMovement(false, isPlayerInScene);
         TaskManager.Instance.MarkAllTasksAsComplete();
     }
@@ -36,7 +35,6 @@ public class VideoPlayerManager : MonoBehaviour
 
     private void OnVideoFinished(VideoPlayer vp)
     {
-        Debug.Log("[VideoPlayerManager] OnVideoFinished chiamato.");
         Destroy(this.gameObject);
         SetPlayerMovement(true, isPlayerInScene);
         OnVideoEnd?.Invoke();

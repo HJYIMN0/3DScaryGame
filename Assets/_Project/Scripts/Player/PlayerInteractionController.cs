@@ -49,7 +49,6 @@ public class PlayerInteractionController : MonoBehaviour
         if (phoneTask != null && phoneTask.isThisPhoneTask)
         {
             HasAnsweredPhone = hasAnswered;
-            Debug.Log("Player has answered the phone task: " + phoneTask.TaskName);
         }
     }
 
@@ -258,7 +257,6 @@ public class PlayerInteractionController : MonoBehaviour
 
     public void SetInteractableTaskForPlayer(AbstractInteractable taskToInteractWith)
     {
-        Debug.Log("Setting interactable task for player: " + taskToInteractWith.name);
         interactableTask = taskToInteractWith;
 
         if (_dialogueController != null)
@@ -273,7 +271,6 @@ public class PlayerInteractionController : MonoBehaviour
 
     public void ClearInteractableTaskForPlayer()
     {
-        Debug.Log("Clearing interactable task for player.");
         interactableTask = null;
     }
 
@@ -283,8 +280,6 @@ public class PlayerInteractionController : MonoBehaviour
         {
             activeMinigame = minigame;
             activeMinigame.SetPlayerInputController(this.gameObject.GetComponent<PlayerInputController>());
-
-            Debug.Log($"Setting active Minigame for player as {minigame}");
         }
     }
 
@@ -294,14 +289,12 @@ public class PlayerInteractionController : MonoBehaviour
 
         activeMinigame.SetPlayerInputController(null);
         activeMinigame = null;
-        Debug.Log("active minigame is now null");
     }
 
     private void HandleMiniGameInteraction()
     {
         if (activeMinigame != null)
         {
-            Debug.Log("Starting minigame " + activeMinigame.name);
             activeMinigame.StartMiniGame();
         }
     }

@@ -26,7 +26,6 @@ public abstract class GenericSingleton<T> : MonoBehaviour where T : MonoBehaviou
                 // accedendo a Instance in OnDisable/OnDestroy e sta creando
                 // un GameObject che Unity non riuscirà a pulire.
                 // Cerca lo stack qui sotto per capire chi è il colpevole.
-                Debug.Log($"Generating new Singleton: {gameObj.name}\n{StackTraceUtility.ExtractStackTrace()}");
             }
 
             return instance;

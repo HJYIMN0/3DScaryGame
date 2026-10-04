@@ -1,6 +1,3 @@
-using System;
-using UnityEngine;
-
 public class InteractableCoffeeMachine : AbstractInteractable
 {
     public override void ExecuteInteraction()

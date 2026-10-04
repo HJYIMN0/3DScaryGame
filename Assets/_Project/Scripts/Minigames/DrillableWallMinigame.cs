@@ -56,7 +56,6 @@ public class DrillableWallMinigame : AbstractMinigame
                                "Impossibile procedere con il raycast.");
                 return;
             }
-            Debug.Log("[DrillableWallMinigame] _raycastCamera non assegnata: uso Camera.main come fallback.");
         }
 
         Texture2D originalTexture = _renderer.material.mainTexture as Texture2D;
@@ -146,8 +145,6 @@ public class DrillableWallMinigame : AbstractMinigame
         // Se non lo è, il minigioco rimane su Camera.main.
         if (_miniGameCamera != null)
             _miniGameCamera.gameObject.SetActive(true);
-        else
-            Debug.Log("[DrillableWallMinigame] Nessuna _miniGameCamera: uso Camera.main per il minigioco.");
 
         _virtualCursorPosition = new Vector2(Screen.width * 0.5f, Screen.height * 0.5f);
 
@@ -170,7 +167,6 @@ public class DrillableWallMinigame : AbstractMinigame
 
         if (HasCompletitionBeenReached())
         {
-            Debug.Log("MiniGame completato! Segnalo al TaskManager che il task è stato completato.");
             taskManager.CompleteTask(interactable.TaskSO);
             interactable.SetHasBeenCompleted(true);
             OnMiniGameCompleted?.Invoke();
@@ -179,7 +175,6 @@ public class DrillableWallMinigame : AbstractMinigame
 
     public override void ResetMiniGame()
     {
-        Debug.Log("Resetting DrillableWallMinigame...");
     }
 
     public override void HandleMiniGameLogic()

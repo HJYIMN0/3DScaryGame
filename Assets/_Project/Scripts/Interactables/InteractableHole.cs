@@ -17,7 +17,6 @@ public class InteractableHole : AbstractInteractable
         }
         else
         {
-            Debug.Log("Already interacted with the hole.");
             ShowDialogue(task.inkJson, true);
         }
     }
@@ -28,7 +27,6 @@ public class InteractableHole : AbstractInteractable
         uiInstance.GetComponent<VideoPlayerManager>().OnVideoEnd += () =>
         {
             DeactivateCanvas();
-            Debug.Log("Video ended, showing dialogue...");
             ShowDialogue(task.inkJson, true);
             taskManager.MarkAllTasksAsComplete();
         };

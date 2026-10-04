@@ -36,7 +36,6 @@ public class PlayerPauseManager : MonoBehaviour
 
     public void TogglePause()
     {
-        Debug.Log("Called toggle pause! IsPaused: " + _isPaused);
         _resumeText = $"Press {playerInputController.InputActions.Player.Quit.name} to Resume";
         if (_isPaused)
         {
@@ -50,7 +49,6 @@ public class PlayerPauseManager : MonoBehaviour
 
     private IEnumerator PauseGame(float fadeSpeed)
     {
-        Debug.Log("Pausing game...");
         _isCoroutineRunning = true;
         _isPaused = true;
 
@@ -60,18 +58,15 @@ public class PlayerPauseManager : MonoBehaviour
         while (pauseMenuCanvasGroup.alpha < 1)
         {
             pauseMenuCanvasGroup.alpha = Mathf.MoveTowards(pauseMenuCanvasGroup.alpha, 1, fadeSpeed * Time.deltaTime);
-            Debug.Log("Pause menu alpha: " + pauseMenuCanvasGroup.alpha);
             yield return null;
         }
         pauseMenuCanvasGroup.alpha = 1;
         pauseMenuCanvasGroup.interactable = true;
         _isCoroutineRunning = false;
-        Debug.Log("Game paused! IsPaused: " + _isPaused);
     }
 
     private IEnumerator ResumeGame(float fadeSpeed)
     {
-        Debug.Log("Resuming game...");
         _isCoroutineRunning = true;
         _isPaused = false;
 
@@ -87,6 +82,5 @@ public class PlayerPauseManager : MonoBehaviour
         pauseMenuCanvasGroup.interactable = false;
         pauseMenuCanvasGroup.blocksRaycasts = false;
         _isCoroutineRunning = false;
-        Debug.Log("Game resumed!");
     }
 }

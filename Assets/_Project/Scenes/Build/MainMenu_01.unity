@@ -209,7 +209,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!108 &386051891
 Light:
   m_ObjectHideFlags: 0
@@ -221,7 +221,7 @@ Light:
   serializedVersion: 13
   m_Type: 1
   m_Color: {r: 1, g: 0.95686275, b: 0.8392157, a: 1}
-  m_Intensity: 0
+  m_Intensity: 1.71
   m_Range: 10
   m_SpotAngle: 30
   m_InnerSpotAngle: 21.80208
@@ -499,13 +499,13 @@ MonoBehaviour:
   gameMusicManager: {fileID: 2133165763}
   distrurbingAudioClip: {fileID: 8300000, guid: e52dfda84032bd34684fbd1d83915099, type: 3}
   wallLight: {fileID: 2002260485}
-  wallLightIntensity: 1.1
   wallLightMinIntensity: 1
-  wallLightMaxIntensity: 100
+  wallLightMaxIntensity: 25
   cameraDistance: 5
   cameraMoveSpeed: 0.25
   wallObject: {fileID: 1707162683}
   destinationColor: {r: 1, g: 1, b: 1, a: 1}
+  colorChangeSpeed: 5
 --- !u!114 &613246569
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1633,7 +1633,7 @@ MonoBehaviour:
   levelMusicClips:
   - {fileID: 8300000, guid: 6d1b2811add0517459041780f1a2154d, type: 3}
   - {fileID: 8300000, guid: 9b30d624795392348aa1f69392486503, type: 3}
-  shouldStartPlayingOnAwake: 1
+  shouldStartPlayingOnAwake: 0
   isLooping: 1
   persistAcrossScenes: 1
   fadeMusicDuration: 1
@@ -1796,7 +1796,7 @@ PrefabInstance:
       objectReference: {fileID: 1909054301}
     - target: {fileID: 3233388396127396515, guid: 2615b63fc32547f468056d2a9d3f4d29, type: 3}
       propertyPath: quitMiniGameAlphaThreshold
-      value: 0.2
+      value: 0.15
       objectReference: {fileID: 0}
     - target: {fileID: 3291461410144737714, guid: 2615b63fc32547f468056d2a9d3f4d29, type: 3}
       propertyPath: m_LocalScale.x

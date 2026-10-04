@@ -1,4 +1,3 @@
-using Unity.Cinemachine;
 using UnityEngine;
 using UnityEngine.UI;
 public class PlateWashingMiniGame : AbstractMinigame
@@ -151,8 +150,6 @@ public class PlateWashingMiniGame : AbstractMinigame
             dirtStain.alpha = 1;
             _currentCleanAmount = 0f;
 
-            Debug.Log($"[PlateWashing] Piatto pulito: {_completedPlates + 1}/{plateSprites.Length}");
-
             // MODIFICATO: non avanziamo più subito (incremento, cambio sprite, completamento
             // task). Avviamo solo il dialogo di completamento e segnaliamo che dobbiamo
             // aspettare la sua chiusura. La logica che prima stava qui è stata spostata in
@@ -180,6 +177,8 @@ public class PlateWashingMiniGame : AbstractMinigame
 
         _completedPlates++;
         plateImage.sprite = plateSprites[_completedPlates];
+        float randomRotation = Random.Range(-360, 360f);
+        dirtStain.transform.localRotation = Quaternion.Euler(0f, 0f, randomRotation);
 
         EvaluateInkDialogueProgress();
     }
@@ -201,7 +200,6 @@ public class PlateWashingMiniGame : AbstractMinigame
         }
         else
         {
-            Debug.Log($"[PlateWashing] Nessun knot '{knot}' trovato, salto il dialogo per questo piatto.");
             _inkManager.EndDialogue();
             isDialogueActive = false;
             // Se il dialogo viene saltato, dobbiamo forzare il passaggio al prossimo piatto?
@@ -222,7 +220,6 @@ public class PlateWashingMiniGame : AbstractMinigame
     {
         if (IsTaskCompleted() && !canReplayMiniGame)
         {
-            Debug.Log("This task has already been completed!");
             return;
         }
 

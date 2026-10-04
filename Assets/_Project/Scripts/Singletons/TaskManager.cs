@@ -34,7 +34,6 @@ public class TaskManager : GenericSingleton<TaskManager>
         if (!tasksOfTheDay.Contains(task))
         {
             tasksOfTheDay.Add(task);
-            Debug.Log($"Task '{task.TaskName}' added to today's tasks.");
             OnTaskAdded?.Invoke(task);
         }
         else
@@ -48,7 +47,6 @@ public class TaskManager : GenericSingleton<TaskManager>
         if (tasksOfTheDay.Contains(task))
         {
             tasksOfTheDay.Remove(task);
-            Debug.Log($"Task '{task.TaskName}' removed from today's tasks.");
         }
         else
         {
@@ -60,7 +58,6 @@ public class TaskManager : GenericSingleton<TaskManager>
         if (tasksOfTheDay.Contains(task) && !CompletedTasks.Contains(task))
         {
             CompletedTasks.Add(task);
-            Debug.Log($"Task '{task.TaskName}' completed.");
 
             OnTaskComplete?.Invoke(task);
         }
@@ -94,7 +91,6 @@ public class TaskManager : GenericSingleton<TaskManager>
             if (!CompletedTasks.Contains(task))
             {
                 CompletedTasks.Add(task);
-                Debug.Log($"Task '{task.TaskName}' marked as completed.");
                 OnTaskComplete?.Invoke(task);
             }
         }

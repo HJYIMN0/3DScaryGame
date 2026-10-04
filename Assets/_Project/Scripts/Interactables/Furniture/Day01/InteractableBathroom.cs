@@ -1,5 +1,3 @@
-using System;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class InteractableBathroom : AbstractInteractable
@@ -18,7 +16,6 @@ public class InteractableBathroom : AbstractInteractable
     {
         if (HasBeenCompleted)
         {
-            Debug.Log("Bathroom has already been interacted with. No further action taken.");
             return;
         }
         GameObject faderObj = Instantiate(faderPrefab);
@@ -46,7 +43,6 @@ public class InteractableBathroom : AbstractInteractable
             if (renderer != null)
             {
                 renderer.material = mat;
-                Debug.Log($"Changed material of {renderer.gameObject.name} to {mat.name}.");
             }
         }
     }

@@ -1,4 +1,3 @@
-using System;
 using TMPro;
 using UnityEngine;
 
@@ -31,13 +30,11 @@ public class TaksListManager : MonoBehaviour
 
     private void UpdateList(TaskSO newTask)
     {
-        Debug.Log($"New task '{newTask.TaskName}' added. Updating the task list UI.");
         SetupTaskList();
     }
 
     private void HandleTaskComplete(TaskSO completedTask)
     {
-        Debug.Log($"Task '{completedTask.TaskName}' has been completed. Update the task list UI accordingly.");
 
         // MODIFICA: al completamento di una task, ricostruisce la lista
         // per applicare il tag <s> (strikethrough TMP) alla task appena completata

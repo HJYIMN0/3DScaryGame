@@ -113,8 +113,6 @@ public class InkManagerUI : MonoBehaviour
         }
 
         UpdateSelectionHighlight();
-
-        Debug.Log($"ShowChoices() : {choices.Count} choices");
     }
     // AGGIUNTO: helper privato — aggiorna l'aspetto visivo dei bottoni in base a _selectedIndex.
     // Cambia colore/alpha del bottone selezionato vs gli altri.
@@ -131,8 +129,6 @@ public class InkManagerUI : MonoBehaviour
             UnityEngine.UI.LayoutRebuilder.ForceRebuildLayoutImmediate(rt);
 
         StartCoroutine(ApplySelectionDelayed(_selectedIndex));
-
-        Debug.Log($"Requested highlight for choice {_selectedIndex}");
     }
 
     private IEnumerator ApplySelectionDelayed(int index)
@@ -158,8 +154,6 @@ public class InkManagerUI : MonoBehaviour
         // NON azzerare prima: con il nuovo Input System il reset + set nello
         // stesso frame fa perdere lo stato Selected.
         EventSystem.current.SetSelectedGameObject(go);
-
-        Debug.Log($"[InkManagerUI] EventSystem selected: {go.name}");
     }
 
     // AGGIUNTO: helper privato che combina selezione e conferma per i click sui bottoni.
@@ -201,9 +195,6 @@ public class InkManagerUI : MonoBehaviour
         if (_onChoiceSelected == null)
             return;
 
-        Debug.Log(
-            $"Confirming choice {_selectedIndex}");
-
         // MODIFICA:
         // invochiamo solamente il callback.
 
@@ -243,7 +234,6 @@ public class InkManagerUI : MonoBehaviour
 
     public void CloseCanva()
     {
-        Debug.Log("[InkManagerUI] Closing Canva...");
         if (canvaInstance != null && canvaInstance.activeSelf && canvaPrefabText != null)
         {
             HideChoices();
@@ -262,8 +252,6 @@ public class InkManagerUI : MonoBehaviour
 
     private void InitializeCanva()
     {
-        Debug.Log("[InkManagerUI] Initializing Canva...");
-
         if (canvaInstance == null)
         {
             canvaInstance = Instantiate(canvaPrefab, Vector3.zero, Quaternion.identity);

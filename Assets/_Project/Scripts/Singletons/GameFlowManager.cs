@@ -43,23 +43,12 @@ public class GameFlowManager : GenericSingleton<GameFlowManager>
 
     private bool isLoadingScene = false;
 
-    private void Start()
-    {
-        Debug.Log($"GameFlowManager started. Current day: {CurrentDay}, Current scene: {CurrentScene}");
-    }
-
     public void LoadNextDay(float fadeDuration)
     {
-        Debug.Log($"Attempting to load next day. Current day: {CurrentDay}, Total days: {gameScenes.Length}");
 
         if (CurrentDay < gameScenes.Length - 1)
         {
             LoadScene(CurrentDay + 1, fadeDuration);
-        }
-        else
-        {
-            Debug.Log("Already at the last day. No next day to load.");
-            // Qui puoi aggiungere logica per fine gioco, crediti, ecc.
         }
     }
     public void LoadScene(int day, float fadeDuration)
@@ -107,7 +96,6 @@ public class GameFlowManager : GenericSingleton<GameFlowManager>
         SceneManager.LoadSceneAsync(sceneName);
         yield return new WaitUntil(() => SceneManager.GetActiveScene().name.Equals(sceneName) && fader.HasFadedIn);
 
-        Debug.Log($"Successfully loaded scene: {sceneName}");
         fader.StartCoroutine(fader.FadeOut(fadeDuration));
 
         // MODIFICATO: rimossa "currentDay = day;" — non esiste più il campo currentDay.
