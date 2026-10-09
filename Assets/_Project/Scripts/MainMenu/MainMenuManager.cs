@@ -191,6 +191,11 @@ public class MainMenuManager : MonoBehaviour
                 newCameraPos,
                 Time.deltaTime * cameraMoveSpeed
             );
+            wallLight.intensity = Mathf.Lerp(
+                wallLight.intensity,
+                wallLightMaxIntensity,
+                Time.deltaTime * cameraMoveSpeed
+            );
             yield return null;
         }
 

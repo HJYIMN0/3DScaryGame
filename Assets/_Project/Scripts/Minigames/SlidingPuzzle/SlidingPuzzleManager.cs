@@ -1,6 +1,6 @@
 using UnityEngine;
 using System.Collections.Generic;
-using UnityEngine.Events; // Richiesto per l'utilizzo di List<T> nella randomizzazione
+using UnityEngine.Events;
 
 // Il nome della classe è rimasto invariato per preservare l'integrità del sistema di minigiochi
 public class SlidingPuzzleManager : AbstractMinigame
@@ -22,6 +22,17 @@ public class SlidingPuzzleManager : AbstractMinigame
 
     [Header("Puzzle Image")]
     [SerializeField] private Sprite[] tileSprites;
+    
+    [Header("Selected Tile Animation")]
+    [SerializeField] private float selectedScale = 1.2f;
+    [SerializeField] private float selectedRotationSpeed = 90f;
+    [SerializeField] private float selectedMinRotationZ = -10f;
+    [SerializeField] private float selectedMaxRotationZ = 10f;
+
+    // [MODIFICA] Parametro esposto per evidenziare le tile con cui la selezionata può essere scambiata.
+    // È separato da selectedScale perché richiesto uno scale diverso da quello della tile selezionata.
+    [Header("Adjacent Tiles Highlight")]
+    [SerializeField] private float highlightScale = 1.1f;
 
     private Tile[,] board;
     private Tile emptyTile;
@@ -51,6 +62,12 @@ public class SlidingPuzzleManager : AbstractMinigame
 
         // MODIFICA: azzeramento di un'eventuale selezione residua da una precedente sessione del minigioco
         selectedTile = null;
+
+        // [MODIFICA] Ripristino di scala e rotazione di tutte le tile. Se il minigioco era stato chiuso con una tile
+        // ancora selezionata, quella tile (e le adiacenti evidenziate) resterebbero ingrandite/ruotate alla riapertura,
+        // perché la coroutine si ferma quando l'oggetto viene disattivato ma scala e rotazione restano com'erano.
+        // Il metodo gestisce internamente il caso board == null (prima apertura), quindi è sicuro chiamarlo qui.
+        ClearAllTileVisuals();
 
         // Genera la scacchiera salvando lo stato iniziale corretto (homeRow e homeColumn)
         if (board == null)
@@ -165,12 +182,6 @@ public class SlidingPuzzleManager : AbstractMinigame
 
         // Sostituzione della vecchia matrice di gioco con quella rimescolata
         board = randomizedBoard;
-
-        // MODIFICA: la nota tecnica precedente segnalava che un rimescolamento puramente casuale poteva
-        // generare configurazioni irrisolvibili, perché nel puzzle scorrevole classico si può muovere solo
-        // il tassello adiacente al vuoto (mosse limitate alle sole permutazioni pari). Ora che TryMove/Swap
-        // permettono lo scambio tra due tessere adiacenti qualsiasi (vedi sotto), le trasposizioni adiacenti
-        // generano l'intero gruppo delle permutazioni: qualunque configurazione rimescolata è quindi risolvibile.
     }
 
     public void OnTileClicked(Tile tile)
@@ -180,15 +191,30 @@ public class SlidingPuzzleManager : AbstractMinigame
 
     void TryMove(Tile tile)
     {
-        // MODIFICA: sostituita la logica "un click sposta la tessera verso il vuoto" con una selezione
+        // sostituita la logica "un click sposta la tessera verso il vuoto" con una selezione
         // a due click, per permettere lo scambio tra due tessere adiacenti qualsiasi, non necessariamente
         // con quella vuota (altrimenti, come richiesto, il puzzle non è sempre risolvibile).
         if (selectedTile == null)
         {
             // Primo click: memorizza la tessera scelta, in attesa della seconda
             selectedTile = tile;
+
+            //  Avvio dell'animazione della tile appena selezionata: la tile viene scalata di selectedScale
+            // e ruota in pingpong sull'asse Z tra selectedMinRotationZ e selectedMaxRotationZ alla velocità
+            // selectedRotationSpeed. Tutta la logica visiva vive nella Tile, qui passo solo i parametri esposti.
+            tile.StartSelectedAnimation(selectedScale, selectedRotationSpeed, selectedMinRotationZ, selectedMaxRotationZ);
+
+            //  Evidenzia (con highlightScale, diverso da selectedScale) le tile con cui la selezionata
+            // può essere scambiata, cioè quelle adiacenti, così il giocatore vede subito le mosse possibili.
+            HighlightAdjacentTiles(tile);
+
             return;
         }
+
+        // Al secondo click, qualunque sia l'esito (scambio, tile non adiacente, doppio click sulla stessa),
+        // tolgo selezione ed evidenziazioni. Lo faccio PRIMA di Swap perché Swap, se il puzzle è completato, chiude
+        // il minigioco e disattiva questo GameObject: dopo non potrei più ripristinare in modo affidabile le tile.
+        ClearAllTileVisuals();
 
         if (selectedTile != tile && IsAdjacent(selectedTile, tile))
         {
@@ -200,7 +226,41 @@ public class SlidingPuzzleManager : AbstractMinigame
         selectedTile = null;
     }
 
-    // MODIFICA: firma cambiata da IsAdjacent(Tile) a IsAdjacent(Tile, Tile) per confrontare due
+    /// <summary>
+    /// applica highlightScale a tutte le tile adiacenti a quella selezionata.
+    /// Riutilizza IsAdjacent esistente, così la regola "chi si può scambiare" resta definita in un solo punto
+    /// ed è identica a quella usata da TryMove. Scorre la board 2D con foreach: nessuna allocazione.</summary>
+    /// <param name="selected"></param>
+    void HighlightAdjacentTiles(Tile selected)
+    {
+        if (board == null) return;
+
+        foreach (Tile candidate in board)
+        {
+            // [MODIFICA] Salta le celle null e la tile selezionata stessa (che ha già la sua scala dedicata)
+            if (candidate == null || candidate == selected) continue;
+
+            if (IsAdjacent(selected, candidate))
+                candidate.SetHighlight(highlightScale);
+        }
+    }
+
+    // riporta TUTTE le tile a scala e rotazione originali, fermando l'animazione.
+    // Scelgo di ripristinare l'intera board invece di tenere traccia delle singole tile evidenziate: sono poche
+    // (griglia piccola) e così non rischio di lasciare una tile "sporca" se la selezione cambia in modi imprevisti.
+    void ClearAllTileVisuals()
+    {
+        // Alla primissima apertura la board non esiste ancora: niente da ripristinare
+        if (board == null) return;
+
+        foreach (Tile tile in board)
+        {
+            if (tile != null)
+                tile.ResetVisual();
+        }
+    }
+
+    //  firma cambiata da IsAdjacent(Tile) a IsAdjacent(Tile, Tile) per confrontare due
     // tessere qualsiasi tra loro, invece di confrontare sempre una tessera con il solo emptyTile
     bool IsAdjacent(Tile a, Tile b)
     {
@@ -211,7 +271,7 @@ public class SlidingPuzzleManager : AbstractMinigame
         return distance == 1;
     }
 
-    // MODIFICA: firma cambiata da Swap(Tile) a Swap(Tile, Tile) per scambiare le posizioni logiche
+    // firma cambiata da Swap(Tile) a Swap(Tile, Tile) per scambiare le posizioni logiche
     // e visive di due tessere qualsiasi, non solo di una tessera con emptyTile
     void Swap(Tile a, Tile b)
     {
@@ -226,7 +286,7 @@ public class SlidingPuzzleManager : AbstractMinigame
         UpdateVisual(a);
         UpdateVisual(b);
 
-        // MODIFICA: Richiamo al nuovo metodo rinominato IsGridCompleted
+        //  Richiamo al nuovo metodo rinominato IsGridCompleted
         if (IsGridCompleted())
         {
             interactable.MarkTaskAsComplete();
@@ -237,7 +297,6 @@ public class SlidingPuzzleManager : AbstractMinigame
         }
     }
 
-    // MODIFICA: Rinominato da IsSolved a IsGridCompleted.
     // Esegue la verifica confrontando lo stato logico alterato dalla randomizzazione con quello Home.
     private bool IsGridCompleted()
     {
@@ -262,7 +321,7 @@ public class SlidingPuzzleManager : AbstractMinigame
         GenerateBoard();
         RandomizeGrid(); // Assicura che la griglia venga nuovamente randomizzata al reset
 
-        // MODIFICA: azzeramento della selezione in corso, per evitare che un click residuo da prima
+        // azzeramento della selezione in corso, per evitare che un click residuo da prima
         // del reset generi uno scambio indesiderato sulla nuova board
         selectedTile = null;
     }

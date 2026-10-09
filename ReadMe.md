@@ -1,3 +1,10 @@
+# T0 DO:
+## Correggere errore in talking head (no invece di not)
+## Numerare pezzi puzzle
+## non mi piace come si resetta la musica (mantra).
+## Mi piacerebbe fare partire l'audio un attimo prima che carichi la scena. 
+
+
 # Proprietà intellettuali
 
 ## Macchinetta del caffè

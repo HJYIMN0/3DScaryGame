@@ -20,6 +20,13 @@ public class AudioManager : GenericSingleton<AudioManager>
 
     // ==================== LEGACY ====================
     private AudioSource _playerAudioSource;
+    /// <summary>
+    /// Nuovo metodo: espone il playhead della sorgente persistente, serve a GameMusicManager.PlayInternal()
+    /// per far partire la sorgente locale esattamente dallo stesso punto (passaggio di consegne senza riavvio).
+    /// </summary>
+    /// <returns></returns>
+    public float GetPersistentTime()
+        => _persistentMusicSource != null ? _persistentMusicSource.time : 0f;
 
     public override void Awake()
     {

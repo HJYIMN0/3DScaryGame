@@ -72,6 +72,16 @@ public class GameMusicManager : MonoBehaviour
     ///  3. persistAcrossScenes = false && nessuna persistente in riproduzione:
     ///     suona la clip su una sorgente locale.
     /// </summary>
+    /// <summary>
+    /// Logica:
+    ///  1. persistAcrossScenes = true  -> delega al singleton: PlayPersistentMusic
+    ///     sostituisce la traccia persistente con crossfade (durata = fadeMusicDuration).
+    ///  2. persistAcrossScenes = false && persistente in riproduzione (musica ereditata):
+    ///     crossfade persistente -> sorgente LOCALE con durata = fadeMusicDuration.
+    ///     A fine fade AudioManager lascia la persistente con clip = null e volume = 0.
+    ///  3. persistAcrossScenes = false && nessuna persistente in riproduzione:
+    ///     suona la clip su una sorgente locale.
+    /// </summary>
     private void PlayInternal(AudioClip newClip, bool loop)
     {
         var am = AudioManager.Instance;
@@ -88,6 +98,29 @@ public class GameMusicManager : MonoBehaviour
         {
             var target = GetFreeLocalSource();
             if (target == null) return;
+
+            // [MODIFICA] Caso pre-roll: GameFlowManager ha già avviato proprio questa clip sulla sorgente persistente
+            // prima del caricamento della scena. Un crossfade la riavvierebbe da 0 (doppione udibile), quindi faccio il
+            // passaggio di consegne: la locale riprende dal punto esatto della persistente e poi la persistente si ferma.
+            if (am.GetPersistentClip() == newClip)
+            {
+                // [MODIFICA] Leggo il playhead PRIMA di fermare la persistente, perché StopPersistentMusic azzera clip e stato
+                float resumeTime = am.GetPersistentTime();
+                am.StopPersistentMusic(0f);
+
+                target.volume = 1f;
+                target.clip = newClip;
+                target.loop = loop;
+
+                // [MODIFICA] Guardia: impostare time oltre la durata della clip darebbe errore (clip più corta del tempo trascorso)
+                if (resumeTime < newClip.length)
+                    target.time = resumeTime;
+
+                target.Play();
+                Debug.Log($"[GameMusicManager] Handoff pre-roll -> locale '{newClip.name}' ripresa a {resumeTime:F2}s");
+                return;
+            }
+
             am.CrossfadeFromPersistentTo(target, newClip, fadeMusicDuration, loop);
             return;
         }

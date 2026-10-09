@@ -10,9 +10,11 @@ public class GameFlowManager : GenericSingleton<GameFlowManager>
     public float FadeDuration => fadeDuration;
     [SerializeField] private GameObject fadeCanvaPrefab;
 
-    // MODIFICATO: rimosso il campo serializzato "currentDay" (int).
-    // Come richiesto, il giorno non è più tracciato manualmente: viene dedotto
-    // confrontando SceneManager.GetActiveScene().name con l'array gameScenes.
+    [Header("Pre-roll audio")]
+    [Tooltip("Clip da far partire prima del caricamento della scena. L'indice corrisponde a quello di gameScenes. Elemento vuoto = nessun pre-roll per quella scena.")]
+    [SerializeField] private AudioClip[] sceneStartClips;
+    [Tooltip("Secondi (in tempo reale) tra l'avvio dell'audio e l'inizio del caricamento della scena.")]
+    [SerializeField] private float audioLeadTime = 0.5f;
     public string[] GameScenes => gameScenes;
 
     // MODIFICATO: CurrentDay è ora una proprietà calcolata al volo invece di un campo.
@@ -74,11 +76,6 @@ public class GameFlowManager : GenericSingleton<GameFlowManager>
         StartCoroutine(FadeToLoad(gameScenes[day], fadeCanvaPrefab, fadeDuration));
     }
 
-
-    // MODIFICATO: firma cambiata da FadeToLoad(int day, string sceneName, ...) a
-    // FadeToLoad(string sceneName, ...): il parametro "day" serviva solo per fare
-    // "currentDay = day;" a fine coroutine, operazione ora superflua perché CurrentDay
-    // si aggiorna da solo (in automatico) non appena la scena attiva cambia.
     private IEnumerator FadeToLoad(string sceneName, GameObject objToFade, float fadeDuration)
     {
         if (isLoadingScene)
@@ -92,6 +89,20 @@ public class GameFlowManager : GenericSingleton<GameFlowManager>
         Fader fader = fadeInstance.GetComponent<Fader>();
         fader.StartCoroutine(fader.FadeIn(fadeDuration));
         yield return new WaitUntil(() => fader.HasFadedIn);
+
+        // [MODIFICA] Pre-roll audio: a schermo già nero, prima di LoadSceneAsync, avvio la musica della scena di destinazione.
+        // L'indice si ricava da sceneName con Array.IndexOf, così non cambio la firma del metodo.
+        int sceneIndex = Array.IndexOf(gameScenes, sceneName);
+        if (sceneStartClips != null && sceneIndex >= 0 && sceneIndex < sceneStartClips.Length && sceneStartClips[sceneIndex] != null)
+        {
+            // [MODIFICA] Uso la sorgente persistente dell'AudioManager (DontDestroyOnLoad): la scena nuova non esiste ancora.
+            // fadeTime = 0 perché lo schermo è nero e un taglio netto non si nota.
+            AudioManager.Instance.PlayPersistentMusic(sceneStartClips[sceneIndex], true, 0f);
+            Debug.Log($"[GameFlowManager] Pre-roll audio '{sceneStartClips[sceneIndex].name}' avviato prima di caricare '{sceneName}'");
+
+            // [MODIFICA] Realtime perché il tempo di gioco potrebbe essere fermo (timeScale = 0) durante la transizione.
+            yield return new WaitForSecondsRealtime(audioLeadTime);
+        }
 
         SceneManager.LoadSceneAsync(sceneName);
         yield return new WaitUntil(() => SceneManager.GetActiveScene().name.Equals(sceneName) && fader.HasFadedIn);
