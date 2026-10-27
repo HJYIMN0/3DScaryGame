@@ -72,7 +72,7 @@ Material:
         m_Offset: {x: 0, y: 0}
     - _NoiseTex3D:
         m_Texture: {fileID: 11700000, guid: 11ded9c9d808b4365b4b40a5198368be, type: 2}
-        m_Scale: {x: 1, y: 1}
+        m_Scale: {x: 0.1, y: 0.1}
         m_Offset: {x: 0, y: 0}
     - _OcclusionMap:
         m_Texture: {fileID: 0}
@@ -113,21 +113,21 @@ Material:
     - _Cull: 2
     - _Cutoff: 0.5
     - _DebugMode: 0
-    - _Density: 3.6
+    - _Density: 10
     - _DensityScale: 0.96
     - _DetailAlbedoMapScale: 1
-    - _DetailBlend: 0
+    - _DetailBlend: 0.73
     - _DetailNormalMapScale: 1
     - _DstBlend: 0
     - _DstBlendAlpha: 0
-    - _EdgeSoftness: 0.419
-    - _EmissiveIntensity: 5.7
+    - _EdgeSoftness: 0.317
+    - _EmissiveIntensity: 3.5
     - _EnvironmentReflections: 1
     - _GlossMapScale: 0
     - _Glossiness: 0
     - _GlossyReflections: 0
     - _HeightBias: 0
-    - _HeightFalloff: 10
+    - _HeightFalloff: 7.8
     - _JitterStrength: 0.39
     - _Metallic: 0
     - _MultiScatter: 0.6
@@ -136,7 +136,7 @@ Material:
     - _NoiseScaleBase: 0.005
     - _NoiseScaleDetail: 5
     - _OcclusionStrength: 1
-    - _OpacityScale: 1
+    - _OpacityScale: 0.53
     - _Parallax: 0.005
     - _QueueOffset: 0
     - _ReceiveShadows: 1
@@ -154,7 +154,7 @@ Material:
     - _StepCount: 43
     - _Surface: 0
     - _UseUIAlphaClip: 1
-    - _WindSpeedBase: 0.005
+    - _WindSpeedBase: 0
     - _WindSpeedDetail: 0.1
     - _WorkflowMode: 1
     - _XRMotionVectorsPass: 1
@@ -165,7 +165,7 @@ Material:
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _EmissiveColor: {r: 0.6679245, g: 0.6679245, b: 0.6679245, a: 1}
-    - _FogColor: {r: 0.3509434, g: 0.3509434, b: 0.3509434, a: 1}
+    - _FogColor: {r: 1, g: 1, b: 1, a: 1}
     - _SpecColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}
     - _WindDir: {r: 0.1, g: 0, b: 0, a: 0}
   m_BuildTextureStacks: []

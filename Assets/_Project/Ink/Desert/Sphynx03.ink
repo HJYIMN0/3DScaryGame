@@ -1,6 +1,6 @@
 This game was supposed to be something else entirely
 
-But as I was building it,
+But as it was getting built,
 Expectations on me kept on growing.
 
 How hard must it be?

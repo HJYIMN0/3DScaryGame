@@ -1,6 +1,6 @@
 Now your time is running out.
 
-You're his victim.
+You're my victim.
 You have no choice.
 
 If choosing is no different from not choosing.
@@ -8,10 +8,11 @@ What is free will?
 
 + [We are what we choose]
 Yet what can you really choose?
-He could not choose the theme of his own game
-He could not choose the trajectory of his own life
+I could not choose the theme of his own game
+You could not choose the trajectory of your own life.
+To live is a discovery.
 
-And yet he lives.
+And yet we live.
 -> Reflection
 
 + [What we are is chosen]
