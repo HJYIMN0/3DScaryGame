@@ -76,3 +76,9 @@ crashlytics-build.properties
 Blender/Clock/Clock01.spp
 *.spp
 Video/Presentazione Pertugio By HJYIMN.mov
+
+# Blender project files
+/Blender/
+
+# Video files
+/Video/
